@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+</script>
+<style type="text/css">
+</style>
+</head>
+<body>
+	<header th:fragment="header" class="header">
+		<nav class="navbar navbar-default" role="navigation">
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li><a href="/" style="color: black; line-height: 40px;"><img
+						alt="" src="/css/mmmm.png"></a></li>
+			</ul>
+			<div class="navbar-collapse collapse">
+				<th:block th:if="${session.mdto==null}">
+					<ul class="nav navbar-nav navbar-center">
+						<li><a href="/"
+							style="color: black; line-height: 40px; padding-left: 700px;">선급여
+								지급 시스템</a></li>
+					</ul>
+				</th:block>
+				<th:block th:unless="${session.mdto==null}">
+					<th:block th:if="${session.mdto.role=='사장'}">
+						<ul class="nav navbar-nav navbar-center">
+						<li><a href="/"
+							style="color: black; line-height: 40px; padding-left: 500px;">직원관리</a></li>
+						<li><a href="/"
+							style="color: black; line-height: 40px; ">월별스케줄</a></li>
+						<li><a href="/"	
+							style="color: black; line-height: 40px; ">선지급관리</a></li>
+						<li><a href="/"
+							style="color: black; line-height: 40px; ">게시판</a></li>
+					</ul>
+					</th:block>
+					<th:block th:if ="${session.mdto.role=='직원'}">
+						<ul class="nav navbar-nav navbar-center">
+						<li><a href="/"
+							style="color: black; line-height: 40px; padding-left: 500px;">급여정보</a></li>
+						<li><a href="/"
+							style="color: black; line-height: 40px; ">월별스케줄</a></li>
+						<li><a href="/"	
+							style="color: black; line-height: 40px; ">선급여요청</a></li>
+						<li><a href="/"
+							style="color: black; line-height: 40px; ">게시판</a></li>
+						</ul>
+					</th:block>
+					</th:block>
+				<th:block th:if="${session.mdto==null}">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/user/login"
+							style="color: black; line-height: 40px;">Login</a></li>
+						<li><a href="/user/addUser"
+							style="color: black; line-height: 40px;">SignUp</a></li>
+					</ul>
+				</th:block>
+
+				<th:block th:unless="${session.mdto==null}">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/user/mypage"
+							style="color: black; line-height: 40px;">MyPage</a></li>
+						<li><a style="color: black; line-height: 40px;">[<span
+								th:text="${session.mdto.role}"></span>] <span
+								th:text="${session.mdto.name}"></span>님 환영합니다
+						</a></li>
+						<li><a href="/user/logout"
+							style="color: black; line-height: 40px;">Logout</a></li>
+					</ul>
+				</th:block>
+			</div>
+		</nav>
+	</header>
+	<div style="height: 50px;"></div>
+</body>
+</html>
+

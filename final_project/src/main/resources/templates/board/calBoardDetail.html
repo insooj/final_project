@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<div layout:fragment="content">
+<div id="container">
+<h1>상품 상세보기</h1>
+<form method="get" 
+								th:object="${updateBoardCommand}">
+	<input type="hidden" name="board_seq"  th:value="${dto.board_seq}"/>
+	<table class="table">
+		<tr>
+			<th>작성자[ID]</th>
+			<td th:text="${dto.id}"></td>
+		</tr>
+		<tr>
+			<th>제목</th>
+			<td	th:text="${dto.title}"  th:value="${dto.title}" style="font-size:15px"></td>
+		</tr>
+		<tr>
+			<th>이미지 파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
+			<th:block th:if="${dto.fileBoardDto[0].origin_filename==null}">
+				<td>첨부파일없음</td>
+			</th:block>	
+			<th:block th:unless="${dto.fileBoardDto[0].origin_filename==null}">
+				<td>
+					<th:block th:each="fdto:${dto.fileBoardDto}">
+						<span class="glyphicon glyphicon-folder-open"></span>
+						<a th:text="${fdto.origin_filename}"
+						   th:href="@{/board/download(file_seq=${fdto.file_seq})}" ></a>
+					</th:block>
+				</td>
+			</th:block>
+		</tr>
+			<tr>
+		<th>이미지 </th>
+		<th:block th:if="${dto.fileBoardDto[0].stored_filename}!=null">
+							<td >
+								<img name="p"
+								th:src="@{'/upload/' + ${dto.fileBoardDto[0].stored_filename}}"
+								alt="Image" style="width: 300px; height: 300px;">
+							</td>
+							</th:block>
+							<th:block th:if="${dto.fileBoardDto[0].stored_filename}==null">
+							<td >이미지없음</td>
+							</th:block>
+		</tr>
+			<th>내용</th>
+			<td><pre th:text="${dto.content}"th:value="${dto.content}" style="font-size:15px; background-color:white"></pre></td>
+		</tr>
+		<tr>
+			<th>가격</th>
+			<td	th:text="${dto.price}+'원'"  th:value="${dto.price}" style="font-size:15px"></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<th:block th:if="${session.mdto.id==dto.id}">
+					<button class="btn"  type="button" th:onclick="|location.href='@{/board/calboardUpdate(board_seq=${dto.board_seq})}'|">수정</button>
+				</th:block> 
+				<th:block th:if="${session.mdto.id==dto.id}">
+					<button  type="button" class="btn" 
+					 th:onclick="|location.href='@{/board/calmulDel(seq=${dto.board_seq})}'|" >삭제</button>
+					</th:block> 
+					<button type="button" class="btn"
+				 	th:onclick="|location.href='@{/board/calBoardList(board_seq=${dto.board_seq})}'|">목록</button>
+				<button type="button" class="btn" style="margin-left:80%; width:200px; height:80px; font-size:30px;">구매하기</button>
+			</td>
+		</tr>
+	</table>
+
+</form>
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+

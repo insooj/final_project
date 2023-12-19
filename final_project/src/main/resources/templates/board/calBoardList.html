@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function allSel(bool){
+		var chks=document.getElementsByName("seq");// [seq,seq,seq,seq..]
+		for (var i = 0; i < chks.length; i++) {
+			chks[i].checked=bool;//각각의 체크박스에 체크여부를 true/false로 적용
+		}
+	}
+	
+	function isCheck(){
+		if(confirm("정말 삭제 하시겠습니까?")){
+			return true;
+		}
+		return false;
+	}
+		$(document).ready(function() {
+
+	// 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
+	var floatPosition = parseInt($("#floatMenu").css('top'));
+	// 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
+
+	$(window).scroll(function() {
+		// 현재 스크롤 위치를 가져온다.
+		var scrollTop = $(window).scrollTop();
+		var newPosition = scrollTop + floatPosition + "px";
+
+		/* 애니메이션 없이 바로 따라감
+		 $("#floatMenu").css('top', newPosition);
+		 */
+
+		$("#floatMenu").stop().animate({
+			"top" : newPosition
+		}, 500);
+
+	}).scroll();
+	
+})
+</script>
+<style type="text/css">
+img {
+	width: 100px;
+	height: 100px;
+}
+th {
+	text-align: center;
+}
+#floatMenu {
+	position: absolute;
+	width: 100px;
+	height: 200px;
+	left: 5%;
+	top: 200px;
+	
+	color: green;
+}
+</style>
+</head>
+<body>
+<div layout:fragment="content">
+	<div id="container">
+		<h1>요일별 상품조회</h1>
+		<form th:action="@{/board/MulDel}" method="post"
+			  th:object="${deleteCalCommand}" onsubmit="return isCheck()">
+			<table class="table" style="vertical-align: middle; height: 100px; font-size: 20px; text-align: center;">
+				<col width="120px"/>
+				<col width="200px"/>
+				<col width="200px"/>
+				<col width="500px"/>
+				<tr>
+<!-- 					<th><input type="checkbox" name="all" onclick="allSel(this.checked)"/></th> -->
+					<th>작성일</th>
+					<th>작성자</th>
+					<th>제목</th>
+					<th>이미지</th>
+				</tr>
+				<th:block th:if="${#lists.isEmpty(list)}">
+					<tr>
+						<td colspan="4" style="text-align: center " >---작성된 글이
+								없습니다.---</td>
+					</tr>				
+				</th:block>
+				<th:block th:unless="${#lists.isEmpty(list)}">
+					<tr th:each="dto:${list}">
+<!-- 						<td><input type="checkbox" name="seq" th:value="${dto.board_seq}"/></td> -->
+						<td th:text="${#dates.format(dto.regdate, 'yyyy-MM-dd')}" style="width: 120px"></td>
+						<td th:text="${dto.id}" ></td>
+						<td> 
+							<a th:href="@{/board/calBoardDetail(board_seq=${dto.board_seq})}"  th:text="${dto.title}"></a>
+						</td>
+						<th:block th:if="${dto.fileBoardDto[0].stored_filename}!=null">
+							<td >
+								<img name="p"
+								th:src="@{'/upload/' + ${dto.fileBoardDto[0].stored_filename}}"
+								alt="Image">
+							</td>
+							</th:block>
+							<th:block th:if="${dto.fileBoardDto[0].stored_filename}==null">
+							<td >이미지없음</td>
+							</th:block>
+					</tr>				
+				</th:block>
+			
+			</table>
+			<div id="floatMenu">
+				<tr>
+					<td colspan="4">
+<!-- 						<button type="submit" title="일정삭제" class="btn btn-default" > -->
+<!-- 						  <span class="glyphicon glyphicon-trash" ></span> -->
+<!-- 						</button> -->
+						
+						<button type="button" title="달력보기" class="btn" style="border-radius: 50%; width: 100px; height: 100px; font-size:20px; text-align:center;"
+								th:onclick="|location.href='@{/board/calendar(year=${session.ymdMap.year},month=${session.ymdMap.month})}'|" >                        
+						뒤로가기 </button> 
+						<span class="errorField" th:if="${#fields.hasErrors('seq')}"
+												 th:errors="*{seq}"></span>
+					</td>
+				</tr>
+				</div>
+		</form>
+	</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

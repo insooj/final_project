@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.project.mapper.BoardMapper">
+
+
+
+	<resultMap type="boardDto" id="boardDtoMap">
+		<id property="board_seq" column="BOARD_SEQ" />
+		<result property="id" column="ID" />
+		<result property="title" column="TITLE" />
+		<result property="content" column="CONTENT" />
+		<result property="regdate" column="REGDATE" />
+		<result property="price" column="PRICE" />
+		<result property="sold" column="SOLD" />
+		<result property="sold_id" column="SOLD_ID" />
+		<!-- <association property="fileBoardDto"></association> -->
+		<collection property="fileBoardDto"
+			resultMap="fileBoardDtoMap"></collection>
+	</resultMap>
+
+	<resultMap type="fileBoardDto" id="fileBoardDtoMap">
+		<id property="file_seq" column="FILE_SEQ" />
+		<result property="board_seq" column="BOARD_SEQ" />
+		<result property="origin_filename" column="ORIGIN_FILENAME" />
+		<result property="stored_filename" column="STORED_FILENAME" />
+	</resultMap>
+
+	<select id="getAllList" resultMap="boardDtoMap">
+		SELECT b.board_seq, b.id,
+		b.sold,
+		b.title, b.content, b.regdate, b.price, f.file_seq,
+		f.stored_filename
+		FROM testboard b left OUTER JOIN fileinfo f
+		ON
+		b.board_seq =
+		f.board_seq
+		ORDER BY REGDATE DESC
+	</select>
+
+	<select id="getsoldAllList" resultMap="boardDtoMap" parameterType="String">
+		SELECT b.board_seq, b.id,
+		b.title, b.content, b.regdate, b.sold_id, f.file_seq,
+		f.stored_filename
+		FROM testboard b left OUTER JOIN fileinfo f
+		ON b.board_seq = f.board_seq
+		WHERE sold=1 and b.id=#{id}
+		ORDER BY regdate
+	</select>
+
+	<select id="getmyAllList" resultMap="boardDtoMap" parameterType="String">
+		SELECT b.board_seq, b.id,
+		b.title, b.content, b.regdate, b.sold_id, f.file_seq,
+		f.stored_filename
+		FROM testboard b left OUTER JOIN fileinfo f
+		ON b.board_seq = f.board_seq
+		WHERE sold_id=#{id}
+		ORDER BY regdate
+	</select>
+
+
+	<select id="getBoard" parameterType="Integer"
+		resultMap="boardDtoMap">
+		SELECT B.BOARD_SEQ, B.ID, B.TITLE, B.CONTENT, B.REGDATE,
+		B.PRICE, B.SOLD, B.SOLD_ID
+		,F.FILE_SEQ, F.ORIGIN_FILENAME,
+		F.STORED_FILENAME
+		FROM TESTBOARD B LEFT OUTER JOIN
+		FILEINFO F
+		ON
+		B.BOARD_SEQ = F.BOARD_SEQ
+		WHERE B.BOARD_SEQ = #{board_seq}
+	</select>
+
+	<!-- useGeneratedKeys="true" keyProperty="board_seq" : 증가된 board_seq값을 BoardDto에 
+		전달 : BoardDto dto=insertBoard() -->
+	<insert id="insertBoard" parameterType="boardDto"
+		useGeneratedKeys="true" keyProperty="board_seq">
+		INSERT INTO TESTBOARD
+		VALUES(NULL,#{id},#{title},#{content},sysdate(),'N',#{price},'0','a')
+	</insert>
+
+	<update id="updateBoard" parameterType="boardDto">
+		UPDATE TESTBOARD
+		SET
+		TITLE=#{title}, CONTENT=#{content}, PRICE=#{price}
+		WHERE
+		BOARD_SEQ=#{board_seq}
+	</update>
+
+	<update id="updateBoard1" parameterType="boardDto">
+		UPDATE testboard
+		SET sold
+		= #{sold}, sold_id = #{sold_id}
+		WHERE board_seq = #{board_seq}
+	</update>
+
+	<update id="mulDel" parameterType="Map">
+		DELETE FROM TESTBOARD WHERE BOARD_SEQ IN
+		<foreach collection="seqs" item="board_seq" open="(" close=")"
+			separator=",">
+			#{board_seq}
+		</foreach>
+	</update>
+
+
+	<!-- 로그인 보드 기능 -->
+	<select id="logininfo" parameterType="boardDto">
+		SELECT b.board_seq, b.id,
+		b.title, b.content, b.regdate
+		FROM testboard b LEFT OUTER JOIN member t
+		ON b.id = t.id
+	</select>
+	<!-- 캘린더 -->
+	<select id="calViewList" parameterType="Map"
+		resultType="boardDto">
+		SELECT rn, id, title, content ,DATE_FORMAT(regdate,
+		'%Y%m%d%h%m') AS mdate
+		FROM (SELECT ROW_NUMBER() OVER( PARTITION BY
+		DATE_FORMAT(regdate,
+		'%Y%m%d')
+		ORDER BY regdate) rn, id, title, content,
+		regdate
+		FROM testboard
+		WHERE
+		DATE_FORMAT(regdate, '%Y%m')=#{yyyyMM}) cal
+		WHERE rn BETWEEN 1 AND 5;
+	</select>
+
+	<select id="calBoardCount" parameterType="Map"
+		resultType="Integer">
+		SELECT COUNT(*)
+		FROM testboard
+		WHERE DATE_FORMAT(regdate,
+		'%Y%m%d')=#{yyyyMMdd}
+
+	</select>
+
+	<select id="calBoardList" parameterType="Map"
+		resultMap="boardDtoMap">
+		SELECT b.board_seq, b.id,
+		b.title, b.content, b.regdate,
+		b.price, f.file_seq,
+		f.stored_filename
+		FROM testboard b left OUTER JOIN
+		fileinfo f
+		ON
+		b.board_seq =
+		f.board_seq
+		WHERE DATE_FORMAT(regdate,
+		'%Y%m%d')=#{yyyyMMdd}
+		ORDER BY REGDATE DESC
+	</select>
+</mapper>

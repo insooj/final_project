@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	$(function(){
+		// on("eventType", function(){})
+		$("input[name=id]").on("keyup", function(){
+			var id=$(this).val(); // id 입력박스에 입력한 id값 가져오기 value -> val()
+// 			console.log(id);
+			$.ajax({
+				url:"/user/idChk",
+				method:"get",
+				dataType:"json",
+				async:false,
+				data:{"id":id},
+				success:function(data){
+					if(data.id!=null){ // 사용할 수 없는 id
+// 						console.log("사용할수 없는 id 입니다");
+						$("#idChk").attr("class", "n").css("color","blue").text("사용불가");
+					}else{  // 사용할 수 있는 id
+// 						console.log("사용가능합니다");
+						$("#idChk").attr("class", "y").css("color","blue").text("사용가능합니다");
+					}
+				},
+				error:function(e){
+					alert("통신오류ㅋ"+e);
+				}
+			});
+		});
+	});
+	
+	function submitChk(){
+		var classValue = $("#idChk").attr("class");
+		if(classValue=="n"){
+			alert("아이디 확인하세요");
+			return false;
+		}
+		return true;
+	}
+</script>
+<style type="text/css">
+body{
+	overflow: hidden;
+}
+ .slider {
+ z-index:1;
+ opacity: 0.6;
+ overflow: hidden;  
+ top: 70px ;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ position: absolute;
+ background-size: cover;
+ background-position: center;
+ background-image:url("/css/background.jpg");
+}
+</style>
+</head>
+<body>
+<div layout:fragment="content">
+<div class="slider">
+<h1 style="margin-left: 45%; margin-top: 10%; font-size: 50px;font-family: 'GmarketSans'; font-weight: bold; color:black; opacity: 1.0;">회원 가입</h1>
+	<form onsubmit="return submitChk()" action="/user/addUser" method="post" th:object="${addUserCommand}">
+		<table class="table" style=" position:absolute; width:50%;  font-family: 'GmarketSans';margin-left: 35%;margin-top: 5%; font-size: 30px; width: 600px;">
+			<tr>
+				<th>아이디:</th>
+				<td><input style ="border-radius: 15px;  width: 400px;  "th:field="*{id}" type="text" 
+				              class="form-control" name="id" />
+				     <span  style=" font-size: 20px;"id="idChk" class="n"></span>
+					<span  style=" font-size: 20px;" th:if="${#fields.hasErrors('id')}" 
+					      th:errors="*{id}"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>이름:</th>
+				<td><input style ="border-radius: 15px;  width: 400px;"th:field="*{name}" type="text" 
+				              class="form-control" name="name" />
+					<span style=" font-size: 20px;" th:if="${#fields.hasErrors('name')}" 
+					      th:errors="*{name}"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>비밀번호:</th>
+				<td><input  style ="border-radius: 15px;  width: 400px;" th:field="*{password}" type="password" 
+				              class="form-control" name="password" />
+					<span style=" font-size: 20px;"th:if="${#fields.hasErrors('password')}" 
+					      th:errors="*{password}"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>이메일:</th>
+				<td><input style ="border-radius: 15px;  width: 400px;" th:field="*{email}" type="email" 
+				              class="form-control" name="email" />
+					<span style=" font-size: 20px;" th:if="${#fields.hasErrors('email')}" 
+					      th:errors="*{email}"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>주소:</th>
+				<td><input style ="border-radius: 15px;  width: 400px;"th:field="*{address}" type="text" 
+				              class="form-control" name="address" />
+					<span style=" font-size: 20px;" th:if="${#fields.hasErrors('address')}" 
+					      th:errors="*{address}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input  style="margin-left: 33%; width: 200px;	  font-family: 'GmarketSans'; font-size:30px; border-radius:20px; margin-top:7%;" type="submit" value="가입" class="btn"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

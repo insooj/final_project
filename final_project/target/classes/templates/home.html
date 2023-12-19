@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+@import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
+
+.slider {
+ z-index:1;
+ opacity: 0.6;
+ overflow: hidden;  
+ top: 70px;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ position: absolute;
+ background-size: cover;
+ background-position: center;
+ background-image:url("/css/background.jpg");
+}
+
+</style>
+</head>
+<body style="overflow:hidden;" >
+<div layout:fragment="content" >
+<div class="slider">
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+

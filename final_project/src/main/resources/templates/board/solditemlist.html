@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function allSel(bool){
+		var chks=document.getElementsByName("seq");// [seq,seq,seq,seq..]
+		for (var i = 0; i < chks.length; i++) {
+			chks[i].checked=bool;//각각의 체크박스에 체크여부를 true/false로 적용
+		}
+	}
+	
+	function isCheck(){
+		if(confirm("정말 삭제 하시겠습니까?")){
+			return true;
+		}
+		return false;
+	}
+	
+	
+	$(document).ready(function() {
+
+	// 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
+	var floatPosition = parseInt($("#floatMenu").css('top'));
+	// 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
+
+	$(window).scroll(function() {
+		// 현재 스크롤 위치를 가져온다.
+		var scrollTop = $(window).scrollTop();
+		var newPosition = scrollTop + floatPosition + "px";
+
+		/* 애니메이션 없이 바로 따라감
+		 $("#floatMenu").css('top', newPosition);
+		 */
+
+		$("#floatMenu").stop().animate({
+			"top" : newPosition
+		}, 500);
+
+	}).scroll();
+
+})
+</script>
+<style type="text/css">
+img {
+	width: 100px;
+	height: 100px;
+}
+
+th {
+	text-align: center;
+}
+
+#floatMenu {
+	position: absolute;
+	width: 100px;
+	height: 200px;
+	left: 5%;
+	top: 200px;
+	
+	color: green;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div id="container">
+			<h1>판매된 상품목록</h1>
+			<form action="/board/mulDel" method="post"
+				th:object="${delBoardCommand} " onsubmit="return isCheck()">
+				<table class="col-md-12 table-bordered"
+					style="vertical-align: middle; height: 100px; font-size: 20px; text-align: center;">
+					<tr>
+<!-- 						<th><input type="checkbox" name="all" 
+<!-- 							onclick="allSel(this.checked)" /></th> -->
+						<th>판매자</th>
+						<th>제목</th>
+						<th>등록일</th>
+						<th>상품 이미지</th>
+						<th>구매자</th>
+					</tr>
+					<th:block th:if="${#lists.isEmpty(list)}">
+						<tr>
+							<td colspan="5" style="text-align: center;">---판매된 상품이
+								없습니다.---</td>
+						</tr>
+					</th:block>
+					<th:block th:unless="${#lists.isEmpty(list)}">
+						<tr th:each="dto:${list}" >
+<!-- 							<td><input type="checkbox" name="seq" th:field="*{seq}" -->
+<!-- 								th:value="${dto.board_seq}" /></td> -->
+							<td th:text="${dto.id}"></td>
+							<td><a
+								th:href="@{/board/boardDetail(board_seq=${dto.board_seq})}"
+								th:text="${dto.title}"></a></td>
+							<td th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"></td>
+							<th:block th:if="${dto.fileBoardDto[0].stored_filename}!=null">
+							<td >
+								<img name="p"
+								th:src="@{'/upload/' + ${dto.fileBoardDto[0].stored_filename}}"
+								alt="Image">
+							</td>
+							</th:block>
+							<th:block th:if="${dto.fileBoardDto[0].stored_filename}==null">
+							<td >이미지없음</td>
+							</th:block>
+							<td th:text="${dto.sold_id}"></td>
+						</tr>
+					</th:block>
+				<table>
+					<tr>
+<!-- 					<td><a href="/board/boardList">맨 위로</a></td> -->
+					</tr>
+				</table>
+				</table>
+<!-- 				<div id="floatMenu"> -->
+<!-- 					<table> -->
+<!-- 						<tr> -->
+<!-- 							<td colspan="4"> -->
+<!-- 								<button type="button" class="btn" style="border-radius: 50%; width: 100px; height: 100px; font-size:20px; text-align:center;" -->
+<!-- 									th:onclick="|location.href='@{/board/boardInsert}'|">상품등록</button> -->
+<!-- 								<button type="submit" class="btn" style="border-radius: 50%; width: 100px; height: 100px; font-size:20px" >글삭제</button> <span -->
+<!-- 								th:if="${#fields.hasErrors('seq')}" th:errors="*{seq}"></span> -->
+<!-- 							</td> -->
+<!-- 						</tr> -->
+<!-- 					</table> -->
+<!-- 				</div> -->
+			</form>
+		</div>
+	</div>
+</body>
+</html>
