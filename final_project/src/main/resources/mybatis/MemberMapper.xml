@@ -23,6 +23,12 @@
       FROM MEMBER
       WHERE ID = #{id}
    </select>
+   
+    <update id="pwChk" parameterType="memberDto" >
+     UPDATE MEMBER
+	 SET PASSWORD = #{password}
+	 WHERE ID = #{id}
+    </update>
 </mapper>
 
 

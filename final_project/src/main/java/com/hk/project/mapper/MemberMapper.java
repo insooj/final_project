@@ -14,6 +14,8 @@ public interface MemberMapper {
 	public MemberDto loginUser(String id);
 	
 	public MemberDto getUser(MemberDto dto);
+	
+	public boolean pwChk(MemberDto mdto);
 }
 
 

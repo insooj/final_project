@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.LoginCommand;
+import com.hk.project.command.UpdatePasswordCommand;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.service.MemberService;
 
@@ -125,12 +126,43 @@ public class MemberController {
 		return "member/mypageform";
 	}
 	
-	
+	@PostMapping(value = "/myupdateform")
+	public String myupdateform(Model model,HttpServletRequest request) {
+		System.out.println("정보수정");
+		HttpSession session=(HttpSession) request.getSession();
+	      MemberDto mdto=(MemberDto)session.getAttribute("mdto");
+	      MemberDto dto=memberService.getUser(mdto);
+	      model.addAttribute("dto",dto);
+		return "member/myupdateform";
+	}
 	@GetMapping(value = "/myaccount")
 	public String myaccount(Model model) {
 		System.out.println("계좌등록 폼 이동");
 		model.addAttribute("addUserCommand", new AddUserCommand());
 		return "member/myaccount";
+	}
+	
+	@PostMapping(value = "/pwChk")
+	public String pwChk(@Validated UpdatePasswordCommand updatePasswordCommand
+			             ,BindingResult result,Model model, HttpServletRequest request) {
+		System.out.println("비밀번호변경하기");
+		
+		if(result.hasErrors()) {
+			System.out.println("회원가입 유효값 오류");
+			return "member/updateUser";
+		}
+		
+		try {
+			memberService.pwChk(updatePasswordCommand);
+			System.out.println("수정완료");
+			request.getSession().invalidate();
+			return "redirect:/";
+		} catch (Exception e) {
+			System.out.println("수정실패");
+			e.printStackTrace();
+			return "redirect:pwChk";
+		}
+
 	}
 }
 

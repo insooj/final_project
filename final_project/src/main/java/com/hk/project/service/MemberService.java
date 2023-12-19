@@ -1,18 +1,19 @@
 package com.hk.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.LoginCommand;
+import com.hk.project.command.UpdatePasswordCommand;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.mapper.MemberMapper;
 import com.hk.project.status.RoleStatus;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+//import lombok.RequiredArgsConstructor;
 
 //@RequiredArgsConstructor ;lombok 기능: final 필드를 초기화 - Autowired 생략가능
 @Service
@@ -20,8 +21,8 @@ public class MemberService {
 
 	@Autowired
 	private MemberMapper memberMapper;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	public boolean addUser(AddUserCommand addUserCommand) {
 
@@ -30,8 +31,9 @@ public class MemberService {
 		mdto.setName(addUserCommand.getName());
 
 		// password암호화하여 저장하자
-		mdto.setPassword(passwordEncoder.encode(addUserCommand.getPassword()));
+//		mdto.setPassword(passwordEncoder.encode(addUserCommand.getPassword()));
 
+		mdto.setPassword(addUserCommand.getPassword());
 		mdto.setEmail(addUserCommand.getEmail());
 		mdto.setAddress(addUserCommand.getAddress());
 		mdto.setRole(RoleStatus.USER + "");// 등급추가
@@ -47,7 +49,8 @@ public class MemberService {
 		String path = "home";
 		if (dto != null) {
 			// 로그인 폼에서 입력받은 패스워드값과 DB에 암호화된 패스워드 비교
-			if (passwordEncoder.matches(loginCommand.getPassword(), dto.getPassword())) {
+//			if (passwordEncoder.matches(loginCommand.getPassword(), dto.getPassword())) {
+			if (loginCommand.getPassword().equals(dto.getPassword())) {
 				System.out.println("패스워드 같음: 회원이 맞음");
 				// session객체에 로그인 정보 저장
 				request.getSession().setAttribute("mdto", dto);
@@ -69,5 +72,13 @@ public class MemberService {
 	public MemberDto getUser(MemberDto dto) {
 
 		return memberMapper.getUser(dto);
+	}
+	
+	public boolean pwChk(UpdatePasswordCommand updatePasswordCommand) {
+		
+		MemberDto mdto=new MemberDto();
+		mdto.setId(updatePasswordCommand.getId());
+		mdto.setPassword(updatePasswordCommand.getPassword());
+		return memberMapper.pwChk(mdto);	
 	}
 }
