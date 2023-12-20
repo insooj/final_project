@@ -64,11 +64,13 @@ button.btn:hover {
 	<div layout:fragment="content">
 		<div class="slider">
 			<div class="main">
-				<h1>회원정보수정</h1>
-				<h2>나의 정보</h2>
 				<form action="/user/pwChk" method="post"
 					th:object="${updateUserCommand}">
-					<table class="table">
+					<div style="position: absolute; margin-left: 35%; border-radius: 20px; margin-top: 15%; box-shadow: 2px 2px 2px 2px; background-color: #E6E7F9; width: 30%; height: 50%;">
+				<p	style="position: absolute; margin-left: 38%; margin-top: 3%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold;">
+				update
+				</p>
+					<table class="table" style="position: absolute; width: 50%; font-family: 'GmarketSans'; margin-top: 15%; margin-left: 10%; font-size: 25px; width: 500px;">
 						<tr>
 							<th>아이디</th>
 							<td><input type="text" name="id" th:value="${dto.id}"
@@ -96,10 +98,28 @@ button.btn:hover {
 								class="form-control" /></td>
 						</tr>
 						<tr>
-							<td colspan="2"><input type="submit" value="수정" class="btn" />
+								<th>전화번호</th>
+								<td><input type="text" name="address"
+									th:value="${dto.address}" readonly="readonly"
+									class="form-control" /></td>
+							</tr>
+						<tr>
+							<td colspan="2">
+							<button type="submit" style="position: absolute; margin-left: 55%; top: 105%; border-radius: 20px; width: 40%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">변경하기</button>
 							</td>
 						</tr>
+<!-- 						<tr> -->
+<!-- 								<td colspan="2"> -->
+<!-- 									<button type="submit" -->
+<!-- 										style="position: absolute; margin-left: 55%; top: 105%; border-radius: 20px; width: 40%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">정보수정 -->
+<!-- 									</button> -->
+<!-- 									<button type="button" -->
+<!-- 										style="position: absolute;  top: 105%; border-radius: 20px; width: 30%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">뒤로 -->
+<!-- 									</button> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
 					</table>
+					</div>
 				</form>
 			</div>
 		</div>
