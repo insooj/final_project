@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class AddUserCommand {
+public class UpdateUserCommand {
 
 	@NotBlank(message = "아이디를 입력하세요")
 	private String id;
@@ -25,7 +25,7 @@ public class AddUserCommand {
 	@NotBlank(message="전화번호를 입력하세요")
 	private String phone;
 	
-	public AddUserCommand(@NotBlank(message = "아이디를 입력하세요") String id, @NotBlank(message = "이름을 입력하세요") String name,
+	public UpdateUserCommand(@NotBlank(message = "아이디를 입력하세요") String id, @NotBlank(message = "이름을 입력하세요") String name,
 			@NotBlank(message = "비밀번호를 입력하세요") @Length(min = 8, max = 16, message = "8자리이상, 16자이하로 입력하세요") String password,
 			@NotBlank(message = "이메일 입력하세요") String email, @NotBlank(message = "주소를 입력하세요") String address,
 			@NotBlank(message = "전화번호를 입력하세요") String phone, String useraccesstoken, String userrefreshtoken,
@@ -105,7 +105,7 @@ public class AddUserCommand {
 				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + "]";
 	}
 	
-	public AddUserCommand() {
+	public UpdateUserCommand() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

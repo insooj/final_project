@@ -311,27 +311,27 @@ public class BoardController {
 				System.out.println(dto);
 				return "redirect:/board/boardList";
 				}
-			
-			@GetMapping(value = "/solditemlist")
-			public String solditemlist(Model model, HttpServletRequest request	) {
-				System.out.println("판매목록 보기");
-				
-				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
-				List<BoardDto> list = boardService.getsoldAllList(mdto.getId());
-				model.addAttribute("list", list);
-				model.addAttribute("delBoardCommand", new DelBoardCommand());
-				return "board/solditemlist";// forward 기능, "redirect:board/boardList"
-			}
-			@GetMapping(value = "/myitemlist")
-			public String myitemlist(Model model, HttpServletRequest request	) {
-				System.out.println("구매목록 보기");
-				
-				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
-				List<BoardDto> list = boardService.getmyAllList(mdto.getId());
-				model.addAttribute("list", list);
-				model.addAttribute("delBoardCommand", new DelBoardCommand());
-				return "board/myitemlist";// forward 기능, "redirect:board/boardList"
-			}
+//			
+//			@GetMapping(value = "/solditemlist")
+//			public String solditemlist(Model model, HttpServletRequest request	) {
+//				System.out.println("판매목록 보기");
+//				
+//				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
+//				List<BoardDto> list = boardService.getsoldAllList(mdto.getId());
+//				model.addAttribute("list", list);
+//				model.addAttribute("delBoardCommand", new DelBoardCommand());
+//				return "board/solditemlist";// forward 기능, "redirect:board/boardList"
+//			}
+//			@GetMapping(value = "/myitemlist")
+//			public String myitemlist(Model model, HttpServletRequest request	) {
+//				System.out.println("구매목록 보기");
+//				
+//				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
+//				List<BoardDto> list = boardService.getmyAllList(mdto.getId());
+//				model.addAttribute("list", list);
+//				model.addAttribute("delBoardCommand", new DelBoardCommand());
+//				return "board/myitemlist";// forward 기능, "redirect:board/boardList"
+//			}
 			
 			
 }

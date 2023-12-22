@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.LoginCommand;
 import com.hk.project.command.UpdatePasswordCommand;
+import com.hk.project.command.UpdateUserCommand;
+import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.mapper.MemberMapper;
 import com.hk.project.status.RoleStatus;
@@ -24,19 +26,24 @@ public class MemberService {
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;
 
-	public boolean addUser(AddUserCommand addUserCommand) {
+	public boolean addUser(AddUserCommand dto) {
 
 		MemberDto mdto = new MemberDto();
-		mdto.setId(addUserCommand.getId());
-		mdto.setName(addUserCommand.getName());
-
+		mdto.setId(dto.getId());
+		mdto.setName(dto.getName());
+		
 		// password암호화하여 저장하자
 //		mdto.setPassword(passwordEncoder.encode(addUserCommand.getPassword()));
 
-		mdto.setPassword(addUserCommand.getPassword());
-		mdto.setEmail(addUserCommand.getEmail());
-		mdto.setAddress(addUserCommand.getAddress());
-		mdto.setRole(RoleStatus.USER + "");// 등급추가
+		mdto.setPassword(dto.getPassword());
+		mdto.setEmail(dto.getEmail());
+		mdto.setAddress(dto.getAddress());
+		mdto.setUseraccesstoken(dto.getUseraccesstoken());
+		mdto.setUserrefreshtoken(dto.getUserrefreshtoken());
+		mdto.setUserseqno(dto.getUserseqno());
+		mdto.setPhone(dto.getPhone());
+		
+		mdto.setRole(RoleStatus.직원 + "");// 등급추가
 		return memberMapper.addUser(mdto);
 	}
 
@@ -74,11 +81,15 @@ public class MemberService {
 		return memberMapper.getUser(dto);
 	}
 	
-	public boolean pwChk(UpdatePasswordCommand updatePasswordCommand) {
+	public boolean userUpdate(UpdateUserCommand updateUserCommand) {
 		
-		MemberDto mdto=new MemberDto();
-		mdto.setId(updatePasswordCommand.getId());
-		mdto.setPassword(updatePasswordCommand.getPassword());
-		return memberMapper.pwChk(mdto);	
+		MemberDto dto=new MemberDto();
+		dto.setId(updateUserCommand.getId());
+		dto.setPassword(updateUserCommand.getPassword());
+		dto.setAddress(updateUserCommand.getAddress());
+		dto.setEmail(updateUserCommand.getEmail());
+//		dto.setPhone(updateUserCommand.getPhone());
+		return memberMapper.userUpdate(dto);	
+		
 	}
 }

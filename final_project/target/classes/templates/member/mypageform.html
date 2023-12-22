@@ -62,12 +62,11 @@ button.btn:hover {
 		<div class="slider">
 			<div class="main">
 				<form action="/user/myupdateform" method="post"
-					th:object="${updateUserCommand}">
+					th:object="${addUserCommand}">
 					<div
 						style="position: absolute; margin-left: 35%; border-radius: 20px; margin-top: 15%; box-shadow: 2px 2px 2px 2px; background-color: #E6E7F9; width: 30%; height: 50%;">
 						<p
-							style="position: absolute; margin-left: 38%; margin-top: 3%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold;">my
-							info</p>
+							style="position: absolute; margin-left: 38%; margin-top: 3%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold;">내 정보</p>
 						<table class="table"
 							style="position: absolute; width: 50%; font-family: 'GmarketSans'; margin-top: 15%; margin-left: 10%; font-size: 25px; width: 500px;">
 							<tr>
@@ -98,18 +97,18 @@ button.btn:hover {
 							</tr>
 							<tr>
 								<th>전화번호</th>
-								<td><input type="text" name="address"
-									th:value="${dto.address}" readonly="readonly"
+								<td><input type="text" name="phone"
+									th:value="${dto.phone}" readonly="readonly"
 									class="form-control" /></td>
 							</tr>
 							<tr>
 								<td colspan="2">
 									<button type="submit"
-										style="position: absolute; margin-left: 55%; top: 105%; border-radius: 20px; width: 40%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">정보수정
+										style="position: absolute; margin-left: 30%; top: 108%; border-radius: 20px; width: 40%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">비밀번호 변경
 									</button>
-									<button type="button"
-										style="position: absolute;  top: 105%; border-radius: 20px; width: 30%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">뒤로
-									</button>
+<!-- 									<button type="button" -->
+<!-- 										style="position: absolute;  top: 105%; border-radius: 20px; width: 30%; height: 15%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;">뒤로 -->
+<!-- 									</button> -->
 								</td>
 							</tr>
 						</table>

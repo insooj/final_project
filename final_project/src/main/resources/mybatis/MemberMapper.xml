@@ -3,9 +3,10 @@
 
 <mapper namespace="com.hk.project.mapper.MemberMapper">
 	
-	<insert id="addUser" parameterType="memberDto">
+		<insert id="addUser" parameterType="memberDto">
 		INSERT INTO MEMBER
-		VALUES(NULL,#{id},#{password},#{name},#{email},#{address},#{role})
+		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken}, #{userrefreshtoken
+		},#{userseqno}, #{phone} )
 	</insert>
 	
 	<select id="idChk" parameterType="String" resultType="String">
@@ -19,12 +20,12 @@
 	</select>
 	
 	<select id="getUser" parameterType="String" resultType="memberDto">
-      SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE
+      SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE, PHONE
       FROM MEMBER
       WHERE ID = #{id}
    </select>
    
-    <update id="pwChk" parameterType="memberDto" >
+    <update id="userUpdate" parameterType="memberDto" >
      UPDATE MEMBER
 	 SET PASSWORD = #{password}
 	 WHERE ID = #{id}

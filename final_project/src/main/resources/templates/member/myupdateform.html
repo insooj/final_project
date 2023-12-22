@@ -6,8 +6,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-
+function updateEX(){
+	if(confirm("수정하시겠습니까?")){
+		return true;
+	}
+	return false
+}
 </script>
+
 <style type="text/css">
 body{
 	overflow: hidden;
@@ -64,8 +70,8 @@ button.btn:hover {
 	<div layout:fragment="content">
 		<div class="slider">
 			<div class="main">
-				<form action="/user/pwChk" method="post"
-					th:object="${updateUserCommand}">
+				<form action="/user/userupdate" method="post"
+					th:object="${UpdateUserCommand}" onsubmit="return updateEX()">
 					<div style="position: absolute; margin-left: 35%; border-radius: 20px; margin-top: 15%; box-shadow: 2px 2px 2px 2px; background-color: #E6E7F9; width: 30%; height: 50%;">
 				<p	style="position: absolute; margin-left: 38%; margin-top: 3%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold;">
 				update
@@ -73,18 +79,21 @@ button.btn:hover {
 					<table class="table" style="position: absolute; width: 50%; font-family: 'GmarketSans'; margin-top: 15%; margin-left: 10%; font-size: 25px; width: 500px;">
 						<tr>
 							<th>아이디</th>
-							<td><input type="text" name="id" th:value="${dto.id}"
+							<td><input type="text" name="id" th:value="${dto.id}" 
 								readonly="readonly" class="form-control" /></td>
 						</tr>
 						<tr>
+						
 							<th>이름</th>
 							<td><input type="text" name="name" th:value="${dto.name}"
 								readonly="readonly" class="form-control" /></td>
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="password" name="password"
-								placeholder="변경할 비밀번호 입력" class="form-control" /></td>
+							<td><input type="password" name="password" 
+								 class="form-control" minlength="8" maxlength="12"  required="required"/> 
+								 
+								</td> 
 						</tr>
 						<tr>
 							<th>주소</th>
@@ -99,8 +108,8 @@ button.btn:hover {
 						</tr>
 						<tr>
 								<th>전화번호</th>
-								<td><input type="text" name="address"
-									th:value="${dto.address}" readonly="readonly"
+								<td><input type="text" name="phone"
+									th:value="${dto.phone}" readonly="readonly"
 									class="form-control" /></td>
 							</tr>
 						<tr>

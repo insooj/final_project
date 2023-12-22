@@ -15,11 +15,5 @@ public interface MemberMapper {
 	
 	public MemberDto getUser(MemberDto dto);
 	
-	public boolean pwChk(MemberDto mdto);
+	public boolean userUpdate(MemberDto dto);
 }
-
-
-
-
-
-

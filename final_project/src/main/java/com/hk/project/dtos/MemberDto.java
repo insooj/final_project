@@ -1,30 +1,51 @@
 package com.hk.project.dtos;
 
+import java.util.Objects;
+
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.Length;
+
+import jakarta.validation.constraints.NotBlank;
 
 @Alias(value = "memberDto")
-public class MemberDto {
-	
-	private int memberId;
-	private String id;
+public class MemberDto {	
 	private String name;
 	private String password;
 	private String email;
 	private String address;
+	private int memberId;
+	private String id;
 	private String role;
-	public MemberDto() {
+	private String useraccesstoken;
+	private String userrefreshtoken;
+	private int userseqno;
+	private String phone;
+	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
+			String useraccesstoken, String userrefreshtoken, int userseqno, String phone) {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role) {
-		super();
-		this.memberId = memberId;
-		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
 		this.address = address;
+		this.memberId = memberId;
+		this.id = id;
 		this.role = role;
+		this.useraccesstoken = useraccesstoken;
+		this.userrefreshtoken = userrefreshtoken;
+		this.userseqno = userseqno;
+		this.phone = phone;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, email, id, memberId, name, password, phone, role, useraccesstoken,
+				userrefreshtoken, userseqno);
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public int getMemberId() {
 		return memberId;
@@ -68,13 +89,48 @@ public class MemberDto {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	public String getUseraccesstoken() {
+		return useraccesstoken;
+	}
+	public void setUseraccesstoken(String useraccesstoken) {
+		this.useraccesstoken = useraccesstoken;
+	}
+	public String getUserrefreshtoken() {
+		return userrefreshtoken;
+	}
+	public void setUserrefreshtoken(String userrefreshtoken) {
+		this.userrefreshtoken = userrefreshtoken;
+	}
+	public int getUserseqno() {
+		return userseqno;
+	}
+	public void setUserseqno(int userseqno) {
+		this.userseqno = userseqno;
+	}
 	@Override
 	public String toString() {
-		return "MemberDto [memberId=" + memberId + ", id=" + id + ", name=" + name + ", password=" + password
-				+ ", email=" + email + ", address=" + address + ", role=" + role + "]";
+		return "MemberDto [name=" + name + ", password=" + password + ", email=" + email + ", address=" + address
+				+ ", memberId=" + memberId + ", id=" + id + ", role=" + role + ", useraccesstoken=" + useraccesstoken
+				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + ", phone=" + phone + "]";
+	}
+	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role,
+			String useraccesstoken, String userrefreshtoken, int userseqno) {
+		super();
+		this.memberId = memberId;
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.email = email;
+		this.address = address;
+		this.role = role;
+		this.useraccesstoken = useraccesstoken;
+		this.userrefreshtoken = userrefreshtoken;
+		this.userseqno = userseqno;
+	}
+	public MemberDto() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
+	
 }
-
-
-
