@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -20,14 +21,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.hk.project.command.AddUserCommand;
+import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.LoginCommand;
 import com.hk.project.command.UpdateBoardCommand;
 import com.hk.project.command.UpdatePasswordCommand;
 import com.hk.project.command.UpdateUserCommand;
 import com.hk.project.dtos.BoardDto;
+import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
+import com.hk.project.service.FileService;
+import com.hk.project.service.FileUserService;
 import com.hk.project.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,8 +45,13 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
 	private HttpServletRequest request;
-
+	@Autowired
+	private FileService fileService;
+	@Autowired
+	private FileUserService fileUserService;
+	
 	@GetMapping(value = "/addUser")
 	public String addUserForm(Model model) {
 		System.out.println("회원가입폼 이동");
@@ -146,13 +157,15 @@ public class MemberController {
 
 	// 로그인 실행
 	@PostMapping(value = "/login")
-	public String login(@Validated LoginCommand loginCommand, BindingResult result, Model model,
+	public String login(@Validated LoginCommand loginCommand, BindingResult result, Model model, 
 			HttpServletRequest request) {
 		if (result.hasErrors()) {
 			System.out.println("로그인 유효값 오류");
 			return "member/login";
 		}
-
+		MemberDto dto= new MemberDto();
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list",list);
 		String path = memberService.login(loginCommand, request, model);
 		System.out.println(path);
 		return path;
@@ -167,8 +180,10 @@ public class MemberController {
 
 	@GetMapping(value = "/mypage")
 	public String mypage(Model model) {
+		MemberDto dto= new MemberDto();
 		System.out.println("마이페이지 이동");
-
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list",list);
 		model.addAttribute("addUserCommand", new AddUserCommand());
 
 		return "member/mypage";
@@ -180,6 +195,8 @@ public class MemberController {
 		HttpSession session = (HttpSession) request.getSession();
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list",list);
 		model.addAttribute("dto", dto);
 		return "member/mypageform";
 	}
@@ -190,6 +207,8 @@ public class MemberController {
 		HttpSession session = (HttpSession) request.getSession();
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list",list);
 		model.addAttribute("dto", dto);
 		return "member/myupdateform";
 	}
@@ -199,6 +218,8 @@ public class MemberController {
 		HttpSession session = (HttpSession) request.getSession();
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list",list);
 		memberService.userUpdate(updateuserCommand);
 		// 유효값처리용
 		model.addAttribute("updateuserCommand", new UpdateUserCommand());
@@ -217,19 +238,34 @@ public class MemberController {
 			return "redirect:myupdateform";
 		}
 
+		
 	}
 
-	
+	@GetMapping(value = "/mypopup")
+	public String mypopup(Model model) {
+		System.out.println("팝업");
 
+		model.addAttribute("addUserCommand", new AddUserCommand());
+
+		return "member/mypopup";
+	}
 	
-	
-	
-	
-	
+	@PostMapping(value = "/fileInsert")
+	public String myfileInsert(@Validated InsertBoardCommand insertBoardCommand, BindingResult result,MemberDto dto,
+			MultipartRequest multipartRequest // multipart data를 처리할때 사용
+			, HttpServletRequest request, Model model) throws IllegalStateException, IOException {
+		memberService.insertfile(multipartRequest, dto,request );
+		return "member/mypopupclose";
+		
+	}
 	
 	@GetMapping(value = "/myaccount")
 	public String myaccount(Model model) {
 		System.out.println("계좌등록 폼 이동");
+
+		MemberDto dto= new MemberDto();
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list",list);
 		model.addAttribute("addUserCommand", new AddUserCommand());
 		return "member/myaccount";
 	}

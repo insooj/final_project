@@ -1,178 +1,157 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/layout}">
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layouts/layout}">
+     
 <head>
 <meta charset="UTF-8">
 <title></title>
 <style type="text/css">
-	.cal{width: 100%;}
-	.cal #thead > div, .cal #tbody > div{display: inline-block;
-										 width: 140px;
-										 }
-		
-	.cal #thead > div{ text-align:center;}	
-	
+
+
+<!--   .cal{width:100%;}-->
+
+   .cal #thead > div, .cal #tbody > div{display: inline-block;
+                               width: 140px;
+                               }
+      
+   .cal #thead > div{ text-align:center;
+            }   
+   
 /*     날짜표현 div */
     .cal #tbody > div{
-    	height: 180px;
-    	vertical-align: top;
-    	border-top:1px solid gray;
-    	position: relative;
-    }				
+       height: 120px;
+       vertical-align: top;
+       border-top:1px solid gray;
+       position: relative;
+    }            
     #ctitle{
-    	text-align: center;
-    }			
+       text-align: center;
+    }         
     
-    .mart{
-    	width: 30px;
-    	height: 30px;
-    }		
+    .pen{
+       width: 20px;
+       height: 20px;
+    }      
     .d{
-    	font-weight: bold;
-    }	 
-    
-    #tbody > div > p{background-color:green; color:white;}
+       font-weight: bold;
+    }    
     
     .cp{
-    	position: absolute;
-    	left: 20px;
-    	top:-30px;
-    	width: 40px;
-    	height: 40px;
-    	border-radius:20px 20px 20px 1px;
-    	background-color: green;
-    	color:white;
-    	line-height: 40px;
-    	text-align: center;
-    	font-weight: bold;
+       position:absolute;
+       left:20px;
+       top:-30px;
+       width:40px;
+       height:40px;
+       border-radius: 20px 20px 20px 1px;
+       background-color:#BCA9F5;
+       text-align: center;
+       font-weight: bold;
     }
-    
-#floatMenu {
-	position: absolute;
-	width: 100px;
-	height: 200px;
-	left: 5%;
-	top: 200px;
-	
-	color: green;
-}
+    .Y,h1{
+       font-size: 25px;
+       font-weight:800;
+    }
+    h2{
+       font-size: 15px;
+       font-weight:500;
+    }
+    .name{
+       font-size:20px;
+       font-weight:bold;
+    }
+   body{
+       background-color : #E7EAF9;
+   }
+   
+   .cal{
+   font-size : 25px;
+   }
 </style>
 <script type="text/javascript">
-	$(function(){
-		$(".d").hover(function(){
-			//controller로 전달할 파라미터 yyyyMM를 구함
-			var aDate=$(this);//현재 마우스가 올라간 a태그(.d)구함
-			var year=$(".y").text().trim();// 년도
-			var month=$(".m").text().trim();// 월
-			var date=aDate.text().trim();//일
-			var yyyyMMdd=year+(month.length<2?"0"+month:month)
-							 +(date.length<2?"0"+date:date);//8자리 만들기
-// 			alert(yyyyMMdd);
-			if(aDate.nextAll("p").length>0){
-				$.ajax({
-					url:"/board/calCountAjax",
-					method:"get",
-					data:{"yyyyMMdd":yyyyMMdd},// 서버로 전달하는 값
-					dataType:"json",//서버에서 전달받은 데이터 타입
-					async:false, // ajax()메서드가 비동기로 실행되는것을 막음:false설정
-					success:function(data){//성공하면 데이터가 data변수에 저장됨
-	// 					alert(data.count);
-						aDate.after("<div class='cp'>"+data.count+"</div>");
-					},
-					error:function(){
-						alert("통신실패");
-					}
-				});				 
-			}				 
-							 
-		},function(){
-			$(".cp").remove();//마우스가 나갔을때 일정개수를 삭제
-		});
-	});
-	
-	$(document).ready(function() {
+   $(function(){
+      $(".d").hover(function(){
+   // controller로 전달할 파라미터 yyyyMM을 구함
+         var aDate=$(this);
+         var year=$(".y").text().trim();//년도
+         var month=$(".m").text().trim();//월
+         var date=aDate.text().trim();//일
+         var yyyyMMdd=year+(month.length<2?"0"+month:month)
+                      +(date.length<2?"0"+date:date);
+      //   alert(yyyyMMdd);
+      
+      if(aDate.nextAll("p").length>0){
+      $.ajax({
+         url:"/schedule/calCountAjax",
+         method:"get",
+         data:{"yyyyMMdd":yyyyMMdd},
+         dataType:"json",
+         async:false,
+         
+         success:function(data){
+         //   alert(data.count);
+            aDate.after("<div class='cp'>"+data.count+"</div>");
+         },
+         error:function(){
+            alert("통신실패");
+         }
+      });
+   }
+      },function(){
+         $(".cp").remove();
+      });
+      
+   });
 
-	// 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
-	var floatPosition = parseInt($("#floatMenu").css('top'));
-	// 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
 
-	$(window).scroll(function() {
-		// 현재 스크롤 위치를 가져온다.
-		var scrollTop = $(window).scrollTop();
-		var newPosition = scrollTop + floatPosition + "px";
 
-		/* 애니메이션 없이 바로 따라감
-		 $("#floatMenu").css('top', newPosition);
-		 */
-
-		$("#floatMenu").stop().animate({
-			"top" : newPosition
-		}, 500);
-
-	}).scroll();
-
-})
 </script>
 </head>
-<body>
+<body style="overflow:hidden;">
+<!--<form action="/schedule/calendar" method="post">-->
 <div layout:fragment="content">
-	<div id="container">
-		<h1>요일별 등록된 상품 </h1>
-		<div class="cal">
-			<div id="ctitle">
-				<a th:href="@{/board/calendar(year=${calMap.year-1},month=${calMap.month})}">◁</a>
-				<a th:href="@{/board/calendar(year=${calMap.year},month=${calMap.month-1})}">◀</a>
-				<span class="y" th:text="${calMap.year}"></span>
-				<span>년</span>
-				<span class="m" th:text="${calMap.month}"></span>
-				<span>월</span>
-				<a th:href="@{/board/calendar(year=${calMap.year},month=${calMap.month+1})}">▶</a>
-				<a th:href="@{/board/calendar(year=${calMap.year+1},month=${calMap.month})}">▷</a>
-			</div>
-			<div id="thead">
-				<div>일</div><div>월</div><div>화</div><div>수</div>
-				<div>목</div><div>금</div><div>토</div>
-			</div>
-			<div id="tbody">
-				<th:block th:if="${calMap.dayOfWeek>1}">
-					<div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>				
-				</th:block>
-				<th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
-					<div>
-<!-- 						<a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}" -->
-<!-- 						   th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}"> -->
-<!-- 						</a> -->
-						<a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
-						  >
-						</a>
-						<a th:href="@{/board/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
-							<img class="mart" th:src="@{/img/mart.jpg}" />
-						</a>
-						[(${@util.getCalViewList(i,clist)})]
-					</div>
-				</th:block>
-				
-			</div>
-		</div>
-		<div id="floatMenu">
-					<table>
-						<tr>
-							<td colspan="4">
-								<button type="button" class="btn" style="border-radius: 50%; width: 100px; height: 100px; font-size:20px; text-align:center;"
-									th:onclick="|location.href='@{/board/calboardInsertForm}'|">상품등록</button>
-<!-- 								<button type="submit" class="btn" style="border-radius: 50%; width: 100px; height: 100px; font-size:20px" >글삭제</button> <span -->
-<!-- 								th:if="${#fields.hasErrors('seq')}" th:errors="*{seq}"></span> -->
-							</td>
-						</tr>
-					</table>
-				</div>
-	</div>
+<div class="slider">
+   <div id="container" style="font-family: 'GmarketSans';">
+      <div class="cal">
+      <h1 style="font-size:30px;">업무 일지</h1>
+         <div id="ctitle">
+            <a th:href="@{/schedule/calendar(year=${calMap.year-1},month=${calMap.month})}">◁</a>
+            <a th:href="@{/schedule/calendar(year=${calMap.year},month=${calMap.month-1})}">◀</a>
+            <span class="y" th:text="${calMap.year}"></span>
+            <span>년</span>
+            <span class="m" th:text="${calMap.month}"></span>
+            <span>월</span>
+            <a th:href="@{/schedule/calendar(year=${calMap.year},month=${calMap.month+1})}">▶</a>
+            <a th:href="@{/schedule/calendar(year=${calMap.year+1},month=${calMap.month})}">▷</a>
+         </div>
+         <div id="thead" style="margin-top: 50px;">
+            <div>일</div><div>월</div><div>화</div><div>수</div>
+            <div>목</div><div>금</div><div>토</div>
+         </div>
+         <div id="tbody">
+            <th:block th:if="${calMap.dayOfWeek>1}">
+               <div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>            
+            </th:block>
+            <th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
+               <div>
+                  <a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
+                     th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
+                  </a>
+                  <a th:href="@{/schedule/addCalBoardForm(year=${calMap.year},month=${calMap.month},date=${i})}">
+                     <img class="pen" th:src="@{/img/calendar-icon.png}" />
+                  </a>
+                  [(${@util.getCalViewList(i,clist)})]
+                  
+               </div>
+            </th:block>
+         </div>
+      </div>
+      </div>
+   </div>
 </div>
 
 </body>
 </html>
-
 
 
 

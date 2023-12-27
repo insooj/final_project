@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.project.mapper.CalMapper">
+   <insert id="insertCalBoard" parameterType="CalDto">
+      INSERT INTO schedule
+        VALUES (NULL,#{id},#{role},#{content},#{mdate},#{sdate},#{edate})
+   </insert>
+   
+   <select id="calBoardList" parameterType="Map" resultType="CalDto">
+       SELECT seq, id, content, mdate, sdate, edate,role
+      FROM schedule
+      WHERE SUBSTRING(mdate,1,8) = #{yyyyMMdd}
+      or id=#{id}
+   </select>
+   
+   
+   <select id="calBoardDetail" parameterType="int" 
+                               resultType="CalDto">
+      SELECT seq,id,content,mdate,sdate,edate,role
+      FROM schedule
+      WHERE seq=#{seq}
+   </select>
+   
+   <update id="calBoardUpdate" parameterType="CalDto">
+      UPDATE schedule
+      SET  content=#{content},
+       mdate=#{mdate}, sdate=#{sdate},edate=#{edate}
+      WHERE seq=#{seq}
+   </update>
+   
+   <delete id="calMulDel" parameterType="Map">
+      DELETE FROM schedule WHERE seq IN 
+      <foreach collection="seqs" item="seq" open="(" close=")"
+             separator=",">
+         #{seq}         
+      </foreach>
+   </delete>
+   
+   
+<!--    <select id="calViewList" parameterType="Map" resultType="CalDto"> -->
+<!--       SELECT rn,seq, id,title,content, mdate, regdate   ,money,DATE_FORMAT(regdate, -->
+<!--       '%Y%m%d%h%m') AS mdate -->
+<!--       FROM (SELECT ROW_NUMBER() OVER( PARTITION BY -->
+<!--       DATE_FORMAT(regdate, -->
+<!--       '%Y%m%d') -->
+<!--       ORDER BY regdate) rn, id, title, content, -->
+<!--       regdate -->
+<!--       FROM calboard -->
+<!--       WHERE -->
+<!--       DATE_FORMAT(regdate, '%Y%m')=#{yyyyMM}) cal -->
+<!--       WHERE rn BETWEEN 1 AND 5; -->
+<!--       </select> -->
+   <select id="calViewList" parameterType="Map" resultType="CalDto">
+     SELECT rn,seq, id,content, mdate, sdate,edate
+   from   (SELECT ROW_NUMBER() over(PARTITION BY SUBSTR(mdate,1,8)
+                                   ORDER BY mdate) rn
+             , seq, id,content, mdate, sdate,edate
+          FROM schedule
+          WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
+          ) cal
+   WHERE rn BETWEEN 1 AND 3
+   </select>
+   <select id="calBoardCount" parameterType="Map"
+         resultType="Integer">
+      SELECT COUNT(*) FROM schedule
+      WHERE id=#{id} or SUBSTR(mdate,1,8)=#{yyyyMMdd}
+   </select>
+   
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

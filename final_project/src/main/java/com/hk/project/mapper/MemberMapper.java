@@ -1,7 +1,11 @@
 package com.hk.project.mapper;
 
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
+import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 
 @Mapper
@@ -16,4 +20,6 @@ public interface MemberMapper {
 	public MemberDto getUser(MemberDto dto);
 	
 	public boolean userUpdate(MemberDto dto);
+	
+	public List<FileUserDto> fileUser(MemberDto dto);
 }

@@ -64,7 +64,7 @@ public class BoardService {
 			// 파일업로드 작업은 FileService쪽에서 업로드하고 업로드된 파일정보 반환
 			List<FileBoardDto> uploadFileList = fileService.uploadFiles(filepath, multipartRequest);
 			// 파일정보를 DB에 추가
-			// 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용
+			// 글추가할때 b oard_seq 증가된 값---> file정보를 추가할때 사용
 			// Testboard: board_seq PK board_seq FK
 			for (FileBoardDto fDto : uploadFileList) {
 				fileMapper.insertFileBoard(new FileBoardDto(0, boardDto.getBoard_seq(), // 증가된 board_seq값을 넣는다

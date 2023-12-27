@@ -2,34 +2,72 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.hk.project.mapper.MemberMapper">
-	
-		<insert id="addUser" parameterType="memberDto">
+
+
+
+	<resultMap type="memberDto" id="memberDtoMap">
+		<id property="memberid" column="MEMBERID" />
+		<result property="id" column="ID" />
+		<result property="password" column="PASSWORD" />
+		<result property="name" column="NAME" />
+		<result property="address" column="ADDRESS" />
+		<result property="email" column="EMAIL" />
+		<result property="role" column="ROLE" />
+		<result property="useraccesstoken" column="USERACCESSTOKEN" />
+		<result property="userrefreshtoken" column="USERREFRESHTOKEN" />
+		<result property="userseqno" column="USERSEQNO" />
+		<result property="phone" column="PHONE" />
+		<!-- <association property="fileUserDto"></association> -->
+		<collection property="fileUserDto"
+			resultMap="fileUserDtoMap"></collection>
+	</resultMap>
+
+	<resultMap type="fileUserDto" id="fileUserDtoMap">
+		<id property="file_seq" column="FILE_SEQ" />
+		<result property="id" column="ID" />
+		<result property="origin_filename" column="ORIGIN_FILENAME" />
+		<result property="stored_filename" column="STORED_FILENAME" />
+	</resultMap>
+
+	<select id="fileUser" resultMap="memberDtoMap">
+		SELECT m.id, m.NAME , f.origin_filminiename, f.stored_filename
+		FROM member m right OUTER JOIN userfile f
+		ON m.id = f.id
+	</select>
+
+	<insert id="addUser" parameterType="memberDto">
 		INSERT INTO MEMBER
-		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken}, #{userrefreshtoken
+		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken},
+		#{userrefreshtoken
 		},#{userseqno}, #{phone} )
 	</insert>
-	
+
 	<select id="idChk" parameterType="String" resultType="String">
-		SELECT ID FROM MEMBER WHERE ID = #{id}
+		SELECT ID
+		FROM MEMBER WHERE ID = #{id}
 	</select>
-	
-	<select id="loginUser" parameterType="String" resultType="memberDto">
+
+	<select id="loginUser" parameterType="String"
+		resultType="memberDto">
 		SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE
 		FROM MEMBER
 		WHERE ID = #{id}
 	</select>
-	
-	<select id="getUser" parameterType="String" resultType="memberDto">
-      SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE, PHONE
-      FROM MEMBER
-      WHERE ID = #{id}
-   </select>
-   
-    <update id="userUpdate" parameterType="memberDto" >
-     UPDATE MEMBER
-	 SET PASSWORD = #{password}
-	 WHERE ID = #{id}
-    </update>
+
+	<select id="getUser" parameterType="String"
+		resultType="memberDto">
+		SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE, PHONE
+		FROM MEMBER
+		WHERE ID = #{id}
+	</select>
+
+	<update id="userUpdate" parameterType="memberDto">
+		UPDATE MEMBER
+		SET PASSWORD = #{password}
+		WHERE ID = #{id}
+	</update>
+
+
 </mapper>
 
 

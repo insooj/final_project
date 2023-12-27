@@ -1,5 +1,6 @@
 package com.hk.project.dtos;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.ibatis.type.Alias;
@@ -35,6 +36,37 @@ public class MemberDto {
 		this.userseqno = userseqno;
 		this.phone = phone;
 	}
+	
+	//Join용 맴버필드
+		private List<FileUserDto> fileUserDto;
+		
+	
+	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
+			String useraccesstoken, String userrefreshtoken, int userseqno, String phone,
+			List<FileUserDto> fileUserDto) {
+		super();
+		this.name = name;
+		this.password = password;
+		this.email = email;
+		this.address = address;
+		this.memberId = memberId;
+		this.id = id;
+		this.role = role;
+		this.useraccesstoken = useraccesstoken;
+		this.userrefreshtoken = userrefreshtoken;
+		this.userseqno = userseqno;
+		this.phone = phone;
+		this.fileUserDto = fileUserDto;
+	}
+
+	public List<FileUserDto> getFileUserDto() {
+			return fileUserDto;
+		}
+
+		public void setFileUserDto(List<FileUserDto> fileUserDto) {
+			this.fileUserDto = fileUserDto;
+		}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(address, email, id, memberId, name, password, phone, role, useraccesstoken,
@@ -111,7 +143,8 @@ public class MemberDto {
 	public String toString() {
 		return "MemberDto [name=" + name + ", password=" + password + ", email=" + email + ", address=" + address
 				+ ", memberId=" + memberId + ", id=" + id + ", role=" + role + ", useraccesstoken=" + useraccesstoken
-				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + ", phone=" + phone + "]";
+				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + ", phone=" + phone
+				+ ", fileUserDto=" + fileUserDto + "]";
 	}
 	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role,
 			String useraccesstoken, String userrefreshtoken, int userseqno) {

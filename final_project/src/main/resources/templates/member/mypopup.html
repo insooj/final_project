@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- 	  layout:decorate="~{layouts/layout}"> -->
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function updateEX(){
+	if(confirm("수정하시겠습니까?")){
+		return true;
+	}
+	return false
+
+
+}
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('preview').src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    document.getElementById('preview').src = "";
+  }
+}
+</script>
+<style type="text/css">
+@import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
+
+
+</style>
+</head>
+<body style="overflow: hidden; background-color: #E6E7F9; font-family:'GmarketSans';">
+<div layout:fragment="content">
+<div id="container">
+<h1 style="text-align: center; margin-top:11%;">프로필 사진 업로드</h1>
+<form action="/user/fileInsert" method="post"
+	  enctype="multipart/form-data" th:object="${UpdateUserCommand}"  onsubmit="return updateEX()">
+	<input type="hidden" name="id" th:value="${session.mdto.id}"/>
+	<table class="table"  style="margin-left:10%; font-family:'GmarketSans';font-size: 20px;">
+		<tr>
+			<th style="padding:20px;">[ID]</th>
+			<td th:text="${session.mdto.id}"></td>
+		<tr>
+		<tr>
+			<th style="padding:20px;">[이름]</th>
+			<td th:text="${session.mdto.name}"></td>
+		<tr >
+			<th style="padding:20px;">파일</th>
+			<td >
+				<input type="file" name="filename" multiple="multiple"
+					  class="form-control" onchange="readURL(this);"  />
+			</td>
+		</tr>
+		<tr>
+		<th>선택한 이미지</th>
+			<td><img id="preview" style="width:250px; margin-left:20%;  height: 250px;border-radius: 100%;"/></td>
+		</tr>
+	</table>
+		<button type="submit" style="position: absolute; top:88%; left:38%; border-radius:20px; border-color: #FDF0DD; background-color: #D19AFC; width:150px; font-family:'GmarketSans';font-size: 25px; height: 40px;"  class="btn">업로드</button>
+</form>
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+

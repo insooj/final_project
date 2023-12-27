@@ -47,29 +47,6 @@ public class BoardController {
 	@Autowired
 	private FileService fileService;
 
-	//진료 안내
-	@GetMapping(value = "/Department")
-		public String Department() {
-			System.out.println("진료과 보기");
-			return "board/Department";
-		}
-	@GetMapping(value = "/Medical_procedure_info")
-	public String Medical_procedure_info() {
-		System.out.println("진료절차안내 보기");
-		return "board/Medical_procedure_info";
-	}
-	@GetMapping(value = "/Instructions_usinginfo")
-	public String Instructions_usinginfo() {
-		System.out.println("검사실이용안내 보기");
-		return "board/Instructions_usinginfo";
-	}
-	// 진료 예약 및 조회
-	@GetMapping(value = "/Full_treatment_schedule")
-	public String Full_treatment_schedule() {
-		System.out.println("전체 진료 시간표 보기");
-		return "board/Full_treatment_schedule";
-	}
-	
 	@GetMapping(value = "/boardList")
 	public String boardList(Model model) {
 		System.out.println("글목록 보기");
@@ -311,27 +288,27 @@ public class BoardController {
 				System.out.println(dto);
 				return "redirect:/board/boardList";
 				}
-//			
-//			@GetMapping(value = "/solditemlist")
-//			public String solditemlist(Model model, HttpServletRequest request	) {
-//				System.out.println("판매목록 보기");
-//				
-//				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
-//				List<BoardDto> list = boardService.getsoldAllList(mdto.getId());
-//				model.addAttribute("list", list);
-//				model.addAttribute("delBoardCommand", new DelBoardCommand());
-//				return "board/solditemlist";// forward 기능, "redirect:board/boardList"
-//			}
-//			@GetMapping(value = "/myitemlist")
-//			public String myitemlist(Model model, HttpServletRequest request	) {
-//				System.out.println("구매목록 보기");
-//				
-//				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
-//				List<BoardDto> list = boardService.getmyAllList(mdto.getId());
-//				model.addAttribute("list", list);
-//				model.addAttribute("delBoardCommand", new DelBoardCommand());
-//				return "board/myitemlist";// forward 기능, "redirect:board/boardList"
-//			}
+			
+			@GetMapping(value = "/solditemlist")
+			public String solditemlist(Model model, HttpServletRequest request	) {
+				System.out.println("판매목록 보기");
+				
+				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
+				List<BoardDto> list = boardService.getsoldAllList(mdto.getId());
+				model.addAttribute("list", list);
+				model.addAttribute("delBoardCommand", new DelBoardCommand());
+				return "board/solditemlist";// forward 기능, "redirect:board/boardList"
+			}
+			@GetMapping(value = "/myitemlist")
+			public String myitemlist(Model model, HttpServletRequest request	) {
+				System.out.println("구매목록 보기");
+				
+				MemberDto mdto = (MemberDto)request.getSession().getAttribute("mdto");
+				List<BoardDto> list = boardService.getmyAllList(mdto.getId());
+				model.addAttribute("list", list);
+				model.addAttribute("delBoardCommand", new DelBoardCommand());
+				return "board/myitemlist";// forward 기능, "redirect:board/boardList"
+			}
 			
 			
 }
