@@ -1,5 +1,6 @@
 package com.hk.project.utils;
 
+import java.awt.Font;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -69,15 +70,25 @@ public class Util {
       }
       return calList;
    }
-   public static String moneyColor(String money) {
-      String str="green";   
-      if(money.equals("수입")) {
-          str="blue";
-      }else if(money.equals("지출")){
-         str="red";
-      }   
+   public static String roleColor(String role) {
+      String str="black";   
+      
+      if(role.equals("사장")) {
+          str="red";
+          Font font = new Font("돋음",Font.BOLD,30);
+      }
+//      }else if(role.equals("직원")){
+//         str="blue";
+//      }   
       return str;
    }
+   public static String scheduletime() {
+	      String str="black";   
+	      str="#6200EA";
+	     
+
+	      return str;
+	   }
 }
 
 

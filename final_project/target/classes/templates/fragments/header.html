@@ -4,90 +4,89 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-	
+   
 </script>
 <style type="text/css">
 </style>
 </head>
 <body>
-	<header th:fragment="header" class="header">
-		<nav class="navbar navbar-default" role="navigation">
+   <header th:fragment="header" class="header">
+      <nav class="navbar navbar-default" role="navigation">
 
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target=".navbar-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-			</div>
+         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+               data-target=".navbar-collapse">
+               <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+                  class="icon-bar"></span>
+            </button>
+         </div>
 
-			<ul class="nav navbar-nav">
-				<li><a href="/" style="color: black; line-height: 40px;"><img
-						alt="" src="/css/mmmm.png"></a></li>
-			</ul>
-			<div class="navbar-collapse collapse">
-				<th:block th:if="${session.mdto==null}">
-					<ul class="nav navbar-nav navbar-center">
-						<li><a href="/"
-							style="color: black; line-height: 40px; padding-left: 700px;">선급여
-								지급 시스템</a></li>
-					</ul>
-				</th:block>
-				<th:block th:unless="${session.mdto==null}">
-					<th:block th:if="${session.mdto.role=='사장'}">
-						<ul class="nav navbar-nav navbar-center">
-							<li><a href="/"
-								style="color: black; line-height: 40px; padding-left: 500px;">직원관리</a></li>
-							<li><a href="/schedule/calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
-							<li><a href="/" style="color: black; line-height: 40px;">선지급관리</a></li>
-							<li><a href="/" style="color: black; line-height: 40px;">게시판</a></li>
-						</ul>
-					</th:block>
-					<th:block th:if="${session.mdto.role=='직원'}">
-						<ul class="nav navbar-nav navbar-center">
-							<li><a href="/"
-								style="color: black; line-height: 40px; padding-left: 500px;">급여정보</a></li>
-							<li><a href="/schedule/calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
-							<li><a href="/" style="color: black; line-height: 40px;">선급여요청</a></li>
-							<li><a href="/" style="color: black; line-height: 40px;">게시판</a></li>
-						</ul>
-					</th:block>
-				</th:block>
-				<th:block th:if="${session.mdto==null}">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/user/login"
-							style="color: black; line-height: 40px;">Login</a></li>
-						<li><a href="/user/addUser"
-							style="color: black; line-height: 40px;">SignUp</a></li>
-					</ul>
-				</th:block>
+         <ul class="nav navbar-nav">
+            <li><a href="/" style="color: black; line-height: 40px;"><img
+                  alt="" src="/css/mmmm.png"></a></li>
+         </ul>
+         <div class="navbar-collapse collapse">
+            <th:block th:if="${session.mdto==null}">
+               <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/"
+                     style="color: black; line-height: 40px; padding-left: 700px;">선급여
+                        지급 시스템</a></li>
+               </ul>
+            </th:block>
+            <th:block th:unless="${session.mdto==null}">
+               <th:block th:if="${session.mdto.role=='사장'}">
+                  <ul class="nav navbar-nav navbar-center">
+                     <li><a href="/board/boardList"
+                        style="color: black; line-height: 40px; padding-left: 500px;">직원관리</a></li>
+                     <li><a href="/schedule/calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
+                     <li><a href="/" style="color: black; line-height: 40px;">선지급관리</a></li>
+                     <li><a href="/board/boardList" style="color: black; line-height: 40px;">게시판</a></li>
+                  </ul>
+               </th:block>
+               <th:block th:if="${session.mdto.role=='직원'}">
+                  <ul class="nav navbar-nav navbar-center">
+                     <li><a href="/"
+                        style="color: black; line-height: 40px; padding-left: 500px;">급여정보</a></li>
+                     <li><a href="/schedule/calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
+                     <li><a href="/" style="color: black; line-height: 40px;">선급여요청</a></li>
+                     <li><a href="/board/boardList" style="color: black; line-height: 40px;">게시판</a></li>
+                  </ul>
+               </th:block>
+            </th:block>
+            <th:block th:if="${session.mdto==null}">
+               <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/user/login"
+                     style="color: black; line-height: 40px;">Login</a></li>
+                  <li><a href="/user/addUser"
+                     style="color: black; line-height: 40px;">SignUp</a></li>
+               </ul>
+            </th:block>
 
-				<th:block th:unless="${session.mdto==null}">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/user/mypage"
-							style="color: black; right:43%; line-height: 40px;">MyPage</a></li>
-						<th:block th:unless="${#lists.isEmpty(list)}">
-							<tr th:each="dto:${list}">
-									<th:block th:if="${session.mdto.id eq dto.fileUserDto[0].id}">
-										<td><img name="p"
-											style="position: absolute; border-radius: 50%; right:18%; width: 65px; height: 65px; background-color: #FFFFFF; "
-											th:src="@{'/upload/' + ${dto.fileUserDto[0].stored_filename}}"
-											alt="Image"></td>
-									</th:block>
-									</tr>
-									</th:block>
-								<li><a style="color: black; line-height: 40px;">[<span
-										th:text="${session.mdto.role}"></span>] <span
-										th:text="${session.mdto.name}"></span>님
-								</a></li>
-								<li><a href="/user/logout"
-									style="color: black; line-height: 40px;">Logout</a></li>
-					</ul>
-				</th:block>
-			</div>
-		</nav>
-	</header>
-	<div style="height: 50px;"></div>
+            <th:block th:unless="${session.mdto==null}">
+               <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/user/mypage"
+                     style="color: black; right:43%; line-height: 40px;">MyPage</a></li>
+                  <th:block th:unless="${#lists.isEmpty(list)}">
+                     <tr th:each="dto:${list}">
+                           <th:block th:if="${session.mdto.id eq dto.fileUserDto[0].id}">
+                              <td><img name="p"
+                                 style="position: absolute; border-radius: 50%; right:18%; width: 65px; height: 65px; background-color: #FFFFFF; "
+                                 th:src="@{'/upload/' + ${dto.fileUserDto[0].stored_filename}}"
+                                 alt="Image"></td>
+                           </th:block>
+                           </tr>
+                           </th:block>
+                        <li><a style="color: black; line-height: 40px;">[<span
+                              th:text="${session.mdto.role}"></span>] <span
+                              th:text="${session.mdto.name}"></span>님
+                        </a></li>
+                        <li><a href="/user/logout"
+                           style="color: black; line-height: 40px;">Logout</a></li>
+               </ul>
+            </th:block>
+         </div>
+      </nav>
+   </header>
+   <div style="height: 50px;"></div>
 </body>
 </html>
-

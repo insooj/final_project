@@ -61,8 +61,7 @@ public class FileService {
 		return fileMapper.getFileInfo(file_seq);
 	}
 
-	public void fileDownload(String origin_filename,
-			String stored_filename, HttpServletRequest request,
+	public void fileDownload(String origin_filename, String stored_filename, HttpServletRequest request,
 			HttpServletResponse response) throws UnsupportedEncodingException {
 		
 		//저장경로
@@ -85,7 +84,6 @@ public class FileService {
 		
 		try {
 			fs = new FileInputStream(file);
-			
 			out = response.getOutputStream();
 			
 			FileCopyUtils.copy(fs, out);// 읽고 쓰는 작업을 처리
@@ -106,7 +104,6 @@ public class FileService {
 				e.printStackTrace();
 			}
 		}
-	
 	}
 	
 }
