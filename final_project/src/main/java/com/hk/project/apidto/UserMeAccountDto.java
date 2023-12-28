@@ -1,4 +1,4 @@
-package com.hk.fintech.apidto;
+package com.hk.project.apidto;
 
 public class UserMeAccountDto {
 	private String fintech_use_num;

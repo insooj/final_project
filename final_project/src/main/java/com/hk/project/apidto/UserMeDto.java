@@ -1,4 +1,4 @@
-package com.hk.fintech.apidto;
+package com.hk.project.apidto;
 
 import java.util.List;
 

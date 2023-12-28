@@ -1,4 +1,4 @@
-package com.hk.fintech.feignMapper;
+package com.hk.project.feignMapper;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.hk.fintech.apidto.UserMeDto;
+import com.hk.project.apidto.UserMeDto;
 import com.hk.project.dtos.MemberDto;
 
 //restAPI 서버(openbanking)에 요청하고, 결과값을 받아 주는 기능 
