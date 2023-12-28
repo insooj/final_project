@@ -25,11 +25,15 @@ public class AddUserCommand {
 	@NotBlank(message="전화번호를 입력하세요")
 	private String phone;
 	
+	private String useraccesstoken;
+	private String userrefreshtoken;
+	private String userseqno;
+
 	public AddUserCommand(@NotBlank(message = "아이디를 입력하세요") String id, @NotBlank(message = "이름을 입력하세요") String name,
 			@NotBlank(message = "비밀번호를 입력하세요") @Length(min = 8, max = 16, message = "8자리이상, 16자이하로 입력하세요") String password,
 			@NotBlank(message = "이메일 입력하세요") String email, @NotBlank(message = "주소를 입력하세요") String address,
 			@NotBlank(message = "전화번호를 입력하세요") String phone, String useraccesstoken, String userrefreshtoken,
-			int userseqno) {
+			String userseqno) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -47,9 +51,6 @@ public class AddUserCommand {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	private String useraccesstoken;
-	private String userrefreshtoken;
-	private int userseqno;
 	public String getId() {
 		return id;
 	}
@@ -92,10 +93,10 @@ public class AddUserCommand {
 	public void setUserrefreshtoken(String userrefreshtoken) {
 		this.userrefreshtoken = userrefreshtoken;
 	}
-	public int getUserseqno() {
+	public String getUserseqno() {
 		return userseqno;
 	}
-	public void setUserseqno(int userseqno) {
+	public void setUserseqno(String userseqno) {
 		this.userseqno = userseqno;
 	}
 	@Override

@@ -19,12 +19,12 @@ public class MemberDto {
 	private String role;
 	private String useraccesstoken;
 	private String userrefreshtoken;
-	private int userseqno;
+	private String userseqno;
 	private String phone;
 	
 	
 	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
-			String useraccesstoken, String userrefreshtoken, int userseqno, String phone) {
+			String useraccesstoken, String userrefreshtoken, String userseqno, String phone) {
 		super();
 		this.name = name;
 		this.password = password;
@@ -44,7 +44,7 @@ public class MemberDto {
 		
 	
 	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
-			String useraccesstoken, String userrefreshtoken, int userseqno, String phone,
+			String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
 			List<FileUserDto> fileUserDto) {
 		super();
 		this.name = name;
@@ -135,10 +135,10 @@ public class MemberDto {
 	public void setUserrefreshtoken(String userrefreshtoken) {
 		this.userrefreshtoken = userrefreshtoken;
 	}
-	public int getUserseqno() {
+	public String getUserseqno() {
 		return userseqno;
 	}
-	public void setUserseqno(int userseqno) {
+	public void setUserseqno(String userseqno) {
 		this.userseqno = userseqno;
 	}
 	@Override
@@ -149,7 +149,7 @@ public class MemberDto {
 				+ ", fileUserDto=" + fileUserDto + "]";
 	}
 	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role,
-			String useraccesstoken, String userrefreshtoken, int userseqno) {
+			String useraccesstoken, String userrefreshtoken, String userseqno) {
 		super();
 		this.memberId = memberId;
 		this.id = id;

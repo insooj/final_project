@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.hk.project.apidto.UserAccountDto;
+import com.hk.project.apidto.UserMeDto;
 import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.LoginCommand;
@@ -32,6 +34,7 @@ import com.hk.project.command.UpdateUserCommand;
 import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
+import com.hk.project.feignMapper.OpenBankingFeign;
 import com.hk.project.service.FileService;
 import com.hk.project.service.FileUserService;
 import com.hk.project.service.MemberService;
@@ -43,9 +46,12 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping(value = "/user")
 public class MemberController {
 
+	
+	@Autowired 
+	private OpenBankingFeign openBankingFeign;
 	@Autowired
 	private MemberService memberService;
-	
+	@Autowired
 	private HttpServletRequest request;
 	@Autowired
 	private FileService fileService;
@@ -110,20 +116,36 @@ public class MemberController {
 		model.addAttribute("refresh_token", refresh_token);
 		model.addAttribute("user_seq_no", user_seq_no);
 
+		
 		return "member/authresult";
 	}
 
 	@PostMapping(value = "/addUser")
 	public String addUser(@Validated AddUserCommand adduserCommand, BindingResult result, Model model) {
 		System.out.println("회원가입하기");
-
+	
 		if (result.hasErrors()) {
 			System.out.println("회원가입 유효값 오류");
 			return "member/addUserForm";
 		}
-
+		
 		try {
+			
+			
 			memberService.addUser(adduserCommand);
+			System.out.println(adduserCommand);
+			UserMeDto userMeDto = openBankingFeign.requestUserMe("Bearer " +adduserCommand.getUseraccesstoken(), adduserCommand.getUserseqno());
+			List<UserAccountDto> list = userMeDto.getRes_list();
+			System.out.println(list);
+			String fintech_use_num = list.get(0).getFintech_use_num();
+			String account_num_masked = list.get(0).getAccount_num_masked();
+			String bank_name = list.get(0).getBank_name();
+			System.out.println(fintech_use_num);
+			System.out.println(account_num_masked);
+			System.out.println(bank_name);
+			
+			memberService.addAccount(fintech_use_num,account_num_masked,bank_name, adduserCommand.getId()); 
+			System.out.println("addAccount성공");
 			System.out.println("회원가입 성공");
 			return "redirect:/";
 		} catch (Exception e) {
@@ -166,6 +188,7 @@ public class MemberController {
 		MemberDto dto= new MemberDto();
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list",list);
+		
 		String path = memberService.login(loginCommand, request, model);
 		System.out.println(path);
 		return path;
@@ -260,14 +283,38 @@ public class MemberController {
 	}
 	
 	@GetMapping(value = "/myaccount")
-	public String myaccount(Model model) {
+	public String myaccount(Model model ) {
 		System.out.println("계좌등록 폼 이동");
 
 		MemberDto dto= new MemberDto();
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list",list);
 		model.addAttribute("addUserCommand", new AddUserCommand());
+		
+		//
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto adto = memberService.getUser(mdto);
+		String userSeqNo=adto.getUserseqno();//사용자 일련번호
+		String useraccesstoken=adto.getUseraccesstoken();//접근할 토큰
+		
+		System.out.println(useraccesstoken);
+		System.out.println(userSeqNo);
+	
+		//json값들을 userMeDto에 저장
+		UserMeDto userMeDto=openBankingFeign
+				.requestUserMe("Bearer "+useraccesstoken, userSeqNo+"");
+		//자바객체에 결과값을 저장했으므로 Model에 담아서 JSP로 전달할 수 있다.
+		model.addAttribute("userMeDto", userMeDto);
+		
 		return "member/myaccount";
 	}
 
+	
+	
+	
+	
+	
+	
+	
 }

@@ -15,6 +15,7 @@ import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.LoginCommand;
 import com.hk.project.command.UpdatePasswordCommand;
 import com.hk.project.command.UpdateUserCommand;
+import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.FileBoardDto;
 import com.hk.project.dtos.FileUserDto;
@@ -62,7 +63,31 @@ public class MemberService {
 		mdto.setRole(RoleStatus.직원 + "");// 등급추가
 		return memberMapper.addUser(mdto);
 	}
-
+	
+	
+	public int getmemberid(String id) {
+		
+		return memberMapper.getmemberid(id);
+	}
+	
+	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name ,String id) {
+		AccountDto adto = new AccountDto();
+		adto.setMemberid(getmemberid(id));
+		System.out.println(getmemberid(id));
+		adto.setAccount_num_masked(account_num_masked);
+		adto.setBank_name(bank_name);
+		adto.setFintech_use_num(fintech_use_num);
+		
+		return memberMapper.addAccount(adto);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	public String idChk(String id) {
 		return memberMapper.idChk(id);
 	}
@@ -140,4 +165,7 @@ public class MemberService {
 			}
 		}
 	}
+
+
+	
 }
