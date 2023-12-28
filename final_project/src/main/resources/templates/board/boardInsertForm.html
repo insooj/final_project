@@ -7,34 +7,27 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('preview').src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    document.getElementById('preview').src = "";
-  }
-}
 </script>
 <style type="text/css">
-
 
 </style>
 </head>
 <body>
 <div layout:fragment="content">
 <div id="container">
-<h1>상품 등록하기</h1>
+<h1>새글 작성하기</h1>
 <form action="/board/boardInsert" method="post"
 	  enctype="multipart/form-data" th:object="${insertBoardCommand}">
 	<input type="hidden" name="id" th:value="${session.mdto.id}"/>
+	<input type="hidden" name="role" th:value="${session.mdto.role}"/>
 	<table class="table">
 		<tr>
 			<th>작성자[ID]</th>
 			<td th:text="${session.mdto.id}"></td>
+		</tr>
+		<tr>
+			<th>등급</th>
+			<td th:text="${session.mdto.role}"></td>
 		</tr>
 		<tr>
 			<th>제목</th>
@@ -49,13 +42,8 @@ function readURL(input) {
 			<th>파일</th>
 			<td>
 				<input type="file" name="filename" multiple="multiple"
-					  class="form-control" onchange="readURL(this);" />
+					                              class="form-control" />
 			</td>
-		</tr>
-		
-		<tr>
-		<th>선택한 이미지 </th>
-			<td><img id="preview" style="width: 300px; height: 300px;"/></td>
 		</tr>
 		<tr>
 			<th>내용</th>
@@ -64,14 +52,6 @@ function readURL(input) {
 				          th:field="*{content}" class="form-control"></textarea>
 				<span th:if="${#fields.hasErrors('content')}" 
 					  th:errors="*{content}"></span>
-			</td>
-		</tr>
-		<tr>
-			<th>가격</th>
-			<td>
-				<input type="text" name="price" th:field="*{price}" 
-												class="form-control"/>
-			
 			</td>
 		</tr>
 		<tr>

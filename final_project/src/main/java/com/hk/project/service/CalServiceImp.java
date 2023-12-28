@@ -35,12 +35,10 @@ public class CalServiceImp implements ICalService{
       String paramYear=request.getParameter("year");
       String paramMonth=request.getParameter("month");
       
-      
       Calendar cal=Calendar.getInstance(); // 추상클래스이고, static 메서드 new(X)
       
       int   year=(paramYear==null)?cal.get(Calendar.YEAR):Integer.parseInt(paramYear) ;
-      int   month=(paramMonth==null)?cal.get(Calendar.MONTH)+1:Integer.parseInt(paramMonth) ;
-      
+      int   month=(paramMonth==null)?cal.get(Calendar.MONTH)+1:Integer.parseInt(paramMonth) ;                  
       
       //                          기본 오늘날짜로 저장할지  :  요청된 날짜로 저장할지
       //                         calendar객체에서 month는 0~11월임
@@ -63,6 +61,11 @@ public class CalServiceImp implements ICalService{
       //2.월의 마지막 날 구하기
       int lastDay=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
       
+      //makeCalendar()에서 실행해야 12->1   1->12 처리시 정상실행할 수 있음
+            String yyyyMM=year+Util.isTwo(month+"");//202311 6자리변환
+            List<CalDto>clist=calViewList(yyyyMM);
+      request.setAttribute("clist", clist);
+            
       map.put("year", year);
       map.put("month", month);
       map.put("dayOfWeek", dayOfWeek);
@@ -70,6 +73,7 @@ public class CalServiceImp implements ICalService{
       
       return map;
    }
+   
    
    @Override
    public boolean insertCalBoard(InsertCalCommand insertCalCommand) throws Exception {

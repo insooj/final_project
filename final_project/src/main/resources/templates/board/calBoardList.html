@@ -54,14 +54,14 @@
                   <td> 
                      <a th:href="@{/schedule/calBoardDetail(seq=${dto.seq})}" 
                       th:text="${dto.id}"></a>
-<!--                                 th:style="'color:'+${@util.moneyColor(dto.money)}"-->
                   </td>
 <!--                  <td th:text="${#dates.format(dto.mdate, 'yyyy-MM-dd')}"></td>-->
-                  <td th:text="${@util.toDates(dto.mdate)}"></td>
+                  <td th:text="${@util.toDates(dto.mdate)}"
+                  th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
                   <td>
-                     <span th:text="${dto.sdate}"></span>
+                     <span th:text="${dto.sdate}"th:style="'font-size : 18px;'+'font-weight : bold;'+'color:'+${@util.scheduletime()}"></span>
                      <span>~</span>
-                     <span th:text="${dto.edate}"></span>   
+                     <span th:text="${dto.edate}"th:style="'font-size : 18px;'+'font-weight : bold;'+'color:'+${@util.scheduletime()}"></span>   
                   </td>
                   <td th:text="${dto.role}"></td>
                </tr>            

@@ -21,6 +21,8 @@ public class MemberDto {
 	private String userrefreshtoken;
 	private int userseqno;
 	private String phone;
+	
+	
 	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
 			String useraccesstoken, String userrefreshtoken, int userseqno, String phone) {
 		super();
