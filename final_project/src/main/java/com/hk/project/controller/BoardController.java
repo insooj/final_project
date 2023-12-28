@@ -289,6 +289,8 @@ public class BoardController {
 				return "redirect:/board/boardList";
 				}
 			
+			
+			
 			@GetMapping(value = "/solditemlist")
 			public String solditemlist(Model model, HttpServletRequest request	) {
 				System.out.println("판매목록 보기");

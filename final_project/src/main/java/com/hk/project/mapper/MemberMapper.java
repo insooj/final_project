@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 
@@ -22,4 +23,8 @@ public interface MemberMapper {
 	public boolean userUpdate(MemberDto dto);
 	
 	public List<FileUserDto> fileUser(MemberDto dto);
+	
+	public boolean addAccount(AccountDto dto);
+	
+	public int getmemberid(String id);
 }

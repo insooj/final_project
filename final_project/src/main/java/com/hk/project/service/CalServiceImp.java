@@ -28,48 +28,52 @@ public class CalServiceImp implements ICalService{
    @Autowired
    private CalMapper calMapper;// interface 객체 생성해줌
    
-   public Map<String, Integer> makeCalendar(HttpServletRequest request){
-      Map<String ,Integer> map=new HashMap<>();
-      
-      //달력의 날짜를 바꾸기 위해 전달된 year와 month 파라미터를 받는 코드
-      String paramYear=request.getParameter("year");
-      String paramMonth=request.getParameter("month");
-      
-      
-      Calendar cal=Calendar.getInstance(); // 추상클래스이고, static 메서드 new(X)
-      
-      int   year=(paramYear==null)?cal.get(Calendar.YEAR):Integer.parseInt(paramYear) ;
-      int   month=(paramMonth==null)?cal.get(Calendar.MONTH)+1:Integer.parseInt(paramMonth) ;
-      
-      
-      //                          기본 오늘날짜로 저장할지  :  요청된 날짜로 저장할지
-      //                         calendar객체에서 month는 0~11월임
-      
-      // 11월,12월,13월.....      오류 처리
-      // -2월, -1월 , 0월 , 1월   오류 처리
-      if(month>12) {
-         month=1;
-         year++;
-      }
-      if(month<1) {
-         month=12;
-         year--;
-      }
-      
-      //1.월의 1일에 대한 요일 구하기
-      cal.set(year, month-1,1);// 원하는 날짜로 셋팅
-      int dayOfWeek=cal.get(Calendar.DAY_OF_WEEK);//1~7중에 반환(1:일요일~7:토요일)
-      
-      //2.월의 마지막 날 구하기
-      int lastDay=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-      
-      map.put("year", year);
-      map.put("month", month);
-      map.put("dayOfWeek", dayOfWeek);
-      map.put("lastDay", lastDay);
-      
-      return map;
-   }
+	public Map<String, Integer> makeCalendar(HttpServletRequest request){
+		Map<String ,Integer> map=new HashMap<>();
+		
+		//달력의 날짜를 바꾸기 위해 전달된 year와 month 파라미터를 받는 코드
+		String paramYear=request.getParameter("year");
+		String paramMonth=request.getParameter("month");
+		
+		Calendar cal=Calendar.getInstance(); // 추상클래스이고, static 메서드 new(X)
+		
+		int	year=(paramYear==null)?cal.get(Calendar.YEAR):Integer.parseInt(paramYear) ;
+		int	month=(paramMonth==null)?cal.get(Calendar.MONTH)+1:Integer.parseInt(paramMonth) ;						
+		
+		//                          기본 오늘날짜로 저장할지  :  요청된 날짜로 저장할지
+		//                         calendar객체에서 month는 0~11월임
+		
+		// 11월,12월,13월.....      오류 처리
+		// -2월, -1월 , 0월 , 1월   오류 처리
+		if(month>12) {
+			month=1;
+			year++;
+		}
+		if(month<1) {
+			month=12;
+			year--;
+		}
+		
+		//1.월의 1일에 대한 요일 구하기
+		cal.set(year, month-1,1);// 원하는 날짜로 셋팅
+		int dayOfWeek=cal.get(Calendar.DAY_OF_WEEK);//1~7중에 반환(1:일요일~7:토요일)
+		
+		//2.월의 마지막 날 구하기
+		int lastDay=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		
+		//makeCalendar()에서 실행해야 12->1   1->12 처리시 정상실행할 수 있음
+				String yyyyMM=year+Util.isTwo(month+"");//202311 6자리변환
+				List<CalDto>clist=calViewList(yyyyMM);
+		request.setAttribute("clist", clist);
+				
+		map.put("year", year);
+		map.put("month", month);
+		map.put("dayOfWeek", dayOfWeek);
+		map.put("lastDay", lastDay);
+		
+		return map;
+	}
+	
    
    @Override
    public boolean insertCalBoard(InsertCalCommand insertCalCommand) throws Exception {

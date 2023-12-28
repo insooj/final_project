@@ -50,10 +50,10 @@ public class CalController {
 		logger.info("달력보기");
 
 		// 달력에서 일일별 일정목록 구하기
-//      String id="jth";//나중에 세션에서 가져온 아이디 사용
 
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
+		
 		MemberDto dto = new MemberDto();
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
@@ -63,17 +63,15 @@ public class CalController {
 			year = cal.get(Calendar.YEAR) + "";
 			month = (cal.get(Calendar.MONTH) + 1) + "";
 		}
-		String yyyyMM = year + Util.isTwo(month);// 202311 6자리변환
-		List<CalDto> clist = calService.calViewList(yyyyMM);
-		model.addAttribute("clist", clist);
-
 		// 달력만들기위한 값 구하기
 		Map<String, Integer> map = calService.makeCalendar(request);
 		model.addAttribute("calMap", map);
 
-		// 수입,지출 값 dto
-		// Dto dto= calService.수입지출메서드();
-		// model.addAttribute("dto",dto);
+//		String yyyyMM = year + Util.isTwo(month);// 202311 6자리변환
+//		List<CalDto> clist = calService.calViewList(yyyyMM);
+//		model.addAttribute("clist", clist);
+
+
 
 		return "board/calendar";
 	}

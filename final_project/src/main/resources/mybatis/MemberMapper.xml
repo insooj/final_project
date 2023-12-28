@@ -30,8 +30,10 @@
 	</resultMap>
 
 	<select id="fileUser" resultMap="memberDtoMap">
-		SELECT m.id, m.NAME , f.origin_filminiename, f.stored_filename
-		FROM member m right OUTER JOIN userfile f
+		SELECT m.id, m.NAME ,
+		f.origin_filminiename, f.stored_filename
+		FROM member m right OUTER JOIN
+		userfile f
 		ON m.id = f.id
 	</select>
 
@@ -41,6 +43,18 @@
 		#{userrefreshtoken
 		},#{userseqno}, #{phone} )
 	</insert>
+
+	<insert id="addAccount" parameterType="AccountDto">
+		INSERT INTO fintech
+		VALUES(NULL,
+		#{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked})
+	</insert>
+
+	<select  id="getmemberid" parameterType="String" resultType="Integer">
+		SELECT memberid
+		FROM member
+		WHERE id = #{id}
+	</select>
 
 	<select id="idChk" parameterType="String" resultType="String">
 		SELECT ID
@@ -56,14 +70,17 @@
 
 	<select id="getUser" parameterType="String"
 		resultType="memberDto">
-		SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE, PHONE
+		SELECT MEMBERID, ID, PASSWORD, NAME, EMAIL, ADDRESS,
+		ROLE,USERACCESSTOKEN,USERREFRESHTOKEN,USERSEQNO,PHONE
 		FROM MEMBER
-		WHERE ID = #{id}
+		WHERE
+		ID = #{id}
 	</select>
 
 	<update id="userUpdate" parameterType="memberDto">
 		UPDATE MEMBER
-		SET PASSWORD = #{password}
+		SET PASSWORD
+		= #{password}
 		WHERE ID = #{id}
 	</update>
 

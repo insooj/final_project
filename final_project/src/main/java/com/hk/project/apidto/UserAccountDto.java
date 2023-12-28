@@ -1,6 +1,6 @@
-package com.hk.fintech.apidto;
+package com.hk.project.apidto;
 
-public class UserMeAccountDto {
+public class UserAccountDto {
 	private String fintech_use_num;
 	private String account_alias;
 	private String bank_code_std;
@@ -132,7 +132,7 @@ public class UserMeAccountDto {
 	public void setPayer_num(String payer_num) {
 		this.payer_num = payer_num;
 	}
-	public UserMeAccountDto(String fintech_use_num, String account_alias, String bank_code_std, String bank_code_sub,
+	public UserAccountDto(String fintech_use_num, String account_alias, String bank_code_std, String bank_code_sub,
 			String bank_name, String savings_bank_name, String account_num, String account_num_masked,
 			String account_seq, String account_holder_name, String account_holder_type, String account_type,
 			String inquiry_agree_yn, String inquiry_agree_dtime, String transfer_agree_yn, String transfer_agree_dtime,
@@ -156,7 +156,7 @@ public class UserMeAccountDto {
 		this.transfer_agree_dtime = transfer_agree_dtime;
 		this.payer_num = payer_num;
 	}
-	public UserMeAccountDto() {
+	public UserAccountDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

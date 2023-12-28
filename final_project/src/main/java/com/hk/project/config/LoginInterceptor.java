@@ -21,6 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 			response.sendRedirect("/user/login");//home.html로 이동
 //			request.getRequestDispatcher("member/login")
 //			.forward(request, response);
+			return false;
 		}
 		return true;
 	}

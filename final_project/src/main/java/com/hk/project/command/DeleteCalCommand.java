@@ -8,7 +8,6 @@ import lombok.Data;
 //@Data
 public class DeleteCalCommand {
 	//null이거나 길이가 0인경우
-	@NotEmpty(message = "삭제하려면 최소 하나 이상 체크하세요")
 	private String[] seq;
 
 	public DeleteCalCommand() {
