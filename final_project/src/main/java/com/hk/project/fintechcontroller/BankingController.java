@@ -107,7 +107,8 @@ public class BankingController {
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
 		System.out.println(userMeDto);
-
+		
+		
 		
 		
 		return "member/myaccount";

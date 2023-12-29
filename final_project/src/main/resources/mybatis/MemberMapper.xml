@@ -20,6 +20,7 @@
 		<!-- <association property="fileUserDto"></association> -->
 		<collection property="fileUserDto"
 			resultMap="fileUserDtoMap"></collection>
+		<collection property="accountDto" resultMap="AccountDtoMap"></collection>
 	</resultMap>
 
 	<resultMap type="fileUserDto" id="fileUserDtoMap">
@@ -29,9 +30,19 @@
 		<result property="stored_filename" column="STORED_FILENAME" />
 	</resultMap>
 
+	<resultMap type="accountDto" id="AccountDtoMap">
+		<id property="account_seq" column="ACCOUNT_SEQ" />
+		<result property="memberid" column="MEMBERID" />
+		<result property="fintech_use_num" column="FINTECH_USE_NUM" />
+		<result property="bank_name" column="BANK_NAME" />
+		<result property="account_num_masked"
+			column="ACCOUNT_NUM_MASKED" />
+	</resultMap>
+
+
 	<select id="fileUser" resultMap="memberDtoMap">
 		SELECT m.id, m.NAME ,
-		f.origin_filminiename, f.stored_filename
+		f.origin_filename, f.stored_filename
 		FROM member m right OUTER JOIN
 		userfile f
 		ON m.id = f.id
@@ -50,11 +61,21 @@
 		#{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked})
 	</insert>
 
-	<select  id="getmemberid" parameterType="String" resultType="Integer">
+
+
+	<select id="getmemberid" parameterType="String"
+		resultType="Integer">
 		SELECT memberid
 		FROM member
 		WHERE id = #{id}
 	</select>
+
+	<select id="getuserAccount" resultMap="memberDtoMap">
+		SELECT m.id, m.NAME, f.bank_name, f.account_num_masked
+		FROM member m right OUTER JOIN fintech f
+		ON m.memberid = f.memberid 
+	</select>
+
 
 	<select id="idChk" parameterType="String" resultType="String">
 		SELECT ID

@@ -27,4 +27,7 @@ public interface MemberMapper {
 	public boolean addAccount(AccountDto dto);
 	
 	public int getmemberid(String id);
+	
+	public List<AccountDto> getuserAccount(MemberDto dto);
+	
 }

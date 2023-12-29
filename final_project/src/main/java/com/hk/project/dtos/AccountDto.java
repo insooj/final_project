@@ -8,9 +8,8 @@ import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class AccountDto {	
+public class AccountDto {
 
-	
 	private int account_seq;
 	private int memberid;
 	private String fintech_use_num;
@@ -64,4 +63,6 @@ public class AccountDto {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 }

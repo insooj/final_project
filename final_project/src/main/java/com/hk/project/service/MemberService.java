@@ -37,7 +37,7 @@ public class MemberService {
 	private MemberMapper memberMapper;
 	@Autowired
 	private FileUserMapper fileUserMapper;
-	
+
 	@Autowired
 	private FileUserService fileUserService;
 //	@Autowired
@@ -63,31 +63,31 @@ public class MemberService {
 		mdto.setRole(RoleStatus.직원 + "");// 등급추가
 		return memberMapper.addUser(mdto);
 	}
-	
-	
+
 	public int getmemberid(String id) {
-		
+
 		return memberMapper.getmemberid(id);
 	}
-	
-	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name ,String id) {
+
+	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id) {
 		AccountDto adto = new AccountDto();
 		adto.setMemberid(getmemberid(id));
 		System.out.println(getmemberid(id));
 		adto.setAccount_num_masked(account_num_masked);
 		adto.setBank_name(bank_name);
 		adto.setFintech_use_num(fintech_use_num);
-		
+
 		return memberMapper.addAccount(adto);
-		
+
 	}
 	
+	public List<AccountDto> getuserAccount(MemberDto dto) {
+		
+		return memberMapper.getuserAccount(dto);
+	}
+
 	
-	
-	
-	
-	
-	
+
 	public String idChk(String id) {
 		return memberMapper.idChk(id);
 	}
@@ -135,15 +135,13 @@ public class MemberService {
 	}
 
 	public List<FileUserDto> fileuser(MemberDto dto) {
-		
+
 		return memberMapper.fileUser(dto);
 	}
 
-	
-	
 	@Transactional
-	public void insertfile( MultipartRequest multipartRequest,MemberDto dto,
-			HttpServletRequest request) throws IllegalStateException, IOException {
+	public void insertfile(MultipartRequest multipartRequest, MemberDto dto, HttpServletRequest request)
+			throws IllegalStateException, IOException {
 		System.out.println("파일첨부여부:" + multipartRequest.getFiles("filename").get(0).isEmpty());
 		// 첨부된 파일들이 있는 경우
 		if (!multipartRequest.getFiles("filename").get(0).isEmpty()) {
@@ -153,19 +151,18 @@ public class MemberService {
 			// 파일업로드 작업은 FileService쪽에서 업로드하고 업로드된 파일정보 반환
 			List<FileUserDto> uploadFileList = fileUserService.uploadFiles(filepath, multipartRequest, dto);
 			// 파일정보를 DB에 추가
-			// 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용ist<FileBoardDto> uploadFileList = fileService.uploadFiles(filepath, multipartRequest);
+			// 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용ist<FileBoardDto> uploadFileList =
+			// fileService.uploadFiles(filepath, multipartRequest);
 			// 파일정보를 DB에 추가
 			// 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용
 			// Testboard: board_seq PK board_seq FK
 			for (FileUserDto fDto : uploadFileList) {
 				fileUserMapper.insertFileuser(fDto);
-				
+
 //				fileMapper.insertFileBoard(new FileUserDto(0,dto.getId() // 증가된 board_seq값을 넣는다
 //						fDto.getOrigin_filename(), fDto.getStored_filename()));
 			}
 		}
 	}
 
-
-	
 }

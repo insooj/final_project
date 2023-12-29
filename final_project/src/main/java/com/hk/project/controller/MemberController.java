@@ -31,6 +31,7 @@ import com.hk.project.command.LoginCommand;
 import com.hk.project.command.UpdateBoardCommand;
 import com.hk.project.command.UpdatePasswordCommand;
 import com.hk.project.command.UpdateUserCommand;
+import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
@@ -287,25 +288,18 @@ public class MemberController {
 		System.out.println("계좌등록 폼 이동");
 
 		MemberDto dto= new MemberDto();
+		dto.getMemberId();
+		dto.getId();
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list",list);
-		model.addAttribute("addUserCommand", new AddUserCommand());
 		
-		//
-		HttpSession session = (HttpSession) request.getSession();
-		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
-		MemberDto adto = memberService.getUser(mdto);
-		String userSeqNo=adto.getUserseqno();//사용자 일련번호
-		String useraccesstoken=adto.getUseraccesstoken();//접근할 토큰
+//		List<AccountDto> mlist = memberService.getuserAccount(dto);
+//		model.addAttribute("addUserCommand", new AddUserCommand());
+//		
+//		model.addAttribute("mlist",mlist);
 		
-		System.out.println(useraccesstoken);
-		System.out.println(userSeqNo);
-	
-		//json값들을 userMeDto에 저장
-		UserMeDto userMeDto=openBankingFeign
-				.requestUserMe("Bearer "+useraccesstoken, userSeqNo+"");
-		//자바객체에 결과값을 저장했으므로 Model에 담아서 JSP로 전달할 수 있다.
-		model.addAttribute("userMeDto", userMeDto);
+		
+//		System.out.println(mlist);
 		
 		return "member/myaccount";
 	}

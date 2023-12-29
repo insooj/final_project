@@ -41,8 +41,35 @@ public class MemberDto {
 	
 	//Join용 맴버필드
 		private List<FileUserDto> fileUserDto;
-		
+		private List<AccountDto> accountDto;
 	
+	public MemberDto(String name, String password, String email, String address, int memberId, String id,
+				String role, String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
+				List<FileUserDto> fileUserDto, List<AccountDto> accountDto) {
+			super();
+			this.name = name;
+			this.password = password;
+			this.email = email;
+			this.address = address;
+			this.memberId = memberId;
+			this.id = id;
+			this.role = role;
+			this.useraccesstoken = useraccesstoken;
+			this.userrefreshtoken = userrefreshtoken;
+			this.userseqno = userseqno;
+			this.phone = phone;
+			this.fileUserDto = fileUserDto;
+			this.accountDto = accountDto;
+		}
+
+	public List<AccountDto> getAccountDto() {
+			return accountDto;
+		}
+
+		public void setAccountDto(List<AccountDto> accountDto) {
+			this.accountDto = accountDto;
+		}
+
 	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
 			String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
 			List<FileUserDto> fileUserDto) {
@@ -146,7 +173,7 @@ public class MemberDto {
 		return "MemberDto [name=" + name + ", password=" + password + ", email=" + email + ", address=" + address
 				+ ", memberId=" + memberId + ", id=" + id + ", role=" + role + ", useraccesstoken=" + useraccesstoken
 				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + ", phone=" + phone
-				+ ", fileUserDto=" + fileUserDto + "]";
+				+ ", fileUserDto=" + fileUserDto + ", accountDto=" + accountDto + "]";
 	}
 	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role,
 			String useraccesstoken, String userrefreshtoken, String userseqno) {
