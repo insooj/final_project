@@ -17,6 +17,7 @@
 		<result property="userrefreshtoken" column="USERREFRESHTOKEN" />
 		<result property="userseqno" column="USERSEQNO" />
 		<result property="phone" column="PHONE" />
+		<result property="money" column="MONEY" />
 		<association property="accountDto" 
 			resultMap="AccountDtoMap"></association>
 		<collection property="fileUserDto"
@@ -39,8 +40,8 @@
 		<result property="memberid" column="MEMBERID" />
 		<result property="fintech_use_num" column="FINTECH_USE_NUM" />
 		<result property="bank_name" column="BANK_NAME" />
-		<result property="account_num_masked"
-			column="ACCOUNT_NUM_MASKED" />
+		<result property="account_num_masked" column="ACCOUNT_NUM_MASKED" />
+		<result property="money" column="MONEY" />
 	</resultMap>
 
 
@@ -55,14 +56,13 @@
 	<insert id="addUser" parameterType="memberDto">
 		INSERT INTO MEMBER
 		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken},
-		#{userrefreshtoken
-		},#{userseqno}, #{phone} )
+		#{userrefreshtoken},#{userseqno}, #{phone} )
 	</insert>
 
 	<insert id="addAccount" parameterType="AccountDto">
 		INSERT INTO fintech
 		VALUES(NULL,
-		#{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked})
+		#{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked},#{money})
 	</insert>
 
 	<select id="getmemberid" parameterType="String"

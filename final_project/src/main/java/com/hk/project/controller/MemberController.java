@@ -147,8 +147,8 @@ public class MemberController {
 			System.out.println(fintech_use_num);
 			System.out.println(account_num_masked);
 			System.out.println(bank_name);
-
-			memberService.addAccount(fintech_use_num, account_num_masked, bank_name, adduserCommand.getId());
+			AccountDto adto = new AccountDto();
+			memberService.addAccount(fintech_use_num, account_num_masked, bank_name, adduserCommand.getId(), adto.getMoney());
 			System.out.println("addAccount성공");
 			System.out.println("회원가입 성공");
 			return "redirect:/";

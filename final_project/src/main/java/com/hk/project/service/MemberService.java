@@ -69,13 +69,14 @@ public class MemberService {
 		return memberMapper.getmemberid(id);
 	}
 
-	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id) {
+	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {
 		AccountDto adto = new AccountDto();
 		adto.setMemberid(getmemberid(id));
 		System.out.println(getmemberid(id));
 		adto.setAccount_num_masked(account_num_masked);
 		adto.setBank_name(bank_name);
 		adto.setFintech_use_num(fintech_use_num);
+		adto.setMoney(money);
 		return memberMapper.addAccount(adto);
 	}
 	

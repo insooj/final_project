@@ -15,9 +15,26 @@ public class AccountDto {
    private String fintech_use_num;
    private String bank_name;
    private String account_num_masked;
+   private int money;
    
    
-   public int getAccount_seq() {
+   public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name, String account_num_masked,
+		int money) {
+	super();
+	this.account_seq = account_seq;
+	this.memberid = memberid;
+	this.fintech_use_num = fintech_use_num;
+	this.bank_name = bank_name;
+	this.account_num_masked = account_num_masked;
+	this.money = money;
+}
+public int getMoney() {
+	return money;
+}
+public void setMoney(int money) {
+	this.money = money;
+}
+public int getAccount_seq() {
       return account_seq;
    }
    public void setAccount_seq(int account_seq) {
@@ -48,10 +65,10 @@ public class AccountDto {
       this.account_num_masked = account_num_masked;
    }
    @Override
-   public String toString() {
-      return "AccountDto [account_seq=" + account_seq + ", memberid=" + memberid + ", fintech_use_num="
-            + fintech_use_num + ", bank_name=" + bank_name + ", account_num_masked=" + account_num_masked + "]";
-   }
+public String toString() {
+	return "AccountDto [account_seq=" + account_seq + ", memberid=" + memberid + ", fintech_use_num=" + fintech_use_num
+			+ ", bank_name=" + bank_name + ", account_num_masked=" + account_num_masked + ", money=" + money + "]";
+}
    public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name,
          String account_num_masked) {
       super();
