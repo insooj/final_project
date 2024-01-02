@@ -44,9 +44,9 @@ body {
          <h1
             style="margin-left: 40%; margin-top: 7%; font-size: 50px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 1.0;"><span th:text="${session.mdto.name}"></span>님의 계좌</h1>
          <div
-            style="margin-left: 15%; margin-top: 5%; box-shadow: 5px 5px 5px 5px; width: 70%; height: 40%; background-color: #E6E7F9; border-radius: 40px;">
+            style="margin-left: 15%; margin-top: 4%; box-shadow: 5px 5px 5px 5px; width: 70%; height: 50%; background-color: #E6E7F9; border-radius: 40px; ">
             <div
-               style="position: absolute; margin-left: 6%; top: 33%; border-radius: 50%; width: 250px; height: 250px; background-color: #FFFFFF; z-index: 200;">
+               style="position: absolute; margin-left: 6%; top: 35%; border-radius: 50%; width: 250px; height: 250px; background-color: #FFFFFF; z-index: 200;">
                <th:block th:unless="${#lists.isEmpty(list)}">
                   <tr th:each="dto:${list}">
                      <th:block th:if="${session.mdto.id eq dto.fileUserDto[0].id}">
@@ -54,23 +54,36 @@ body {
                            style="position: absolute; border-radius: 50%; width: 250px; height: 250px; background-color: #FFFFFF; z-index: 200;"
                            th:src="@{'/upload/' + ${dto.fileUserDto[0].stored_filename}}"
                            alt="Image"></td>
-                     </th:block>
+                     </th:block>	
             </div>
             <div
-               style="position: absolute; margin-left: 25%; top: 33%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 25%; background-color: #FFFFFF; z-index: 200;">
+               style="position: absolute; margin-left: 25%; top: 30%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 38%; background-color: #FFFFFF; z-index: 200;">
                <p
-                  style="position: absolute; margin-left: 6%; top: 40%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 1.0; font-size: 20px;">
-                  은행기관<span ></span><span ></span>님<br /> 방문해주셔서 감사합니다
+                  style="position: absolute; margin-left: 6%; top: 10%; font-size: 30px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 0.7; ">
+                  계좌명 : <span th:text="${accountBalDto.product_name}"> </span>
+                  </p>
+               <p
+                  style="position: absolute; margin-left: 6%; top: 25%; font-size: 30px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 0.7; ">
+                  은행기관 : <span th:text="${adto.accountDto.bank_name}"> </span>
+                  </p>
+                  <p style="position: absolute; margin-left: 6%; top: 40%; font-size: 30px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 0.7; "> 
+                  계좌번호	: <span th:text="${adto.accountDto.account_num_masked}" ></span><br /> 
+               </p>
+               <p style="position: absolute; margin-left: 6%; top: 55%; font-size: 30px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 0.7; "> 
+                  핀테크번호 : <span th:text="${adto.accountDto.fintech_use_num}" ></span><br /> 
+               </p>
+               <p style="position: absolute; margin-left: 6%; top: 80%; font-size: 30px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 1.0; "> 
+                  계좌잔액 :  \ <span th:text="${accountBalDto.balance_amt}" ></span><br /> 
                </p>
             </div>
             <p
-               style="position: absolute; margin-left: 6%; top: 58%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black;">
+               style="position: absolute; margin-left: 6%; top: 60%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black;">
                <span th:text="${session.mdto.name}"></span> <span
                   th:text="${session.mdto.role}"></span>님
             </p>
-            <button type="button" onclick="myInfo_feign()" style="position: absolute; margin-left: 55%; top: 57%; border-radius: 20px; width: 10%; height: 5%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;"
-            >계좌조회 </button>
-
+<!--             <button type="button" onclick="myInfo_feign()" style="position: absolute; margin-left: 55%; top: 57%; border-radius: 20px; width: 10%; height: 5%; background-color: black; z-index: 200; color: white; font-family: 'GmarketSans'; font-size: 30px;" -->
+<!--             >계좌조회 </button> -->
+	
                </div>
       </div>
       

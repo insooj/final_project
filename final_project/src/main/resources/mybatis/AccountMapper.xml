@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.project.mapper.AccountMapper">
+   
+   <resultMap type="AccountDto" id="accountDtoMap">
+      <id property="account_seq"   column="ACCOUNT_SEQ" />
+      <result property="memberid"      column="MEMBERID" />
+      <result property="fintech_use_num"   column="FINTECH_USE_NUM" />
+      <result property="bank_name" column="BANK_NAME" />
+      <result property="account_num_masked" column="ACCOUNT_NUM_MASKED" />   
+   </resultMap>
+
+   
+   
+   <select id="getUserList" resultType="AccountDto">
+      SELECT ACCOUNT_SEQ, MEMBERID, FINTECH_USE_NUM, BANK_NAME, ACCOUNT_NUM_MASKED
+      FROM FINTECH
+   </select>
+   
+   <select id="getUser" parameterType="Integer" resultMap="accountDtoMap">
+      SELECT B.ACCOUNT_SEQ, B.MEMBERID,  B.FINTECH_USE_NUM, B.BANK_NAME, B.ACCOUNT_NUM_MASKED
+      FROM FINTECH B LEFT OUTER JOIN FILEINFO F
+      ON B.ACCOUNT_SEQ = F.ACCOUNT_SEQ
+      WHERE B.ACCOUNT_SEQ = #{account_seq}
+   </select>
+   
+<!--    useGeneratedKeys="true" keyProperty="board_seq"
+        : 증가된 board_seq값을 BoardDto에 전달 : insertBoard(boardDto) -->
+   <insert id="insertUser" parameterType="AccountDto"
+      useGeneratedKeys="true" keyProperty="account_seq">
+      INSERT INTO FINTECH
+      VALUES(#{account_seq},#{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked})
+   </insert>
+   
+
+<!--    해고 -->
+<!--    <update id="mulDel" parameterType="Map"> -->
+<!--       UPDATE TESTBOARD SET DELFLAG = 'Y' WHERE BOARD_SEQ IN -->
+<!--       <foreach collection="seqs" item="board_seq" open="(" close=")" -->
+<!--                separator=","> -->
+<!--          #{board_seq} -->
+<!--       </foreach> -->
+<!--    </update> -->
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

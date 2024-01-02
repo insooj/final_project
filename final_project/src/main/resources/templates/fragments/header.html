@@ -36,7 +36,7 @@
             <th:block th:unless="${session.mdto==null}">
                <th:block th:if="${session.mdto.role=='사장'}">
                   <ul class="nav navbar-nav navbar-center">
-                     <li><a href="/board/boardList"
+                     <li><a href="/manage/usermanagement"
                         style="color: black; line-height: 40px; padding-left: 500px;">직원관리</a></li>
                      <li><a href="/schedule/calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
                      <li><a href="/" style="color: black; line-height: 40px;">선지급관리</a></li>
@@ -45,7 +45,7 @@
                </th:block>
                <th:block th:if="${session.mdto.role=='직원'}">
                   <ul class="nav navbar-nav navbar-center">
-                     <li><a href="/"
+                     <li><a href="/salary/salaryinfo"
                         style="color: black; line-height: 40px; padding-left: 500px;">급여정보</a></li>
                      <li><a href="/schedule/calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
                      <li><a href="/" style="color: black; line-height: 40px;">선급여요청</a></li>

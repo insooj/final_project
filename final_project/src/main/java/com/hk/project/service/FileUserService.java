@@ -20,6 +20,7 @@ import com.hk.project.dtos.FileBoardDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.mapper.FileMapper;
+import com.hk.project.mapper.FileUserMapper;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ import jakarta.servlet.http.HttpSession;
 public class FileUserService {
 
 	@Autowired
-	private FileMapper fileMapper;
+	private FileUserMapper fileUserMapper;
 	
 	//파일업로드하기
 	public List<FileUserDto> uploadFiles(String uploadPath
@@ -62,8 +63,8 @@ public class FileUserService {
 	}
 	
 	//파일정보 가져오기
-	public FileBoardDto getFileInfo(int file_seq) {
-		return fileMapper.getFileInfo(file_seq);
+	public FileUserDto getFileUserInfo(int file_seq) {
+		return fileUserMapper.getFileUserInfo(file_seq);
 	}
 
 	public void fileDownload(String origin_filename,

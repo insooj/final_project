@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.hk.project.apidto.AccountBalanceDto;
 import com.hk.project.apidto.UserAccountDto;
 import com.hk.project.apidto.UserMeDto;
 import com.hk.project.command.AddUserCommand;
@@ -40,6 +45,7 @@ import com.hk.project.service.FileService;
 import com.hk.project.service.FileUserService;
 import com.hk.project.service.MemberService;
 
+import groovyjarjarantlr4.v4.runtime.ParserInterpreter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -47,8 +53,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping(value = "/user")
 public class MemberController {
 
-	
-	@Autowired 
+	@Autowired
 	private OpenBankingFeign openBankingFeign;
 	@Autowired
 	private MemberService memberService;
@@ -58,7 +63,7 @@ public class MemberController {
 	private FileService fileService;
 	@Autowired
 	private FileUserService fileUserService;
-	
+
 	@GetMapping(value = "/addUser")
 	public String addUserForm(Model model) {
 		System.out.println("회원가입폼 이동");
@@ -117,25 +122,23 @@ public class MemberController {
 		model.addAttribute("refresh_token", refresh_token);
 		model.addAttribute("user_seq_no", user_seq_no);
 
-		
 		return "member/authresult";
 	}
 
 	@PostMapping(value = "/addUser")
 	public String addUser(@Validated AddUserCommand adduserCommand, BindingResult result, Model model) {
 		System.out.println("회원가입하기");
-	
+
 		if (result.hasErrors()) {
 			System.out.println("회원가입 유효값 오류");
 			return "member/addUserForm";
 		}
-		
+
 		try {
-			
-			
 			memberService.addUser(adduserCommand);
 			System.out.println(adduserCommand);
-			UserMeDto userMeDto = openBankingFeign.requestUserMe("Bearer " +adduserCommand.getUseraccesstoken(), adduserCommand.getUserseqno());
+			UserMeDto userMeDto = openBankingFeign.requestUserMe("Bearer " + adduserCommand.getUseraccesstoken(),
+					adduserCommand.getUserseqno());
 			List<UserAccountDto> list = userMeDto.getRes_list();
 			System.out.println(list);
 			String fintech_use_num = list.get(0).getFintech_use_num();
@@ -144,8 +147,8 @@ public class MemberController {
 			System.out.println(fintech_use_num);
 			System.out.println(account_num_masked);
 			System.out.println(bank_name);
-			
-			memberService.addAccount(fintech_use_num,account_num_masked,bank_name, adduserCommand.getId()); 
+
+			memberService.addAccount(fintech_use_num, account_num_masked, bank_name, adduserCommand.getId());
 			System.out.println("addAccount성공");
 			System.out.println("회원가입 성공");
 			return "redirect:/";
@@ -180,16 +183,16 @@ public class MemberController {
 
 	// 로그인 실행
 	@PostMapping(value = "/login")
-	public String login(@Validated LoginCommand loginCommand, BindingResult result, Model model, 
+	public String login(@Validated LoginCommand loginCommand, BindingResult result, Model model,
 			HttpServletRequest request) {
 		if (result.hasErrors()) {
 			System.out.println("로그인 유효값 오류");
 			return "member/login";
 		}
-		MemberDto dto= new MemberDto();
+		MemberDto dto = new MemberDto();
 		List<FileUserDto> list = memberService.fileuser(dto);
-		model.addAttribute("list",list);
-		
+		model.addAttribute("list", list);
+
 		String path = memberService.login(loginCommand, request, model);
 		System.out.println(path);
 		return path;
@@ -204,10 +207,10 @@ public class MemberController {
 
 	@GetMapping(value = "/mypage")
 	public String mypage(Model model) {
-		MemberDto dto= new MemberDto();
+		MemberDto dto = new MemberDto();
 		System.out.println("마이페이지 이동");
 		List<FileUserDto> list = memberService.fileuser(dto);
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
 		model.addAttribute("addUserCommand", new AddUserCommand());
 
 		return "member/mypage";
@@ -220,7 +223,7 @@ public class MemberController {
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
 		List<FileUserDto> list = memberService.fileuser(dto);
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
 		model.addAttribute("dto", dto);
 		return "member/mypageform";
 	}
@@ -232,25 +235,25 @@ public class MemberController {
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
 		List<FileUserDto> list = memberService.fileuser(dto);
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
 		model.addAttribute("dto", dto);
 		return "member/myupdateform";
 	}
 
 	@PostMapping(value = "/userupdate")
-	public String userUpdate(@Validated HttpServletRequest request, UpdateUserCommand updateuserCommand, BindingResult result, Model model) {
+	public String userUpdate(@Validated HttpServletRequest request, UpdateUserCommand updateuserCommand,
+			BindingResult result, Model model) {
 		HttpSession session = (HttpSession) request.getSession();
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
 		List<FileUserDto> list = memberService.fileuser(dto);
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
 		memberService.userUpdate(updateuserCommand);
 		// 유효값처리용
 		model.addAttribute("updateuserCommand", new UpdateUserCommand());
 		// 출력용
 		model.addAttribute("dto", dto);
-		
-		
+
 		try {
 			memberService.userUpdate(updateuserCommand);
 			System.out.println("update 성공");
@@ -262,7 +265,6 @@ public class MemberController {
 			return "redirect:myupdateform";
 		}
 
-		
 	}
 
 	@GetMapping(value = "/mypopup")
@@ -273,42 +275,74 @@ public class MemberController {
 
 		return "member/mypopup";
 	}
-	
+
 	@PostMapping(value = "/fileInsert")
-	public String myfileInsert(@Validated InsertBoardCommand insertBoardCommand, BindingResult result,MemberDto dto,
+	public String myfileInsert(@Validated InsertBoardCommand insertBoardCommand, BindingResult result, MemberDto dto,
 			MultipartRequest multipartRequest // multipart data를 처리할때 사용
 			, HttpServletRequest request, Model model) throws IllegalStateException, IOException {
-		memberService.insertfile(multipartRequest, dto,request );
+		memberService.insertfile(multipartRequest, dto, request);
 		return "member/mypopupclose";
-		
-	}
-	
-	@GetMapping(value = "/myaccount")
-	public String myaccount(Model model ) {
-		System.out.println("계좌등록 폼 이동");
 
-		MemberDto dto= new MemberDto();
-		dto.getMemberId();
-		dto.getId();
+	}
+
+	@GetMapping(value = "/myaccount")
+	public String myaccount(Model model,  HttpServletRequest request)
+			throws MalformedURLException {
+		System.out.println("계좌등록 폼 이동");
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		model.addAttribute("dto", dto);
+//		프로필 사진 가져오기
 		List<FileUserDto> list = memberService.fileuser(dto);
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
+//		fintech 정보 조회
+		MemberDto adto = memberService.getuserAccount(dto);
+		model.addAttribute("adto", adto);
+		System.out.println(adto);
+
+//		 필요한 정보 설정
+		String useraccesstoken = dto.getUseraccesstoken();
+		System.out.println(useraccesstoken);
+		String bank_tran_id = "M202201886U" + createNum();
+		System.out.println(bank_tran_id);
+		String fintech_use_num =adto.getAccountDto().getFintech_use_num();
+		System.out.println(fintech_use_num);
+		String tran_dtime = getDateTime();
 		
-//		List<AccountDto> mlist = memberService.getuserAccount(dto);
-//		model.addAttribute("addUserCommand", new AddUserCommand());
-//		
-//		model.addAttribute("mlist",mlist);
 		
-		
-//		System.out.println(mlist);
-		
+//		// OpenFeign을 사용하여 잔액 조회
+		AccountBalanceDto accountBalDto =openBankingFeign.requestAccountBalance("Bearer " + useraccesstoken,
+				bank_tran_id, fintech_use_num, tran_dtime + "");
+		System.out.println(accountBalDto.getBalance_amt());
+        String balanceAmount = accountBalDto.getBalance_amt();
+        int IntbalAmount =  Integer.parseInt(balanceAmount);
+        
+        // DecimalFormat을 사용하여 천 단위로 콤마를 넣습니다.
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedBalance = decimalFormat.format(IntbalAmount);
+        accountBalDto.setBalance_amt(formattedBalance);
+        
+        
+        model.addAttribute("accountBalDto", accountBalDto);
+        System.out.println(accountBalDto);
 		return "member/myaccount";
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	// 이용기관 부여번호 9자리를 생성하는 메서드
+	public String createNum() {
+		String createNum = "";
+		for (int i = 0; i < 9; i++) {
+			createNum += ((int) (Math.random() * 10)) + "";
+		}
+		System.out.println("이용기관부여번호9자리생성:" + createNum);
+		return createNum;
+	}
+
+	// 현재시간 구하는 메서드
+	public String getDateTime() {
+		LocalDateTime now = LocalDateTime.now(); // 현재시간 구하기
+		String formatNow = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+		return formatNow;
+	}
 }

@@ -116,8 +116,6 @@ public class BoardController {
                       , Model model) {
       if(result.hasErrors()) {
          System.out.println("최소하나 체크하기");
-         List<BoardDto> blist=boardService.getAllList();
-         model.addAttribute("blist", blist);
          return "board/boardlist";
       }
       boardService.mulDel(delBoardCommand.getSeq());

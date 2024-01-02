@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+ 
+</script>
+<style type="text/css">
+      h2 { font-weight: border; }
+      .hr1 { border: 0;
+      height: 2px;
+      background:  #d3d3d3;}
+          .grey { 
+           color: #727272;}
+           #strong { font-weight: 900;}
+      
+                  table {
+                  width: 100%;
+                  border-top: 1px solid #d3d3d3;
+                  border-collapse: collapse;
+                  }
+                  th { background-color: #d3d3d3 ; 
+                  border-top: 3px solid #727272;
+                  
+                  }
+                  th, td {
+                  border-bottom: 1px solid #d3d3d3;
+                  padding: 10px;
+                  }
+      
+        .btn {
+        width: 100px;
+        height: 30px;
+        font-weight: 900;
+        color: white;
+        text-align: center;
+        background: grey;
+        border: solid 2px white;
+        border-radius: 5px;
+        }
+      
+      #error{
+         color:red;
+         }
+
+      a:link { color: blue; text-decoration: none;}
+       a:visited { color: grey; text-decoration: none;}
+       a:hover { color: black; height:bold; text-decoration: underline;}
+       a {color:black; text-decoration-line : none;}
+         
+</style>
+</head>
+<body>
+<div layout:fragment="content">
+<div id="container">
+<h2>직원 관리</h2>
+<hr class ="hr1" noshade>
+<form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
+   <table class="table">
+      <tr>
+         <th><input type="checkbox" name="all" 
+                              onclick="allSel(this.checked)" /></th>
+         <th>순번</th>
+         <th>이름(아이디)</th>
+         <th>은행</th>
+         <th>계좌번호</th>
+      </tr>
+      <th:block th:if="${#lists.isEmpty(mlist)}">
+         <tr>
+            <td colspan="4" style="text-align: center;" >---작성된 글이 없습니다.---</td>
+         </tr>
+      </th:block>
+      <th:block th:unless="${#lists.isEmpty(mlist)}">
+         <tr th:each="dto:${mlist}">
+            <td><input type="checkbox" class="center" th:field="*{seq}"
+                                 th:value="${dto.account_seq}"/></td>
+            <td class="center" th:text="${dto.account_seq}"></td>
+            <td class="center" th:text="${dto.bank_name}"></td>
+            <td class="left"   th:text="${dto.bank_name}" ></td>
+             <td class="center" th:text="${dto.Account_num_masked}"></td>
+ 
+         </tr>
+      </th:block>
+         <tr>
+            <td colspan="4">
+<!--               <button type="button" class="btn" th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>-->
+               <th:block th:if="${session.mdto.role == '사장'}">
+               
+                     <button type="submit" class="btn">삭제</button>
+                     <span id="error" th:if="${#fields.hasErrors('seq')}"
+                     th:errors="*{seq}"></span>
+               </th:block>
+            </td>
+         </tr>
+   </table>
+</form>
+</div>
+</div>
+</body>
+</html>
+
+

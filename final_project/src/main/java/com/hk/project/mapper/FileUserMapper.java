@@ -11,7 +11,7 @@ public interface FileUserMapper {
 	//파일 정보 추가
 	public boolean insertFileuser(FileUserDto dto);
 	//파일 정보 조회
-	public FileBoardDto getFileInfo(int file_seq);
+	public FileUserDto getFileUserInfo(int file_seq);
 	
 }
 

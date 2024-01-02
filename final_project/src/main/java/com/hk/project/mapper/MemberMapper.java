@@ -28,6 +28,6 @@ public interface MemberMapper {
 	
 	public int getmemberid(String id);
 	
-	public List<AccountDto> getuserAccount(MemberDto dto);
+	public MemberDto getuserAccount(MemberDto dto);
 	
 }

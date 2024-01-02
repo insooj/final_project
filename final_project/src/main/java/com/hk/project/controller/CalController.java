@@ -113,10 +113,11 @@ public class CalController {
 //      String id=(String) session.getAttribute("id");
 //      String id="jth";//임시로 id 저장
       MemberDto dto = new MemberDto();
+      
       List<FileUserDto> list = memberService.fileuser(dto);
       model.addAttribute("list", list);
       // command 유효값 처리를 위해 기본 생성해서 보내줌
-      model.addAttribute("deleteCalCommand", new DeleteCalCommand());
+      model.addAttribute("deleteCalCommand", new DeleteCalCommand()); 
 
       // 일정목록을 조회할때마다 year, month, date를 세션에 저장
 //      HttpSession session=request.getSession();

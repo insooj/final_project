@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hk.project.apidto.ResUserAccountinfoDto;
 import com.hk.project.apidto.UserAccountDto;
-import com.hk.project.apidto.UserAccountinfoDto;
 import com.hk.project.apidto.UserMeDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;

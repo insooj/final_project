@@ -17,6 +17,35 @@ public class MemberDto {
 	private int memberId;
 	private String id;
 	private String role;
+	private String fintech_use_num;
+	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
+			String fintech_use_num, String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
+			List<FileUserDto> fileUserDto, AccountDto accountDto) {
+		super();
+		this.name = name;
+		this.password = password;
+		this.email = email;
+		this.address = address;
+		this.memberId = memberId;
+		this.id = id;
+		this.role = role;
+		this.fintech_use_num = fintech_use_num;
+		this.useraccesstoken = useraccesstoken;
+		this.userrefreshtoken = userrefreshtoken;
+		this.userseqno = userseqno;
+		this.phone = phone;
+		this.fileUserDto = fileUserDto;
+		this.accountDto = accountDto;
+	}
+
+	public String getFintech_use_num() {
+		return fintech_use_num;
+	}
+
+	public void setFintech_use_num(String fintech_use_num) {
+		this.fintech_use_num = fintech_use_num;
+	}
+
 	private String useraccesstoken;
 	private String userrefreshtoken;
 	private String userseqno;
@@ -41,11 +70,11 @@ public class MemberDto {
 	
 	//Join용 맴버필드
 		private List<FileUserDto> fileUserDto;
-		private List<AccountDto> accountDto;
+		private AccountDto accountDto;
 	
 	public MemberDto(String name, String password, String email, String address, int memberId, String id,
 				String role, String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
-				List<FileUserDto> fileUserDto, List<AccountDto> accountDto) {
+				List<FileUserDto> fileUserDto, AccountDto accountDto) {
 			super();
 			this.name = name;
 			this.password = password;
@@ -62,11 +91,11 @@ public class MemberDto {
 			this.accountDto = accountDto;
 		}
 
-	public List<AccountDto> getAccountDto() {
+	public AccountDto getAccountDto() {
 			return accountDto;
 		}
 
-		public void setAccountDto(List<AccountDto> accountDto) {
+		public void setAccountDto(AccountDto accountDto) {
 			this.accountDto = accountDto;
 		}
 
@@ -171,9 +200,9 @@ public class MemberDto {
 	@Override
 	public String toString() {
 		return "MemberDto [name=" + name + ", password=" + password + ", email=" + email + ", address=" + address
-				+ ", memberId=" + memberId + ", id=" + id + ", role=" + role + ", useraccesstoken=" + useraccesstoken
-				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + ", phone=" + phone
-				+ ", fileUserDto=" + fileUserDto + ", accountDto=" + accountDto + "]";
+				+ ", memberId=" + memberId + ", id=" + id + ", role=" + role + ", fintech_use_num=" + fintech_use_num
+				+ ", useraccesstoken=" + useraccesstoken + ", userrefreshtoken=" + userrefreshtoken + ", userseqno="
+				+ userseqno + ", phone=" + phone + ", fileUserDto=" + fileUserDto + ", accountDto=" + accountDto + "]";
 	}
 	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role,
 			String useraccesstoken, String userrefreshtoken, String userseqno) {

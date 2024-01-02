@@ -8,8 +8,8 @@
 		VALUES(NULL,#{id},#{origin_filename},#{stored_filename})
 	</insert>
 	
-	<select id="getFileInfo" parameterType="Integer" 
-			resultType="fileBoardDto">
+	<select id="getFileUserInfo" parameterType="Integer" 
+			resultType="fileUserDto">
 		SELECT FILE_SEQ, BOARD_SEQ,ORIGIN_NAME, STORED_NAME
 		FROM FILEINFO
 		WHERE FILE_SEQ=#{file_seq}

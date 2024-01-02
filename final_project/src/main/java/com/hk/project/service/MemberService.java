@@ -76,13 +76,10 @@ public class MemberService {
 		adto.setAccount_num_masked(account_num_masked);
 		adto.setBank_name(bank_name);
 		adto.setFintech_use_num(fintech_use_num);
-
 		return memberMapper.addAccount(adto);
-
 	}
 	
-	public List<AccountDto> getuserAccount(MemberDto dto) {
-		
+	public MemberDto getuserAccount(MemberDto dto) {
 		return memberMapper.getuserAccount(dto);
 	}
 
