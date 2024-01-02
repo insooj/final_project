@@ -14,6 +14,7 @@ import com.hk.project.command.UpdateBoardCommand;
 import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.FileBoardDto;
+import com.hk.project.dtos.MemberDto;
 import com.hk.project.mapper.AccountMapper;
 import com.hk.project.mapper.MemberMapper;
 
@@ -28,14 +29,14 @@ public class UserListService {
 //   private MemberMapper memberMapper;
    
    //유저목록 조회
-   public List<AccountDto> getUserList(){
-      
-      return accountMapper.getUserList();
+   public List<AccountDto> getUser(){
+	  
+      return accountMapper.getUser();
    }
 
    //글 추가, 파일업로드및 파일정보 추가
    @Transactional
-   public void insertBoard( MultipartRequest multipartRequest
+   public void getUser( MultipartRequest multipartRequest
                        , HttpServletRequest request) 
                        throws IllegalStateException, IOException {
       //command:UI -> dto:DB 데이터 옮겨담기
@@ -45,17 +46,15 @@ public class UserListService {
       accountDto.getFintech_use_num();
       accountDto.getBank_name();
       accountDto.getAccount_num_masked();
+      accountDto.getName();
+      accountDto.getRole();
+      accountDto.getId();
       
-      //새글을 추가할때 파라미터로 전달된 boardDto객체에 자동으로,
-      //증가된 board_seq값이 저장
-//      AccountMapper.insertBoard(boardDto);//새글 추가
+      
       
       
    }
-   //상세내용조회
-//   public BoardDto getBoard(int board_seq) {
-//      return boardMapper.getBoard(board_seq);
-//   }
+
    
 
 

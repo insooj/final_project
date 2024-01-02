@@ -49,12 +49,19 @@
                                     th:object="${insertCalCommand}">
           <input type="hidden" name ="id" th:value="${session.mdto.id}"/>
           <input type="hidden" name ="role" th:value="${session.mdto.role}"/>
+          <input type="hidden" name ="name" th:value="${session.mdto.name}"/>
                                
       <table class="table">
          <tr>
             <th>아이디</th>       
             
                <th th:text="${session.mdto.id}"></th>
+              
+         </tr> 
+         <tr>
+            <th>이름</th>       
+            
+               <th th:text="${session.mdto.name}"></th>
               
          </tr> 
          <tr>

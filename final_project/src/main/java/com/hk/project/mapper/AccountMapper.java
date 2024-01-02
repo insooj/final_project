@@ -11,7 +11,9 @@ import com.hk.project.dtos.BoardDto;
 public interface AccountMapper {
 
    //글목록
-   public List<AccountDto> getUserList();
+//   public List<AccountDto> getUserList();
+   //글목록
+   public List<AccountDto> getUser();
 
    //글 삭제
 //   public boolean mulDel(String[] seqs);
