@@ -30,4 +30,7 @@ public interface MemberMapper {
 	
 	public MemberDto getuserAccount(MemberDto dto);
 	
+	 //글목록
+	   public List<MemberDto> getuserAccount();
+	
 }

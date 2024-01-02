@@ -10,6 +10,7 @@ public class CalDto {
 
 	private int seq;
 	private String id;
+	private String name;
 	private String content;
 	private String mdate;
 	private String sdate;
@@ -55,6 +56,13 @@ public class CalDto {
 	public void setId(String id) {
 		this.id = id;
 	}
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getContent() {
 		return content;
@@ -93,22 +101,26 @@ public class CalDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CalDto(int seq, String id, String title, String content, String mdate, String sdate, String edate,
-			String role) {
+
+	public CalDto(int seq, String id, String name, String content, String mdate, String sdate, String edate,
+			String role, List<FileUserDto> fileUserDto) {
 		super();
 		this.seq = seq;
 		this.id = id;
+		this.name = name;
 		this.content = content;
 		this.mdate = mdate;
 		this.sdate = sdate;
 		this.edate = edate;
 		this.role = role;
+		this.fileUserDto = fileUserDto;
 	}
+
 
 	@Override
 	public String toString() {
-		return "CalDto [seq=" + seq + ", id=" + id + ", content=" + content + ", mdate=" + mdate + ", sdate=" + sdate
-				+ ", edate=" + edate + ", role=" + role + ", fileUserDto=" + fileUserDto + "]";
+		return "CalDto [seq=" + seq + ", id=" + id + ", name=" + name + ", content=" + content + ", mdate=" + mdate
+				+ ", sdate=" + sdate + ", edate=" + edate + ", role=" + role + ", fileUserDto=" + fileUserDto + "]";
 	}
 
 }

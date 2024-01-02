@@ -16,10 +16,13 @@ public class AccountDto {
    private String bank_name;
    private String account_num_masked;
    private int money;
+   private String name;
+   private String role;
+   private String id;
    
    
-   public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name, String account_num_masked,
-		int money) {
+public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name, String account_num_masked,
+		int money, String name, String role, String id) {
 	super();
 	this.account_seq = account_seq;
 	this.memberid = memberid;
@@ -27,6 +30,31 @@ public class AccountDto {
 	this.bank_name = bank_name;
 	this.account_num_masked = account_num_masked;
 	this.money = money;
+	this.name = name;
+	this.role = role;
+	this.id = id;
+}
+
+
+
+public String getId() {
+	return id;
+}
+public void setId(String id) {
+	this.id = id;
+}
+
+public String getRole() {
+	return role;
+}
+public void setRole(String role) {
+	this.role = role;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
 }
 public int getMoney() {
 	return money;
@@ -67,17 +95,10 @@ public int getAccount_seq() {
    @Override
 public String toString() {
 	return "AccountDto [account_seq=" + account_seq + ", memberid=" + memberid + ", fintech_use_num=" + fintech_use_num
-			+ ", bank_name=" + bank_name + ", account_num_masked=" + account_num_masked + ", money=" + money + "]";
+			+ ", bank_name=" + bank_name + ", account_num_masked=" + account_num_masked + ", money=" + money + ", name="
+			+ name + ", role=" + role + ", id=" + id + "]";
 }
-   public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name,
-         String account_num_masked) {
-      super();
-      this.account_seq = account_seq;
-      this.memberid = memberid;
-      this.fintech_use_num = fintech_use_num;
-      this.bank_name = bank_name;
-      this.account_num_masked = account_num_masked;
-   }
+
    public AccountDto() {
       super();
       // TODO Auto-generated constructor stub

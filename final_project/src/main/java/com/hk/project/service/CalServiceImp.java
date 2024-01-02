@@ -97,6 +97,7 @@ public class CalServiceImp implements ICalService{
       dto.setEdate(insertCalCommand.getEdate());
       dto.setMdate(mdate);
       dto.setRole(insertCalCommand.getRole());
+      dto.setName(insertCalCommand.getName());
       
       int count=calMapper.insertCalBoard(dto);
       

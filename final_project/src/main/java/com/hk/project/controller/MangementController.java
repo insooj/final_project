@@ -47,9 +47,11 @@ public class MangementController {
       MemberDto dto = new MemberDto();
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
-      List<AccountDto> mlist=userlistService.getUserList();
+		
+      List<AccountDto> mlist=userlistService.getUser();
       model.addAttribute("mlist", mlist);
       model.addAttribute("delBoardCommand", new DelBoardCommand());
+      
       return "board/UserManagement";// forward 기능, "redirect:board/boardList"
    }
    

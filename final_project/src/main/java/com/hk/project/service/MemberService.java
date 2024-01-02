@@ -83,7 +83,7 @@ public class MemberService {
 	public MemberDto getuserAccount(MemberDto dto) {
 		return memberMapper.getuserAccount(dto);
 	}
-
+	
 	
 
 	public String idChk(String id) {
@@ -162,5 +162,8 @@ public class MemberService {
 			}
 		}
 	}
+	
+	
+	 
 
 }

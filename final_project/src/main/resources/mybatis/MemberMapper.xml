@@ -73,7 +73,7 @@
 	</select>
 
 	<select id="getuserAccount" parameterType="String" resultMap="memberDtoMap">
-		SELECT m.id, m.NAME, f.fintech_use_num, f.bank_name, f.account_num_masked
+		SELECT m.id, m.NAME,m.role, f.fintech_use_num, f.bank_name, f.account_num_masked
 		FROM member m right OUTER JOIN fintech f
 		ON m.memberid = f.memberid 
 		WHERE id = #{id}

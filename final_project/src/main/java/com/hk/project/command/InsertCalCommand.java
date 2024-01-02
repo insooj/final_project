@@ -15,12 +15,10 @@ public class InsertCalCommand {
    
    private String id;
    
+   private String name;
+   
    private String role;
-   
-
-
-   
-
+  
    private String content;
    
    private String sdate;
@@ -39,32 +37,40 @@ public class InsertCalCommand {
    
    
 
-   public InsertCalCommand(int seq,String id,String role, String content, String sdate, String edate, int month, int year, int date,
-         int hour, int min) {
-      super();
-      this.seq = seq;
-      this.id = id;
-      this.content = content;
-      this.sdate = sdate;
-      this.edate = edate;
-      this.month = month;
-      this.year = year;
-      this.date = date;
-      this.hour = hour;
-      this.min = min;
-      this.role = role;
-   }
+   public InsertCalCommand(int seq, String id, String name, String role, String content, String sdate, String edate,
+			int month, int year, int date, int hour, int min) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.name = name;
+		this.role = role;
+		this.content = content;
+		this.sdate = sdate;
+		this.edate = edate;
+		this.month = month;
+		this.year = year;
+		this.date = date;
+		this.hour = hour;
+		this.min = min;
+	}
+
 
    
    @Override
-   public String toString() {
-      return "InsertCalCommand [seq=" + seq + ", id=" + id + ", role=" + role + ", content=" + content + ", sdate="
-            + sdate + ", edate=" + edate + ", month=" + month + ", year=" + year + ", date=" + date + ", hour="
-            + hour + ", min=" + min + "]";
-   }
+public String toString() {
+	return "InsertCalCommand [seq=" + seq + ", id=" + id + ", name=" + name + ", role=" + role + ", content=" + content
+			+ ", sdate=" + sdate + ", edate=" + edate + ", month=" + month + ", year=" + year + ", date=" + date
+			+ ", hour=" + hour + ", min=" + min + "]";
+}
    
    
-   
+   public String getName() {
+		return name;
+	}
+   public void setName(String name) {
+		this.name = name;
+	}
+ 
    public String getRole() {
       return role;
    }

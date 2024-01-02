@@ -37,7 +37,8 @@
             <col width="200px"/>
             <tr>
                <th><input type="checkbox" name="all" onclick="allSel(this.checked)"/></th>
-               <th>아이디(이름)</th>
+               <th>아이디</th>
+               <th>이름</th>
                <th>업무날짜</th> 
                <th>업무시간</th>
                <th>등급</th>
@@ -52,8 +53,11 @@
                   <td><input type="checkbox" name="seq" th:value="${dto.seq}"/></td>
 <!--                  <td th:text="${@util.toDates(dto.mdate)}"></td>-->
                   <td> 
-                     <a th:href="@{/schedule/calBoardDetail(seq=${dto.seq})}" 
-                      th:text="${dto.id}"></a>
+                     <span th:href="@{/schedule/calBoardDetail(seq=${dto.seq})}" 
+                      th:text="${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span>
+                  </td>
+                   <td> 
+                     <span th:text="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span>
                   </td>
 <!--                  <td th:text="${#dates.format(dto.mdate, 'yyyy-MM-dd')}"></td>-->
                   <td th:text="${@util.toDates(dto.mdate)}"
@@ -63,7 +67,7 @@
                      <span>~</span>
                      <span th:text="${dto.edate}"th:style="'font-size : 18px;'+'font-weight : bold;'+'color:'+${@util.scheduletime()}"></span>   
                   </td>
-                  <td th:text="${dto.role}"></td>
+                  <td th:text="${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
                </tr>            
             </th:block>
             <tr>

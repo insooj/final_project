@@ -4,11 +4,11 @@
 <mapper namespace="com.hk.project.mapper.CalMapper">
    <insert id="insertCalBoard" parameterType="CalDto">
       INSERT INTO schedule
-        VALUES (NULL,#{id},#{role},#{content},#{mdate},#{sdate},#{edate})
+        VALUES (NULL,#{id},#{name},#{role},#{content},#{mdate},#{sdate},#{edate})
    </insert>
    
    <select id="calBoardList" parameterType="Map" resultType="CalDto">
-       SELECT seq, id, content, mdate, sdate, edate,role
+       SELECT seq, id,name,content, mdate, sdate, edate,role
       FROM schedule
       WHERE SUBSTRING(mdate,1,8) = #{yyyyMMdd}
       or id=#{id}
@@ -17,7 +17,7 @@
    
    <select id="calBoardDetail" parameterType="int" 
                                resultType="CalDto">
-      SELECT seq,id,content,mdate,sdate,edate,role
+      SELECT seq,id,name,content,mdate,sdate,edate,role
       FROM schedule
       WHERE seq=#{seq}
    </select>
@@ -52,10 +52,10 @@
 <!--       WHERE rn BETWEEN 1 AND 5; -->
 <!--       </select> -->
    <select id="calViewList" parameterType="Map" resultType="CalDto">
-     SELECT rn,seq, id,content, mdate, sdate,edate
+     SELECT rn,seq, id,name,content, mdate, sdate,edate
    from   (SELECT ROW_NUMBER() over(PARTITION BY SUBSTR(mdate,1,8)
                                    ORDER BY mdate) rn
-             , seq, id,content, mdate, sdate,edate
+             , seq, id,name,content, mdate, sdate,edate
           FROM schedule
           WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
           ) cal
