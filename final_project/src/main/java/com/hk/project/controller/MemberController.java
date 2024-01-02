@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -300,7 +301,7 @@ public class MemberController {
 		MemberDto adto = memberService.getuserAccount(dto);
 		model.addAttribute("adto", adto);
 		System.out.println(adto);
-
+		AccountDto accountDto = new AccountDto();
 //		 필요한 정보 설정
 		String useraccesstoken = dto.getUseraccesstoken();
 		System.out.println(useraccesstoken);
@@ -315,17 +316,19 @@ public class MemberController {
 		AccountBalanceDto accountBalDto =openBankingFeign.requestAccountBalance("Bearer " + useraccesstoken,
 				bank_tran_id, fintech_use_num, tran_dtime + "");
 		System.out.println(accountBalDto.getBalance_amt());
-        String balanceAmount = accountBalDto.getBalance_amt();
-        int IntbalAmount =  Integer.parseInt(balanceAmount);
-        
+		
+        int money = accountDto.getMoney();
         // DecimalFormat을 사용하여 천 단위로 콤마를 넣습니다.
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        String formattedBalance = decimalFormat.format(IntbalAmount);
-        accountBalDto.setBalance_amt(formattedBalance);
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        
+        // 천 단위로 콤마를 추가한 문자열로 변환
+        
         
         
         model.addAttribute("accountBalDto", accountBalDto);
         System.out.println(accountBalDto);
+        
+        
 		return "member/myaccount";
 	}
 

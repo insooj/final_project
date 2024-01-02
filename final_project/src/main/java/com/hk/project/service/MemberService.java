@@ -69,6 +69,10 @@ public class MemberService {
 		return memberMapper.getmemberid(id);
 	}
 
+	public boolean Plus(AccountDto dto) {
+		return memberMapper.Plus(dto);
+	}
+	
 	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {
 		AccountDto adto = new AccountDto();
 		adto.setMemberid(getmemberid(id));

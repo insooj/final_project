@@ -30,4 +30,6 @@ public interface MemberMapper {
 	
 	public MemberDto getuserAccount(MemberDto dto);
 	
+	public boolean Plus(AccountDto dto);
+	
 }

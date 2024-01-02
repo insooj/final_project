@@ -29,6 +29,31 @@ public class AddUserCommand {
 	private String userrefreshtoken;
 	private String userseqno;
 
+	private int money;
+	
+	public AddUserCommand(@NotBlank(message = "아이디를 입력하세요") String id, @NotBlank(message = "이름을 입력하세요") String name,
+			@NotBlank(message = "비밀번호를 입력하세요") @Length(min = 8, max = 16, message = "8자리이상, 16자이하로 입력하세요") String password,
+			@NotBlank(message = "이메일 입력하세요") String email, @NotBlank(message = "주소를 입력하세요") String address,
+			@NotBlank(message = "전화번호를 입력하세요") String phone, String useraccesstoken, String userrefreshtoken,
+			String userseqno, int money) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+		this.useraccesstoken = useraccesstoken;
+		this.userrefreshtoken = userrefreshtoken;
+		this.userseqno = userseqno;
+		this.money = money;
+	}
+	public int getMoney() {
+		return money;
+	}
+	public void setMoney(int money) {
+		this.money = money;
+	}
 	public AddUserCommand(@NotBlank(message = "아이디를 입력하세요") String id, @NotBlank(message = "이름을 입력하세요") String name,
 			@NotBlank(message = "비밀번호를 입력하세요") @Length(min = 8, max = 16, message = "8자리이상, 16자이하로 입력하세요") String password,
 			@NotBlank(message = "이메일 입력하세요") String email, @NotBlank(message = "주소를 입력하세요") String address,
@@ -103,7 +128,7 @@ public class AddUserCommand {
 	public String toString() {
 		return "AddUserCommand [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email
 				+ ", address=" + address + ", phone=" + phone + ", useraccesstoken=" + useraccesstoken
-				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + "]";
+				+ ", userrefreshtoken=" + userrefreshtoken + ", userseqno=" + userseqno + ", money=" + money + "]";
 	}
 	
 	public AddUserCommand() {

@@ -46,6 +46,7 @@ import com.hk.project.feignMapper.OpenBankingFeign;
 import com.hk.project.service.FileService;
 import com.hk.project.service.FileUserService;
 import com.hk.project.service.MemberService;
+import com.hk.project.status.RoleStatus;
 
 import groovyjarjarantlr4.v4.runtime.ParserInterpreter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,11 +62,28 @@ public class SalaryController {
 	private MemberService memberService;
 	@Autowired
 	private HttpServletRequest request;
-	@Autowired
-	private FileService fileService;
-	@Autowired
-	private FileUserService fileUserService;
-
+	
+	@GetMapping(value = "/plus")
+	public String plus(@Validated AddUserCommand adduserCommand, BindingResult result, Model model) {
+		AccountDto accountDto = new AccountDto();
+		MemberDto memberDto = new MemberDto();
+		
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		memberDto = memberService.getUser(mdto);
+		model.addAttribute("memberDto",memberDto);
+//		model.addAttribute("adduserCommand", new AddUserCommand());
+		accountDto.setMemberid(memberDto.getMemberId());
+		
+		accountDto.setMoney(adduserCommand.getMoney());
+		
+		System.out.println("송금하기");
+		memberService.Plus(accountDto);
+		model.addAttribute("accountDto",accountDto);
+		System.out.println(accountDto);
+		return "redirect:/salary/salaryinfo	";
+	}
+	
 	@GetMapping(value = "/salaryinfo")
 	public String mypage(Model model) {
 		HttpSession session = (HttpSession) request.getSession();
@@ -74,6 +92,8 @@ public class SalaryController {
 		System.out.println("급여정보 이동");
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
+		
+		
 		
 //		fintech 정보 조회
 		String useraccesstoken = dto.getUseraccesstoken();
