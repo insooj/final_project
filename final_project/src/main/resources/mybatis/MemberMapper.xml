@@ -59,6 +59,7 @@
 		#{userrefreshtoken},#{userseqno}, #{phone} )
 	</insert>
 
+
 	<insert id="addAccount" parameterType="AccountDto">
 		INSERT INTO fintech
 		VALUES(NULL,
@@ -72,10 +73,21 @@
 		WHERE id = #{id}
 	</select>
 
-	<select id="getuserAccount" parameterType="String" resultMap="memberDtoMap">
-		SELECT m.id, m.NAME, f.fintech_use_num, f.bank_name,f.account_num_masked, f.money
-		FROM member m right OUTER JOIN fintech f
-		ON
+	<select id="getuserDetail" parameterType="String"
+		resultMap="memberDtoMap">
+		SELECT m.id, m.NAME, f.fintech_use_num, m.role, m.email, m.address, m.phone, 
+		f.bank_name,f.account_num_masked, f.money
+		FROM member m right OUTER JOIN fintech f ON 
+		m.memberid = f.memberid
+		WHERE name = #{name}
+	</select>
+	
+	<select id="getuserAccount" parameterType="String"
+		resultMap="memberDtoMap">
+		SELECT m.id, m.NAME, f.fintech_use_num,
+		f.bank_name,f.account_num_masked, f.money
+		FROM member m right OUTER
+		JOIN fintech f ON
 		m.memberid = f.memberid
 		WHERE id = #{id}
 	</select>
@@ -110,7 +122,8 @@
 
 	<update id="Plus" parameterType="AccountDto">
 		UPDATE fintech
-		SET money = money + #{money}
+		SET money = money
+		+ #{money}
 		WHERE memberid = #{memberid}
 	</update>
 </mapper>

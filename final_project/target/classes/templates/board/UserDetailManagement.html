@@ -68,10 +68,11 @@
 <body>
 <div layout:fragment="content">
 <div id="container">
-<h2>직원 상세정보</h2>
+<h2>직원 관리</h2>
 <hr class ="hr1" noshade>
-<form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
-   <table class="table">
+<form action="/board/mulDel" method="post" th:object="${addUserCommand}">
+      <input type="hidden" name="name" th:value="${dto.name}"/>
+      <table>
       <tr>
          <th><input type="checkbox" name="all" 
                               onclick="allSel(this.checked)" /></th>
@@ -82,32 +83,23 @@
          <th>은행</th>
          <th>계좌번호</th>
       </tr>
-      <th:block th:if="${#lists.isEmpty(mlist)}">
-         <tr>
-            <td colspan="4" style="text-align: center;" >---작성된 글이 없습니다.---</td>
-         </tr>
-      </th:block>
-      <th:block th:unless="${#lists.isEmpty(mlist)}">
-         <tr th:each="dto:${mlist}">
-            <td><input type="checkbox" class="center" th:field="*{seq}"
-                                 th:value="${dto.account_seq}"/></td>
-            <td class="center" th:text="${dto.account_seq}"></td>
-            <td><a th:href="@{/manage/UserDetailManagement(name=${dto.name})}" class="center" th:text="${dto.name}"  th:value="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></a></td>
+         <tr >
+            <td class="center" th:text="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
             <td class="center" th:text="${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
             <td class="center" th:text="${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-            <td class="left"   th:text="${dto.bank_name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-             <td class="center" th:text="${dto.Account_num_masked}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+            <td class="left"   th:text="${dto.accountDto.bank_name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+             <td class="center" th:text="${dto.accountDto.Account_num_masked}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+             <td class="center" th:text="${dto.address}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+             <td class="center" th:text="${dto.email}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+             <td class="center" th:text="${dto.phone}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+             <td class="center" th:text="${dto.accountDto.fintech_use_num}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
  
          </tr>
-      </th:block>
          <tr>
             <td colspan="4">
 <!--               <button type="button" class="btn" th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>-->
                <th:block th:if="${session.mdto.role == '사장'}">
                
-                     <button type="submit" class="btn">해고</button>
-                     <span id="error" th:if="${#fields.hasErrors('seq')}"
-                     th:errors="*{seq}"></span>
                </th:block>
             </td>
          </tr>

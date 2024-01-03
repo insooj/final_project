@@ -68,11 +68,12 @@ public class MemberService {
 
 		return memberMapper.getmemberid(id);
 	}
-
 	public boolean Plus(AccountDto dto) {
 		return memberMapper.Plus(dto);
 	}
 	
+	
+	 
 	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {
 		AccountDto adto = new AccountDto();
 		adto.setMemberid(getmemberid(id));
@@ -82,10 +83,6 @@ public class MemberService {
 		adto.setFintech_use_num(fintech_use_num);
 		adto.setMoney(money);
 		return memberMapper.addAccount(adto);
-	}
-	
-	public MemberDto getuserAccount(MemberDto dto) {
-		return memberMapper.getuserAccount(dto);
 	}
 	
 	
@@ -119,11 +116,20 @@ public class MemberService {
 		return path;
 	}
 
+	
 	public MemberDto getUser(MemberDto dto) {
 
 		return memberMapper.getUser(dto);
 	}
+	public MemberDto getuserAccount(MemberDto dto) {
 
+		return memberMapper.getuserAccount(dto);
+	}
+	
+	public MemberDto getuserDetail(String name) {
+		return memberMapper.getuserDetail(name);
+	}
+	
 	public boolean userUpdate(UpdateUserCommand updateUserCommand) {
 
 		MemberDto dto = new MemberDto();

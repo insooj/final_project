@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.hk.project.dtos.AccountDto;
+import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 
@@ -27,11 +28,15 @@ public interface MemberMapper {
    public boolean addAccount(AccountDto dto);
    
    public int getmemberid(String id);
-   
+  
    public MemberDto getuserAccount(MemberDto dto);
+   
+   public MemberDto getuserDetail(String name);
    
    public boolean Plus(AccountDto dto);
     //글목록
       public List<MemberDto> getuserAccount();
+
+	
    
 }

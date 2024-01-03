@@ -12,13 +12,13 @@ import jakarta.validation.constraints.NotBlank;
 public class MemberDto {	
 	private String name;
 	private String password;
-	private String email;
 	private String address;
+	private String email;
 	private int memberId;
 	private String id;
 	private String role;
 	private String fintech_use_num;
-	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
+	public MemberDto(String name, String password,  String address, String email,int memberId, String id, String role,
 			String fintech_use_num, String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
 			List<FileUserDto> fileUserDto, AccountDto accountDto) {
 		super();
@@ -52,7 +52,7 @@ public class MemberDto {
 	private String phone;
 	
 	
-	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
+	public MemberDto(String name, String password,  String address,String email, int memberId, String id, String role,
 			String useraccesstoken, String userrefreshtoken, String userseqno, String phone) {
 		super();
 		this.name = name;
@@ -72,7 +72,7 @@ public class MemberDto {
 		private List<FileUserDto> fileUserDto;
 		private AccountDto accountDto;
 	
-	public MemberDto(String name, String password, String email, String address, int memberId, String id,
+	public MemberDto(String name, String password,  String address,String email, int memberId, String id,
 				String role, String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
 				List<FileUserDto> fileUserDto, AccountDto accountDto) {
 			super();
@@ -99,7 +99,7 @@ public class MemberDto {
 			this.accountDto = accountDto;
 		}
 
-	public MemberDto(String name, String password, String email, String address, int memberId, String id, String role,
+	public MemberDto(String name, String password, String address,  String email,int memberId, String id, String role,
 			String useraccesstoken, String userrefreshtoken, String userseqno, String phone,
 			List<FileUserDto> fileUserDto) {
 		super();
@@ -197,14 +197,16 @@ public class MemberDto {
 	public void setUserseqno(String userseqno) {
 		this.userseqno = userseqno;
 	}
+	
 	@Override
 	public String toString() {
-		return "MemberDto [name=" + name + ", password=" + password + ", email=" + email + ", address=" + address
+		return "MemberDto [name=" + name + ", password=" + password + ", address=" + address + ", email=" + email
 				+ ", memberId=" + memberId + ", id=" + id + ", role=" + role + ", fintech_use_num=" + fintech_use_num
 				+ ", useraccesstoken=" + useraccesstoken + ", userrefreshtoken=" + userrefreshtoken + ", userseqno="
 				+ userseqno + ", phone=" + phone + ", fileUserDto=" + fileUserDto + ", accountDto=" + accountDto + "]";
 	}
-	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role,
+
+	public MemberDto(int memberId, String id, String name, String password, String address,  String email,String role,
 			String useraccesstoken, String userrefreshtoken, String userseqno) {
 		super();
 		this.memberId = memberId;

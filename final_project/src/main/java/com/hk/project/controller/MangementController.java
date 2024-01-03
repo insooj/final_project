@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.DelBoardCommand;
 import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.UpdateBoardCommand;
@@ -30,6 +31,7 @@ import com.hk.project.service.UserListService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "/manage")
@@ -55,21 +57,18 @@ public class MangementController {
       return "board/UserManagement";// forward 기능, "redirect:board/boardList"
    }
    
- 
-   
-   //상세보기
-//   @GetMapping(value = "/boardDetail")
-//   public String boardDetail(int board_seq, Model model) {
-//      BoardDto dto=boardService.getBoard(board_seq);
-//      
-//      //유효값처리용
-//      model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
-//      //출력용
-//      model.addAttribute("dto", dto);
-//      System.out.println(dto);
-//      return "board/boardDetail";
-//   }
-   
+   @GetMapping(value = "/UserDetailManagement")
+	public String userDetail(String name, AddUserCommand adduserCommand, Model model, HttpServletRequest request) {
+		MemberDto dto =  memberService.getuserDetail(name);
+		System.out.println(name);
+		// 유효값처리용
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		
+		
+		return "board/UserDetailManagement";
+	}
+
    
  
 //   @RequestMapping(value="mulDel",method = {RequestMethod.POST,RequestMethod.GET})
