@@ -15,6 +15,7 @@ public interface AccountMapper {
    //글목록
    public List<AccountDto> getUser();
 
+   public AccountDto getUserDetail(String id);
    //글 삭제
 //   public boolean mulDel(String[] seqs);
    

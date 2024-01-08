@@ -42,16 +42,17 @@
                <th>업무날짜</th> 
                <th>업무시간</th>
                <th>등급</th>
+                <th>근무시간</th>
             </tr>
             <th:block th:if="${#lists.isEmpty(flist)}">
-               <tr>
+               <tr> 	
                   <td colspan="4" style="text-align: center">작성된 내역이 없습니다.</td>
                </tr>            
             </th:block>
             <th:block th:unless="${#lists.isEmpty(flist)}">
                <tr th:each="dto:${flist}">
                   <td><input type="checkbox" name="seq" th:value="${dto.seq}"/></td>
-<!--                  <td th:text="${@util.toDates(dto.mdate)}"></td>-->
+<!--                  <td th:text="${@util.toDates(dto.mdate)}"></td> -->
                   <td> 
                      <span th:href="@{/schedule/calBoardDetail(seq=${dto.seq})}" 
                       th:text="${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span>
@@ -59,7 +60,7 @@
                    <td> 
                      <span th:text="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span>
                   </td>
-<!--                  <td th:text="${#dates.format(dto.mdate, 'yyyy-MM-dd')}"></td>-->
+<!--                  <td th:text="${#dates.format(dto.mdate, 'yyyy-MM-dd')}"></td> -->
                   <td th:text="${@util.toDates(dto.mdate)}"
                   th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
                   <td>
@@ -68,8 +69,12 @@
                      <span th:text="${dto.edate}"th:style="'font-size : 18px;'+'font-weight : bold;'+'color:'+${@util.scheduletime()}"></span>   
                   </td>
                   <td th:text="${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+                  <td> 
+                     <span th:text="${dto.work_hours}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span>
+                  </td>
                </tr>            
             </th:block>
+            
             <tr>
                <td colspan="5">
                   <button type="submit" title="일정삭제" class="btn btn-default" >

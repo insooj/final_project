@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.attribute.SetOfIntegerSyntax;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +69,7 @@ public class CalController {
       Map<String, Integer> map = calService.makeCalendar(request);
       model.addAttribute("calMap", map);
 
-//      String yyyyMM = year + Util.isTwo(month);// 202311 6자리변환
-//      List<CalDto> clist = calService.calViewList(yyyyMM);
-//      model.addAttribute("clist", clist);
+
 
 
 
@@ -113,7 +113,6 @@ public class CalController {
 //      String id=(String) session.getAttribute("id");
 //      String id="jth";//임시로 id 저장
       MemberDto dto = new MemberDto();
-      
       List<FileUserDto> list = memberService.fileuser(dto);
       model.addAttribute("list", list);
       // command 유효값 처리를 위해 기본 생성해서 보내줌
@@ -133,8 +132,10 @@ public class CalController {
       // 달력에서 전달받은 파라미터 year, month, date를 8자리로 만든다.
       String yyyyMMdd = map.get("year") + Util.isTwo(map.get("month")) + Util.isTwo(map.get("date"));
       List<CalDto> flist = calService.calBoardList(yyyyMMdd);
+      
       model.addAttribute("flist", flist);
-
+      
+      
       return "board/calBoardList";
    }
 

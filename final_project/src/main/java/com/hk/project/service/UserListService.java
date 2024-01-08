@@ -33,7 +33,11 @@ public class UserListService {
 	  
       return accountMapper.getUser();
    }
-
+   
+   
+   public AccountDto getUserDetail(String id) {
+	   return accountMapper.getUserDetail(id);
+   }
    //글 추가, 파일업로드및 파일정보 추가
    @Transactional
    public void getUser( MultipartRequest multipartRequest

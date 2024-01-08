@@ -35,9 +35,42 @@ public class InsertCalCommand {
    
    private int min;
    
+   private String work_hours;
    
 
    public InsertCalCommand(int seq, String id, String name, String role, String content, String sdate, String edate,
+		int month, int year, int date, int hour, int min, String work_hours) {
+	super();
+	this.seq = seq;
+	this.id = id;
+	this.name = name;
+	this.role = role;
+	this.content = content;
+	this.sdate = sdate;
+	this.edate = edate;
+	this.month = month;
+	this.year = year;
+	this.date = date;
+	this.hour = hour;
+	this.min = min;
+	this.work_hours = work_hours;
+}
+
+
+
+public String getWork_hours() {
+	return work_hours;
+}
+
+
+
+public void setWork_hours(String work_hours) {
+	this.work_hours = work_hours;
+}
+
+
+
+public InsertCalCommand(int seq, String id, String name, String role, String content, String sdate, String edate,
 			int month, int year, int date, int hour, int min) {
 		super();
 		this.seq = seq;
@@ -60,7 +93,7 @@ public class InsertCalCommand {
 public String toString() {
 	return "InsertCalCommand [seq=" + seq + ", id=" + id + ", name=" + name + ", role=" + role + ", content=" + content
 			+ ", sdate=" + sdate + ", edate=" + edate + ", month=" + month + ", year=" + year + ", date=" + date
-			+ ", hour=" + hour + ", min=" + min + "]";
+			+ ", hour=" + hour + ", min=" + min + ", work_hours=" + work_hours + "]";
 }
    
    
