@@ -320,7 +320,7 @@ public class MemberController {
         int money = accountDto.getMoney();
         // DecimalFormat을 사용하여 천 단위로 콤마를 넣습니다.
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        
+//        
         // 천 단위로 콤마를 추가한 문자열로 변환
         
         

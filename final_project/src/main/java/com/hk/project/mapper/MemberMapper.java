@@ -2,6 +2,7 @@ package com.hk.project.mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -34,9 +35,10 @@ public interface MemberMapper {
    public MemberDto getuserDetail(String name);
    
    public boolean Plus(AccountDto dto);
+   public boolean Pay(MemberDto dto);
     //글목록
       public List<MemberDto> getuserAccount();
-
+   public String totalworktime(Map<String, String>map);
 	
    
 }

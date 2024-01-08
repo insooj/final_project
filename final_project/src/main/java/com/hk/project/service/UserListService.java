@@ -33,7 +33,7 @@ public class UserListService {
 	  
       return accountMapper.getUser();
    }
-
+   
    
    public AccountDto getUserDetail(String id) {
 	   return accountMapper.getUserDetail(id);

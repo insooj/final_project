@@ -9,9 +9,13 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.print.attribute.SetOfIntegerSyntax;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,13 +44,16 @@ import com.hk.project.command.UpdatePasswordCommand;
 import com.hk.project.command.UpdateUserCommand;
 import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.BoardDto;
+import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.feignMapper.OpenBankingFeign;
 import com.hk.project.service.FileService;
 import com.hk.project.service.FileUserService;
+import com.hk.project.service.ICalService;
 import com.hk.project.service.MemberService;
 import com.hk.project.status.RoleStatus;
+import com.hk.project.utils.Util;
 
 import groovyjarjarantlr4.v4.runtime.ParserInterpreter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,30 +67,12 @@ public class SalaryController {
 	private OpenBankingFeign openBankingFeign;
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private ICalService calService;
 	@Autowired
 	private HttpServletRequest request;
-	
-	@GetMapping(value = "/plus")
-	public String plus(@Validated AddUserCommand adduserCommand, BindingResult result, Model model) {
-		AccountDto accountDto = new AccountDto();
-		MemberDto memberDto = new MemberDto();
-		
-		HttpSession session = (HttpSession) request.getSession();
-		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
-		memberDto = memberService.getUser(mdto);
-		model.addAttribute("memberDto",memberDto);
-//		model.addAttribute("adduserCommand", new AddUserCommand());
-		accountDto.setMemberid(memberDto.getMemberId());
-		
-		accountDto.setMoney(adduserCommand.getMoney());
-		
-		System.out.println("송금하기");
-		memberService.Plus(accountDto);
-		model.addAttribute("accountDto",accountDto);
-		System.out.println(accountDto);
-		return "redirect:/salary/salaryinfo	";
-	}
-	
+
 	@GetMapping(value = "/salaryinfo")
 	public String mypage(Model model) {
 		HttpSession session = (HttpSession) request.getSession();
@@ -91,37 +80,69 @@ public class SalaryController {
 		MemberDto dto = memberService.getUser(mdto);
 		System.out.println("급여정보 이동");
 		List<FileUserDto> list = memberService.fileuser(dto);
+
+		// 년월
 		model.addAttribute("list", list);
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+
+		if (year == null || month == null) {
+			Calendar cal = Calendar.getInstance();
+			year = cal.get(Calendar.YEAR) + "";
+			month = (cal.get(Calendar.MONTH) + 1) + "";
+		}
+		// 달력만들기위한 값 구하기
+		Map<String, Integer> map = calService.makeCalendar(request);
+		model.addAttribute("calMap", map);
+
+		System.out.println(map);
+
+		String yyyy = year + Util.isTwo(month);// 202311 6자리변환
+		String id = dto.getId();
+		System.out.println(yyyy);
+//	      String MM =  Util.isTwo(month);
+		Map<String, String> cMap = new HashMap<>();
+		cMap.put("yyyyMM", yyyy);
+		cMap.put("id", id);
+
+		List<CalDto> clist = calService.totalworktime(cMap);
+
+		model.addAttribute("clist", clist);
 		
-		
-		
+		Map<String, String> pMap = new HashMap<>();
+
+		pMap.put("yyyyMM", yyyy);
+		pMap.put("id", id);
+		List<CalDto> plist = calService.getmonth(pMap);
+
+		model.addAttribute("plist", plist);
+		System.out.println(plist);
+
 //		fintech 정보 조회
 		String useraccesstoken = dto.getUseraccesstoken();
-			System.out.println(useraccesstoken);
+		System.out.println(useraccesstoken);
 		MemberDto adto = memberService.getuserAccount(dto);
 		String user_seq_no = dto.getUserseqno();
-			System.out.println(user_seq_no);
-		String sort_order ="D";
-			String bank_tran_id = "M202201886U" + createNum();
-			System.out.println(bank_tran_id);
-		String fintech_use_num =adto.getAccountDto().getFintech_use_num();
-			System.out.println(fintech_use_num);
-		String inquiry_type ="A";
+		System.out.println(user_seq_no);
+		String sort_order = "D";
+		String bank_tran_id = "M202201886U" + createNum();
+		System.out.println(bank_tran_id);
+		String fintech_use_num = adto.getAccountDto().getFintech_use_num();
+		System.out.println(fintech_use_num);
+		String inquiry_type = "A";
 		String inquiry_base = "D";
 		String from_date = "20190101";
 		String to_date = "20190101";
 		String tran_dtime = getDateTime();
-		
 
-		
-		AccountTransactionListDto accountTransListDto =openBankingFeign.requestAccountTransactionList("Bearer " +useraccesstoken, bank_tran_id,
-				fintech_use_num, inquiry_type, inquiry_base,from_date,to_date,sort_order,tran_dtime+"");
-		
+		AccountTransactionListDto accountTransListDto = openBankingFeign.requestAccountTransactionList(
+				"Bearer " + useraccesstoken, bank_tran_id, fintech_use_num, inquiry_type, inquiry_base, from_date,
+				to_date, sort_order, tran_dtime + "");
+
 		System.out.println(accountTransListDto);
-		
+
 		return "salary/salaryinfo";
 	}
-
 
 	// 이용기관 부여번호 9자리를 생성하는 메서드
 	public String createNum() {

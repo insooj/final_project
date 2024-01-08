@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hk.project.command.InsertCalCommand;
 import com.hk.project.command.UpdateCalCommand;
 import com.hk.project.dtos.CalDto;
+import com.hk.project.dtos.MemberDto;
 import com.hk.project.mapper.CalMapper;
 import com.hk.project.utils.Util;
 
@@ -113,7 +114,11 @@ public class CalServiceImp implements ICalService{
    public List<CalDto> calBoardList(String yyyyMMdd) {
       return calMapper.calBoardList(yyyyMMdd);
    }
-
+   @Override
+   public List<CalDto> worktime(String yyyyMMdd) {
+      return calMapper.worktime(yyyyMMdd);
+   }
+   
    @Override
    public CalDto calBoardDetail(int seq) {
       return calMapper.calBoardDetail(seq);
@@ -148,6 +153,14 @@ public class CalServiceImp implements ICalService{
       return calMapper.calViewList(yyyyMM);
    }
    
+   @Override
+   public List<CalDto> getmonth(Map<String, String>map) {
+      return calMapper.getmonth(map);
+   }
+   @Override
+   public List<CalDto> totalworktime(Map<String, String>map) {
+      return calMapper.totalworktime(map);
+   }
    @Override
    public int calBoardCount(String yyyyMMdd) {
       return calMapper.calBoardCount(yyyyMMdd);

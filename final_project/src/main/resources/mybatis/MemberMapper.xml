@@ -6,7 +6,7 @@
 
 
 	<resultMap type="memberDto" id="memberDtoMap">
-		<id property="memberid" column="MEMBERID" />
+		<result property="memberId" column="MEMBERID" />
 		<result property="id" column="ID" />
 		<result property="password" column="PASSWORD" />
 		<result property="name" column="NAME" />
@@ -17,6 +17,7 @@
 		<result property="userrefreshtoken" column="USERREFRESHTOKEN" />
 		<result property="userseqno" column="USERSEQNO" />
 		<result property="phone" column="PHONE" />
+		<result property="pay" column="PAY" />
 		<association property="accountDto"
 			resultMap="AccountDtoMap"></association>
 		<collection property="fileUserDto"
@@ -73,15 +74,20 @@
 		WHERE id = #{id}
 	</select>
 
+	
+
+
 	<select id="getuserDetail" parameterType="String"
 		resultMap="memberDtoMap">
-		SELECT m.id, m.NAME, f.fintech_use_num, m.role, m.email, m.address, m.phone, 
+		SELECT m.id, m.NAME, f.fintech_use_num, m.role, m.email,
+		m.address, m.phone, m.memberid, m.pay,
 		f.bank_name,f.account_num_masked, f.money
-		FROM member m right OUTER JOIN fintech f ON 
+		FROM member m right OUTER
+		JOIN fintech f ON
 		m.memberid = f.memberid
 		WHERE name = #{name}
 	</select>
-	
+
 	<select id="getuserAccount" parameterType="String"
 		resultMap="memberDtoMap">
 		SELECT m.id, m.NAME, f.fintech_use_num,
@@ -107,7 +113,7 @@
 	<select id="getUser" parameterType="String"
 		resultType="memberDto">
 		SELECT MEMBERID, ID, PASSWORD, NAME, EMAIL, ADDRESS,
-		ROLE,USERACCESSTOKEN,USERREFRESHTOKEN,USERSEQNO,PHONE
+		ROLE,USERACCESSTOKEN,USERREFRESHTOKEN,USERSEQNO,PHONE,PAY
 		FROM MEMBER
 		WHERE
 		ID = #{id}
@@ -125,6 +131,12 @@
 		SET money = money
 		+ #{money}
 		WHERE memberid = #{memberid}
+	</update>
+
+	<update id="Pay" parameterType="memberDto">
+		UPDATE MEMBER
+		SET PAY = #{pay}
+		WHERE name = #{name}
 	</update>
 </mapper>
 

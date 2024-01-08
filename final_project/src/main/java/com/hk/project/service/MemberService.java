@@ -71,7 +71,9 @@ public class MemberService {
 	public boolean Plus(AccountDto dto) {
 		return memberMapper.Plus(dto);
 	}
-	
+	public boolean Pay(MemberDto dto) {
+		return memberMapper.Pay(dto);
+	}
 	
 	 
 	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {

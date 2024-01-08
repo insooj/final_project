@@ -74,8 +74,7 @@
    <table class="table">
       <tr>
          <th><input type="checkbox" name="all" 
-                              onclick="allSel(this.checked)" /></th>
-         <th>순번</th>
+                              	onclick="allSel(this.checked)" /></th>
          <th>이름</th>
          <th>아이디</th>
          <th>등급</th>
@@ -91,7 +90,6 @@
          <tr th:each="dto:${mlist}">
             <td><input type="checkbox" class="center" th:field="*{seq}"
                                  th:value="${dto.account_seq}"/></td>
-            <td class="center" th:text="${dto.account_seq}"></td>
             <td><a th:href="@{/manage/UserDetailManagement(name=${dto.name})}" class="center" th:text="${dto.name}"  th:value="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></a></td>
             <td class="center" th:text="${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
             <td class="center" th:text="${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
