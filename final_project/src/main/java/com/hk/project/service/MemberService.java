@@ -33,141 +33,147 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class MemberService {
 
-	@Autowired
-	private MemberMapper memberMapper;
-	@Autowired
-	private FileUserMapper fileUserMapper;
+   @Autowired
+   private MemberMapper memberMapper;
+   @Autowired
+   private FileUserMapper fileUserMapper;
 
-	@Autowired
-	private FileUserService fileUserService;
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
+   @Autowired
+   private FileUserService fileUserService;
+//   @Autowired
+//   private PasswordEncoder passwordEncoder;
 
-	public boolean addUser(AddUserCommand dto) {
+   public boolean addUser(AddUserCommand dto) {
 
-		MemberDto mdto = new MemberDto();
-		mdto.setId(dto.getId());
-		mdto.setName(dto.getName());
+      MemberDto mdto = new MemberDto();
+      mdto.setId(dto.getId());
+      mdto.setName(dto.getName());
 
-		// password암호화하여 저장하자
-//		mdto.setPassword(passwordEncoder.encode(addUserCommand.getPassword()));
+      // password암호화하여 저장하자
+//      mdto.setPassword(passwordEncoder.encode(addUserCommand.getPassword()));
 
-		mdto.setPassword(dto.getPassword());
-		mdto.setEmail(dto.getEmail());
-		mdto.setAddress(dto.getAddress());
-		mdto.setUseraccesstoken(dto.getUseraccesstoken());
-		mdto.setUserrefreshtoken(dto.getUserrefreshtoken());
-		mdto.setUserseqno(dto.getUserseqno());
-		mdto.setPhone(dto.getPhone());
+      mdto.setPassword(dto.getPassword());
+      mdto.setEmail(dto.getEmail());
+      mdto.setAddress(dto.getAddress());
+      mdto.setUseraccesstoken(dto.getUseraccesstoken());
+      mdto.setUserrefreshtoken(dto.getUserrefreshtoken());
+      mdto.setUserseqno(dto.getUserseqno());
+      mdto.setPhone(dto.getPhone());
 
-		mdto.setRole(RoleStatus.직원 + "");// 등급추가
-		return memberMapper.addUser(mdto);
-	}
+      mdto.setRole(RoleStatus.직원 + "");// 등급추가
+      return memberMapper.addUser(mdto);
+   }
 
-	public int getmemberid(String id) {
+   public int getmemberid(String id) {
 
-		return memberMapper.getmemberid(id);
-	}
+      return memberMapper.getmemberid(id);
+   }
+   public boolean Plus(AccountDto dto) {
+      return memberMapper.Plus(dto);
+   }
+   
+   
+    
+   public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {
+      AccountDto adto = new AccountDto();
+      adto.setMemberid(getmemberid(id));
+      System.out.println(getmemberid(id));
+      adto.setAccount_num_masked(account_num_masked);
+      adto.setBank_name(bank_name);
+      adto.setFintech_use_num(fintech_use_num);
+      adto.setMoney(money);
+      return memberMapper.addAccount(adto);
+   }
+   
+   
 
-	public boolean Plus(AccountDto dto) {
-		return memberMapper.Plus(dto);
-	}
-	
-	public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {
-		AccountDto adto = new AccountDto();
-		adto.setMemberid(getmemberid(id));
-		System.out.println(getmemberid(id));
-		adto.setAccount_num_masked(account_num_masked);
-		adto.setBank_name(bank_name);
-		adto.setFintech_use_num(fintech_use_num);
-		adto.setMoney(money);
-		return memberMapper.addAccount(adto);
-	}
-	
-	public MemberDto getuserAccount(MemberDto dto) {
-		return memberMapper.getuserAccount(dto);
-	}
-	
-	
+   public String idChk(String id) {
+      return memberMapper.idChk(id);
+   }
 
-	public String idChk(String id) {
-		return memberMapper.idChk(id);
-	}
+   public String login(LoginCommand loginCommand, HttpServletRequest request, Model model) {
+      MemberDto dto = memberMapper.loginUser(loginCommand.getId());
+      String path = "home";
+      if (dto != null) {
+         // 로그인 폼에서 입력받은 패스워드값과 DB에 암호화된 패스워드 비교
+//         if (passwordEncoder.matches(loginCommand.getPassword(), dto.getPassword())) {
+         if (loginCommand.getPassword().equals(dto.getPassword())) {
+            System.out.println("패스워드 같음: 회원이 맞음");
+            // session객체에 로그인 정보 저장
+            request.getSession().setAttribute("mdto", dto);
+            return path;
+         } else {
+            System.out.println("패스워드 틀림");
+            model.addAttribute("msg", "패스워드를 확인하세요");
+            path = "member/login";
+         }
+      } else {
+         System.out.println("회원이 아닙니다. ");
+         model.addAttribute("msg", "아이디를 확인하세요");
+         path = "member/login";
+      }
 
-	public String login(LoginCommand loginCommand, HttpServletRequest request, Model model) {
-		MemberDto dto = memberMapper.loginUser(loginCommand.getId());
-		String path = "home";
-		if (dto != null) {
-			// 로그인 폼에서 입력받은 패스워드값과 DB에 암호화된 패스워드 비교
-//			if (passwordEncoder.matches(loginCommand.getPassword(), dto.getPassword())) {
-			if (loginCommand.getPassword().equals(dto.getPassword())) {
-				System.out.println("패스워드 같음: 회원이 맞음");
-				// session객체에 로그인 정보 저장
-				request.getSession().setAttribute("mdto", dto);
-				return path;
-			} else {
-				System.out.println("패스워드 틀림");
-				model.addAttribute("msg", "패스워드를 확인하세요");
-				path = "member/login";
-			}
-		} else {
-			System.out.println("회원이 아닙니다. ");
-			model.addAttribute("msg", "아이디를 확인하세요");
-			path = "member/login";
-		}
+      return path;
+   }
 
-		return path;
-	}
+   
+   public MemberDto getUser(MemberDto dto) {
 
-	public MemberDto getUser(MemberDto dto) {
+      return memberMapper.getUser(dto);
+   }
+   public MemberDto getuserAccount(MemberDto dto) {
 
-		return memberMapper.getUser(dto);
-	}
+      return memberMapper.getuserAccount(dto);
+   }
+   
+   public MemberDto getuserDetail(String name) {
+      return memberMapper.getuserDetail(name);
+   }
+   
+   public boolean userUpdate(UpdateUserCommand updateUserCommand) {
 
-	public boolean userUpdate(UpdateUserCommand updateUserCommand) {
+      MemberDto dto = new MemberDto();
+      dto.setId(updateUserCommand.getId());
+      dto.setPassword(updateUserCommand.getPassword());
+      dto.setAddress(updateUserCommand.getAddress());
+      dto.setEmail(updateUserCommand.getEmail());
+//      dto.setPhone(updateUserCommand.getPhone());
+      return memberMapper.userUpdate(dto);
 
-		MemberDto dto = new MemberDto();
-		dto.setId(updateUserCommand.getId());
-		dto.setPassword(updateUserCommand.getPassword());
-		dto.setAddress(updateUserCommand.getAddress());
-		dto.setEmail(updateUserCommand.getEmail());
-//		dto.setPhone(updateUserCommand.getPhone());
-		return memberMapper.userUpdate(dto);
+   }
 
-	}
+   public List<FileUserDto> fileuser(MemberDto dto) {
 
-	public List<FileUserDto> fileuser(MemberDto dto) {
+      return memberMapper.fileUser(dto);
+   }
 
-		return memberMapper.fileUser(dto);
-	}
+   @Transactional
+   public void insertfile(MultipartRequest multipartRequest, MemberDto dto, HttpServletRequest request)
+         throws IllegalStateException, IOException {
+      System.out.println("파일첨부여부:" + multipartRequest.getFiles("filename").get(0).isEmpty());
+      // 첨부된 파일들이 있는 경우
+      if (!multipartRequest.getFiles("filename").get(0).isEmpty()) {
+         // 파일 저장경로 설정: 절대경로, 상대경로
+         String filepath = request.getSession().getServletContext().getRealPath("upload");
+         System.out.println("파일저장경로:" + filepath);
+         // 파일업로드 작업은 FileService쪽에서 업로드하고 업로드된 파일정보 반환
+         List<FileUserDto> uploadFileList = fileUserService.uploadFiles(filepath, multipartRequest, dto);
+         // 파일정보를 DB에 추가
+         // 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용ist<FileBoardDto> uploadFileList =
+         // fileService.uploadFiles(filepath, multipartRequest);
+         // 파일정보를 DB에 추가
+         // 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용
+         // Testboard: board_seq PK board_seq FK
+         for (FileUserDto fDto : uploadFileList) {
+            fileUserMapper.insertFileuser(fDto);
 
-	@Transactional
-	public void insertfile(MultipartRequest multipartRequest, MemberDto dto, HttpServletRequest request)
-			throws IllegalStateException, IOException {
-		System.out.println("파일첨부여부:" + multipartRequest.getFiles("filename").get(0).isEmpty());
-		// 첨부된 파일들이 있는 경우
-		if (!multipartRequest.getFiles("filename").get(0).isEmpty()) {
-			// 파일 저장경로 설정: 절대경로, 상대경로
-			String filepath = request.getSession().getServletContext().getRealPath("upload");
-			System.out.println("파일저장경로:" + filepath);
-			// 파일업로드 작업은 FileService쪽에서 업로드하고 업로드된 파일정보 반환
-			List<FileUserDto> uploadFileList = fileUserService.uploadFiles(filepath, multipartRequest, dto);
-			// 파일정보를 DB에 추가
-			// 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용ist<FileBoardDto> uploadFileList =
-			// fileService.uploadFiles(filepath, multipartRequest);
-			// 파일정보를 DB에 추가
-			// 글추가할때 board_seq 증가된 값---> file정보를 추가할때 사용
-			// Testboard: board_seq PK board_seq FK
-			for (FileUserDto fDto : uploadFileList) {
-				fileUserMapper.insertFileuser(fDto);
-
-//				fileMapper.insertFileBoard(new FileUserDto(0,dto.getId() // 증가된 board_seq값을 넣는다
-//						fDto.getOrigin_filename(), fDto.getStored_filename()));
-			}
-		}
-	}
-	
-	
-	 
+//            fileMapper.insertFileBoard(new FileUserDto(0,dto.getId() // 증가된 board_seq값을 넣는다
+//                  fDto.getOrigin_filename(), fDto.getStored_filename()));
+         }
+      }
+   }
+   
+   
+    
 
 }

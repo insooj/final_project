@@ -48,7 +48,7 @@ public class BoardController {
    @GetMapping(value = "/boardInsert")
    public String boardInsertForm(Model model) {
       model.addAttribute("insertBoardCommand", new InsertBoardCommand());
-      return "board/boardInsertForm";
+      return "board/boardInsertForm";	
    }
    
    @PostMapping(value = "/boardInsert")

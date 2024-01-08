@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.project.mapper.PayRequestMapper">
+	
+	<resultMap type="paymentDto" id="paymentDtoMap">
+		<id property="board_seq"   column="BOARD_SEQ" />
+		<result property="id"      column="ID" />
+		<result property="name"   column="NAME" />
+		<result property="role" column="ROLE" />
+		<result property="regdate" column="REGDATE" />
+		<result property="money" column="MONEY"/>
+<!-- 		<result property="delflag" column="DELFLAG"/> -->
+	</resultMap>
+	
+	
+	<select id="getAllList" resultType="paymentDto">
+		SELECT BOARD_SEQ, ID, NAME, ROLE, REGDATE,MONEY , DELFLAG
+		FROM FIRSTPAYBOARD
+<!-- 		WHERE DELFLAG = 'N' -->
+		ORDER BY REGDATE DESC
+	</select>
+	
+	<select id="getBoard" parameterType="Integer" resultMap="paymentDtoMap">
+		SELECT BOARD_SEQ, ID,  NAME, ROLE, REGDATE
+ 		MONEY , DELFLAG
+		FROM FIRSTPAYBOARD
+		WHERE BOARD_SEQ = #{board_seq}
+	</select>
+	
+<!-- 	useGeneratedKeys="true" keyProperty="board_seq"
+        : 증가된 board_seq값을 BoardDto에 전달 : insertBoard(boardDto) -->
+<!-- 	<insert id="insertPayment" parameterType="paymentDto" -->
+<!-- 		useGeneratedKeys="true" keyProperty="board_seq"> -->
+<!-- 		INSERT INTO FIRSTPAYBOARD -->
+<!-- 		VALUES(NULL,#{id},#{name},#{role},sysdate(),#{money},'N') -->
+<!-- 	</insert> -->
+	
+	<insert id="insertPayment" parameterType="paymentDto" useGeneratedKeys="true" keyProperty="board_seq">
+    INSERT INTO FIRSTPAYBOARD (id, name, role, regdate, money, delflag)
+    VALUES (#{id}, #{name}, #{role}, NOW(), #{money}, 'N')
+</insert>
+	
+	<update id="updateBoard" parameterType="paymentDto">
+		UPDATE FIRSTPAYBOARD
+		SET TITLE=#{title}, CONTENT=#{content}
+		WHERE BOARD_SEQ=#{board_seq}
+	</update>
+	
+	<update id="complete" parameterType="String">
+		UPDATE FIRSTPAYBOARD
+		SET DELFLAG = 'Y'
+		WHERE BOARD_SEQ = #{board_seq}
+	</update>
+	
+	<update id="refuse" parameterType="String">
+		UPDATE FIRSTPAYBOARD
+		SET DELFLAG = 'R'
+		WHERE BOARD_SEQ = #{board_seq}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -67,6 +67,36 @@
       WHERE id=#{id} or SUBSTR(mdate,1,8)=#{yyyyMMdd}
    </select>
    
+   
+   
+   
+   
+   <select id="getWorkHours" resultType="CalDto">
+    <![CDATA[
+        SELECT 
+            CONCAT(
+                HOUR(SEC_TO_TIME(
+                    TIMESTAMPDIFF(SECOND,
+                        IF(STR_TO_DATE(edate, '%H:%i') < STR_TO_DATE(sdate, '%H:%i'), 
+                           ADDTIME(STR_TO_DATE(edate, '%H:%i'), '24:00'), 
+                           STR_TO_DATE(edate, '%H:%i')), 
+                        STR_TO_DATE(sdate, '%H:%i')
+                    )
+                )),
+                ':',
+                MINUTE(SEC_TO_TIME(
+                    TIMESTAMPDIFF(SECOND,
+                        IF((STR_TO_DATE(edate, '%H:%i')) < (STR_TO_DATE(sdate, '%H:%i')), 
+                           ADDTIME(STR_TO_DATE(edate, '%H:%i'), '24:00'), 
+                           STR_TO_DATE(edate, '%H:%i')), 
+                        STR_TO_DATE(sdate, '%H:%i')
+                    )
+                ))
+            ) AS work_hours
+        FROM schedule;
+    ]]>
+</select>
+
 </mapper>
 
 

@@ -2,6 +2,7 @@ package com.hk.project.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Member;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.DelBoardCommand;
 import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.UpdateBoardCommand;
@@ -57,20 +60,30 @@ public class MangementController {
    
  
    
-   //상세보기
-//   @GetMapping(value = "/boardDetail")
-//   public String boardDetail(int board_seq, Model model) {
-//      BoardDto dto=boardService.getBoard(board_seq);
-//      
-//      //유효값처리용
-//      model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
-//      //출력용
-//      model.addAttribute("dto", dto);
-//      System.out.println(dto);
-//      return "board/boardDetail";
+//   상세보기
+//   @GetMapping("/members/{id}")
+//   public String getMemberDetails(@PathVariable Long id, Model model) {
+//       MemberDto member = memberService.getMemberById(id);
+//       model.addAttribute("member", member);
+//       
+//       System.out.println(member);
+//       return "board/UserInfo"; // HTML 템플릿 이름
 //   }
+//}
    
-   
+   @GetMapping(value = "/UserDetailManagement")
+   public String userDetail(String name, AddUserCommand adduserCommand, Model model, HttpServletRequest request) {
+      MemberDto dto =  memberService.getuserDetail(name);
+      System.out.println(name);
+      // 유효값처리용
+      model.addAttribute("dto", dto);
+      System.out.println(dto);
+      
+      
+      return "board/UserDetailManagement";
+   }
+
+}
  
 //   @RequestMapping(value="mulDel",method = {RequestMethod.POST,RequestMethod.GET})
 //   public String mulDel(@Validated DelBoardCommand delBoardCommand
@@ -86,7 +99,6 @@ public class MangementController {
 //      System.out.println("글삭제함");
 //      return "redirect:/board/boardList";
 //   }
-}
 
 
 
