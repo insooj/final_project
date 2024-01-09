@@ -191,6 +191,7 @@
                         </td>
                         <!-- 승인여부 -->
                         <th:block th:if="${session.mdto.role == '직원'}">
+                        
                             <th:block th:if="${dto.delflag == 'N'}">
                                 <td th:style="'font-size: 18px; font-weight: bold; background-color: #3DFF92;'">
                                     <span th:if="${dto != null && dto.delflag == 'N'}">승인대기</span>
@@ -239,13 +240,17 @@
                             </th:block>					    
 						</th:block>
                       	  </th:block>
-                      	   <tr>
-                              <button type="button" class="btn" th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
-                              </tr>
+                      	   
                     </tr>
-                </th:block>
+
             </table>
 <!--        </form>-->
+
+                 <th:block th:if="${session.mdto.role == '직원'}">
+                  <tr>
+                   <button type="button" class="btn" th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
+                   </tr>
+                 </th:block>
     </div>
 </div>
 
