@@ -3,38 +3,38 @@
 
 <mapper namespace="com.hk.project.mapper.CalMapper">
 
-	<resultMap type="calDto" id="calDtoMap">
-		<result property="id" column="ID" />
-		<result property="name" column="NAME" />
-		<result property="work_hours" column="WORK_HOURS" />
-		<result property="mdate" column="MDATE" />
-		<result  property="month_pay" column="MONTH_PAY" />
-		<result  property="total_hours" column="TOTAL_HOURS" />
-		<result  property="total_minutes" column="TOTAL_MINUTES" />
-		
-		<association property="memberDto" resultMap="MemberDtoMap"></association>
-	</resultMap>
+   <resultMap type="calDto" id="calDtoMap">
+      <result property="id" column="ID" />
+      <result property="name" column="NAME" />
+      <result property="work_hours" column="WORK_HOURS" />
+      <result property="mdate" column="MDATE" />
+      <result  property="month_pay" column="MONTH_PAY" />
+      <result  property="total_hours" column="TOTAL_HOURS" />
+      <result  property="total_minutes" column="TOTAL_MINUTES" />
+      
+      <association property="memberDto" resultMap="MemberDtoMap"></association>
+   </resultMap>
 
 
-	<resultMap type="memberDto" id="MemberDtoMap">
-		<result property="memberId" column="MEMBERID" />
-		<result property="id" column="ID" />
-		<result property="password" column="PASSWORD" />
-		<result property="name" column="NAME" />
-		<result property="address" column="ADDRESS" />
-		<result property="email" column="EMAIL" />
-		<result property="role" column="ROLE" />
-		<result property="useraccesstoken" column="USERACCESSTOKEN" />
-		<result property="userrefreshtoken" column="USERREFRESHTOKEN" />
-		<result property="userseqno" column="USERSEQNO" />
-		<result property="phone" column="PHONE" />
-		<result property="pay" column="PAY" />
-	</resultMap>
-	<insert id="insertCalBoard" parameterType="CalDto">
+   <resultMap type="memberDto" id="MemberDtoMap">
+      <result property="memberId" column="MEMBERID" />
+      <result property="id" column="ID" />
+      <result property="password" column="PASSWORD" />
+      <result property="name" column="NAME" />
+      <result property="address" column="ADDRESS" />
+      <result property="email" column="EMAIL" />
+      <result property="role" column="ROLE" />
+      <result property="useraccesstoken" column="USERACCESSTOKEN" />
+      <result property="userrefreshtoken" column="USERREFRESHTOKEN" />
+      <result property="userseqno" column="USERSEQNO" />
+      <result property="phone" column="PHONE" />
+      <result property="pay" column="PAY" />
+   </resultMap>
+   <insert id="insertCalBoard" parameterType="CalDto">
     <![CDATA[
     INSERT INTO schedule (seq, id, name, role, content, mdate, sdate, edate, work_hours)
-		VALUES (NULL, #{id}, #{name}, #{role}, #{content}, #{mdate}, #{sdate}, #{edate},
-    	CONCAT(
+      VALUES (NULL, #{id}, #{name}, #{role}, #{content}, #{mdate}, #{sdate}, #{edate},
+       CONCAT(
         HOUR(SEC_TO_TIME(
             TIMESTAMPDIFF(SECOND,
                 IF(STR_TO_DATE(edate, '%H:%i') < STR_TO_DATE(sdate, '%H:%i'), 
@@ -55,10 +55,10 @@
     )
 );
  ]]>
-	</insert>
+   </insert>
 
-	<select id="calBoardList" parameterType="Map"
-		resultType="CalDto">
+   <select id="calBoardList" parameterType="Map"
+      resultType="CalDto">
          <![CDATA[
         SELECT ID, NAME, CONTENT, MDATE, SDATE, EDATE, ROLE, 
             CONCAT(
@@ -83,32 +83,32 @@
         FROM schedule
         WHERE SUBSTRING(mdate,1,8) = #{yyyyMMdd} 
     ]]>
-	</select>
+   </select>
 
 
-	<select id="calBoardDetail" parameterType="int"
-		resultType="CalDto">
-		SELECT seq,id,name,content,mdate,sdate,edate,role
-		FROM schedule
-		WHERE seq=#{seq}
-	</select>
+   <select id="calBoardDetail" parameterType="int"
+      resultType="CalDto">
+      SELECT seq,id,name,content,mdate,sdate,edate,role
+      FROM schedule
+      WHERE seq=#{seq}
+   </select>
 
-	<update id="calBoardUpdate" parameterType="CalDto">
-		UPDATE schedule
-		SET content=#{content},
-		mdate=#{mdate}, sdate=#{sdate},edate=#{edate}
-		WHERE seq=#{seq}
-	</update>
+   <update id="calBoardUpdate" parameterType="CalDto">
+      UPDATE schedule
+      SET content=#{content},
+      mdate=#{mdate}, sdate=#{sdate},edate=#{edate}
+      WHERE seq=#{seq}
+   </update>
 
-	<delete id="calMulDel" parameterType="Map">
-		DELETE FROM schedule WHERE seq IN
-		<foreach collection="seqs" item="seq" open="(" close=")"
-			separator=",">
-			#{seq}
-		</foreach>
-	</delete>
+   <delete id="calMulDel" parameterType="Map">
+      DELETE FROM schedule WHERE seq IN
+      <foreach collection="seqs" item="seq" open="(" close=")"
+         separator=",">
+         #{seq}
+      </foreach>
+   </delete>
 
-	<select id="worktime" parameterType="Map" resultType="CalDto">
+   <select id="worktime" parameterType="Map" resultType="CalDto">
     <![CDATA[
         SELECT ID, NAME, CONTENT, MDATE, SDATE, EDATE, ROLE, 
             CONCAT(
@@ -133,38 +133,38 @@
         FROM schedule
         WHERE SUBSTRING(mdate,1,8) = #{yyyyMMdd} 
     ]]>
-	</select>
-	<!-- <select id="calViewList" parameterType="Map" resultType="CalDto"> -->
-	<!-- SELECT rn,seq, id,title,content, mdate, regdate ,money,DATE_FORMAT(regdate, -->
-	<!-- '%Y%m%d%h%m') AS mdate -->
-	<!-- FROM (SELECT ROW_NUMBER() OVER( PARTITION BY -->
-	<!-- DATE_FORMAT(regdate, -->
-	<!-- '%Y%m%d') -->
-	<!-- ORDER BY regdate) rn, id, title, content, -->
-	<!-- regdate -->
-	<!-- FROM calboard -->
-	<!-- WHERE -->
-	<!-- DATE_FORMAT(regdate, '%Y%m')=#{yyyyMM}) cal -->
-	<!-- WHERE rn BETWEEN 1 AND 5; -->
-	<!-- </select> -->
-	<select id="calViewList" parameterType="Map" resultType="CalDto">
-		SELECT rn,seq, id,name,content, mdate, sdate,edate
-		from (SELECT ROW_NUMBER() over(PARTITION BY SUBSTR(mdate,1,8)
-		ORDER BY mdate) rn
-		, seq, id,name,content, mdate, sdate,edate
-		FROM schedule
-		WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
-		) cal
-		WHERE rn BETWEEN 1 AND 3
-	</select>
-	<select id="calBoardCount" parameterType="Map"
-		resultType="Integer">
-		SELECT COUNT(*) FROM schedule
-		WHERE id=#{id} or SUBSTR(mdate,1,8)=#{yyyyMMdd}
-	</select>
+   </select>
+   <!-- <select id="calViewList" parameterType="Map" resultType="CalDto"> -->
+   <!-- SELECT rn,seq, id,title,content, mdate, regdate ,money,DATE_FORMAT(regdate, -->
+   <!-- '%Y%m%d%h%m') AS mdate -->
+   <!-- FROM (SELECT ROW_NUMBER() OVER( PARTITION BY -->
+   <!-- DATE_FORMAT(regdate, -->
+   <!-- '%Y%m%d') -->
+   <!-- ORDER BY regdate) rn, id, title, content, -->
+   <!-- regdate -->
+   <!-- FROM calboard -->
+   <!-- WHERE -->
+   <!-- DATE_FORMAT(regdate, '%Y%m')=#{yyyyMM}) cal -->
+   <!-- WHERE rn BETWEEN 1 AND 5; -->
+   <!-- </select> -->
+   <select id="calViewList" parameterType="Map" resultType="CalDto">
+      SELECT rn,seq, id,name,content, mdate, sdate,edate
+      from (SELECT ROW_NUMBER() over(PARTITION BY SUBSTR(mdate,1,8)
+      ORDER BY mdate) rn
+      , seq, id,name,content, mdate, sdate,edate
+      FROM schedule
+      WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
+      ) cal
+      WHERE rn BETWEEN 1 AND 3
+   </select>
+   <select id="calBoardCount" parameterType="Map"
+      resultType="Integer">
+      SELECT COUNT(*) FROM schedule
+      WHERE id=#{id} or SUBSTR(mdate,1,8)=#{yyyyMMdd}
+   </select>
 
-	<select id="totalworktime" parameterType="Map"
-		resultType="CalDto">
+   <select id="totalworktime" parameterType="Map"
+      resultType="CalDto">
  <![CDATA[
       SELECT ID, 
         COALESCE(
@@ -183,62 +183,62 @@
         AND ID = #{id}
     ]]>
 
-	</select>
+   </select>
 
-	<select id="getmonthpay" parameterType="Map"
-		resultMap="calDtoMap">
-		 <![CDATA[
-		SELECT s.id, 
- 		 COALESCE(
- 		   CAST(
- 		     (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
-    		  + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) 
-     	 AS SIGNED
-    	), 0
-  		) AS total_hours ,
-  		COALESCE(
-    		SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) % 60, 0
-  		) AS total_minutes,
-  		COALESCE(
-    		(SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
-    		+ SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60)) * m.pay AS month_pay  
-		FROM schedule s	JOIN member m ON s.id = m.id
-	  WHERE SUBSTRING(mdate, 1, 4) = SUBSTRING(#{yyyyMM}, 1, 4)
+   <select id="getmonthpay" parameterType="Map"
+      resultMap="calDtoMap">
+       <![CDATA[
+      SELECT s.id, 
+        COALESCE(
+          CAST(
+            (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
+            + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) 
+         AS SIGNED
+       ), 0
+        ) AS total_hours ,
+        COALESCE(
+          SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) % 60, 0
+        ) AS total_minutes,
+        COALESCE(
+          (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
+          + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60)) * m.pay AS month_pay  
+      FROM schedule s   JOIN member m ON s.id = m.id
+     WHERE SUBSTRING(mdate, 1, 4) = SUBSTRING(#{yyyyMM}, 1, 4)
         AND SUBSTRING(mdate, 5, 2) = SUBSTRING(#{yyyyMM}, 5, 2)
-	 AND s.id = #{id}
-	 ]]>
-	</select>
-	<select id="getmonth" parameterType="Map" resultMap="calDtoMap">
-		 <![CDATA[
-		SELECT 
- 		 s.id,
- 		 COALESCE(
-   			 CAST(
-    			  (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
-    				  + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) 
-    			  AS SIGNED
-   			 ), 0
-  			) AS total_hours,
- 			 COALESCE(
-  			  SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) % 60, 0
- 			 ) AS total_minutes,
- 			 COALESCE(
-  			  CAST(
-			  		    (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
-			      + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) * m.pay
-			      AS SIGNED
-			    ), 0
-			  ) AS month_pay
-			FROM 
-			  schedule s
-			JOIN 
-			  member m ON s.id = m.id
-			WHERE 
-				SUBSTRING(s.mdate, 1, 4) = SUBSTRING(#{yyyyMM}, 1, 4)
-				  AND SUBSTRING(s.mdate, 5, 2) = SUBSTRING(#{yyyyMM}, 5, 2)
-				  AND s.id =#{id}
+    AND s.id = #{id}
+    ]]>
+   </select>
+   <select id="getmonth" parameterType="Map" resultMap="calDtoMap">
+       <![CDATA[
+      SELECT 
+        s.id,
+        COALESCE(
+             CAST(
+               (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
+                  + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) 
+               AS SIGNED
+             ), 0
+           ) AS total_hours,
+           COALESCE(
+             SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) % 60, 0
+           ) AS total_minutes,
+           COALESCE(
+             CAST(
+                     (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
+               + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) * m.pay
+               AS SIGNED
+             ), 0
+           ) AS month_pay
+         FROM 
+           schedule s
+         JOIN 
+           member m ON s.id = m.id
+         WHERE 
+            SUBSTRING(s.mdate, 1, 4) = SUBSTRING(#{yyyyMM}, 1, 4)
+              AND SUBSTRING(s.mdate, 5, 2) = SUBSTRING(#{yyyyMM}, 5, 2)
+              AND s.id =#{id}
  ]]>
-	</select>
+   </select>
 </mapper>
 
 
@@ -247,7 +247,6 @@
 
 
  
-
 
 
 

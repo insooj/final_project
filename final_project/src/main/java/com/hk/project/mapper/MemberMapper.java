@@ -39,6 +39,6 @@ public interface MemberMapper {
     //글목록
       public List<MemberDto> getuserAccount();
    public String totalworktime(Map<String, String>map);
-	
+   
    
 }

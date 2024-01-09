@@ -5,141 +5,140 @@
 
 
 
-	<resultMap type="memberDto" id="memberDtoMap">
-		<result property="memberId" column="MEMBERID" />
-		<result property="id" column="ID" />
-		<result property="password" column="PASSWORD" />
-		<result property="name" column="NAME" />
-		<result property="address" column="ADDRESS" />
-		<result property="email" column="EMAIL" />
-		<result property="role" column="ROLE" />
-		<result property="useraccesstoken" column="USERACCESSTOKEN" />
-		<result property="userrefreshtoken" column="USERREFRESHTOKEN" />
-		<result property="userseqno" column="USERSEQNO" />
-		<result property="phone" column="PHONE" />
-		<result property="pay" column="PAY" />
-		<association property="accountDto"
-			resultMap="AccountDtoMap"></association>
-		<collection property="fileUserDto"
-			resultMap="fileUserDtoMap"></collection>
+   <resultMap type="memberDto" id="memberDtoMap">
+      <result property="memberId" column="MEMBERID" />
+      <result property="id" column="ID" />
+      <result property="password" column="PASSWORD" />
+      <result property="name" column="NAME" />
+      <result property="address" column="ADDRESS" />
+      <result property="email" column="EMAIL" />
+      <result property="role" column="ROLE" />
+      <result property="useraccesstoken" column="USERACCESSTOKEN" />
+      <result property="userrefreshtoken" column="USERREFRESHTOKEN" />
+      <result property="userseqno" column="USERSEQNO" />
+      <result property="phone" column="PHONE" />
+      <result property="pay" column="PAY" />
+      <association property="accountDto"
+         resultMap="AccountDtoMap"></association>
+      <collection property="fileUserDto"
+         resultMap="fileUserDtoMap"></collection>
 
-	</resultMap>
-	<!-- <association property="fileUserDto"></association> -->
-	<!-- 1:n -->
-	<!-- 1:1 -->
+   </resultMap>
+   <!-- <association property="fileUserDto"></association> -->
+   <!-- 1:n -->
+   <!-- 1:1 -->
 
-	<resultMap type="fileUserDto" id="fileUserDtoMap">
-		<result property="file_seq" column="FILE_SEQ" />
-		<result property="id" column="ID" />
-		<result property="origin_filename" column="ORIGIN_FILENAME" />
-		<result property="stored_filename" column="STORED_FILENAME" />
-	</resultMap>
+   <resultMap type="fileUserDto" id="fileUserDtoMap">
+      <result property="file_seq" column="FILE_SEQ" />
+      <result property="id" column="ID" />
+      <result property="origin_filename" column="ORIGIN_FILENAME" />
+      <result property="stored_filename" column="STORED_FILENAME" />
+   </resultMap>
 
-	<resultMap type="AccountDto" id="AccountDtoMap">
-		<result property="account_seq" column="ACCOUNT_SEQ" />
-		<result property="memberid" column="MEMBERID" />
-		<result property="fintech_use_num" column="FINTECH_USE_NUM" />
-		<result property="bank_name" column="BANK_NAME" />
-		<result property="account_num_masked"
-			column="ACCOUNT_NUM_MASKED" />
-		<result property="money" column="MONEY" />
-	</resultMap>
-
-
-	<select id="fileUser" resultMap="memberDtoMap">
-		SELECT m.id, m.NAME ,
-		f.origin_filename, f.stored_filename
-		FROM member m right OUTER JOIN
-		userfile f
-		ON m.id = f.id
-	</select>
-
-	<insert id="addUser" parameterType="memberDto">
-		INSERT INTO MEMBER
-		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken},
-		#{userrefreshtoken},#{userseqno}, #{phone} )
-	</insert>
+   <resultMap type="AccountDto" id="AccountDtoMap">
+      <result property="account_seq" column="ACCOUNT_SEQ" />
+      <result property="memberid" column="MEMBERID" />
+      <result property="fintech_use_num" column="FINTECH_USE_NUM" />
+      <result property="bank_name" column="BANK_NAME" />
+      <result property="account_num_masked"
+         column="ACCOUNT_NUM_MASKED" />
+      <result property="money" column="MONEY" />
+   </resultMap>
 
 
-	<insert id="addAccount" parameterType="AccountDto">
-		INSERT INTO fintech
-		VALUES(NULL,
-		#{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked},#{money})
-	</insert>
+   <select id="fileUser" resultMap="memberDtoMap">
+      SELECT m.id, m.NAME ,
+      f.origin_filename, f.stored_filename
+      FROM member m right OUTER JOIN
+      userfile f
+      ON m.id = f.id
+   </select>
 
-	<select id="getmemberid" parameterType="String"
-		resultType="Integer">
-		SELECT memberid
-		FROM member
-		WHERE id = #{id}
-	</select>
-
-	
+   <insert id="addUser" parameterType="memberDto">
+      INSERT INTO MEMBER
+      VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken},
+      #{userrefreshtoken},#{userseqno}, #{phone} )
+   </insert>
 
 
-	<select id="getuserDetail" parameterType="String"
-		resultMap="memberDtoMap">
-		SELECT m.id, m.NAME, f.fintech_use_num, m.role, m.email,
-		m.address, m.phone, m.memberid, m.pay,
-		f.bank_name,f.account_num_masked, f.money
-		FROM member m right OUTER
-		JOIN fintech f ON
-		m.memberid = f.memberid
-		WHERE name = #{name}
-	</select>
+   <insert id="addAccount" parameterType="AccountDto">
+      INSERT INTO fintech
+      VALUES(NULL,
+      #{memberid},#{fintech_use_num},#{bank_name},#{account_num_masked},#{money})
+   </insert>
 
-	<select id="getuserAccount" parameterType="String"
-		resultMap="memberDtoMap">
-		SELECT m.id, m.NAME, f.fintech_use_num,
-		f.bank_name,f.account_num_masked, f.money
-		FROM member m right OUTER
-		JOIN fintech f ON
-		m.memberid = f.memberid
-		WHERE id = #{id}
-	</select>
+   <select id="getmemberid" parameterType="String"
+      resultType="Integer">
+      SELECT memberid
+      FROM member
+      WHERE id = #{id}
+   </select>
 
-	<select id="idChk" parameterType="String" resultType="String">
-		SELECT ID
-		FROM MEMBER WHERE ID = #{id}
-	</select>
+   
 
-	<select id="loginUser" parameterType="String"
-		resultType="memberDto">
-		SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE
-		FROM MEMBER
-		WHERE ID = #{id}
-	</select>
 
-	<select id="getUser" parameterType="String"
-		resultType="memberDto">
-		SELECT MEMBERID, ID, PASSWORD, NAME, EMAIL, ADDRESS,
-		ROLE,USERACCESSTOKEN,USERREFRESHTOKEN,USERSEQNO,PHONE,PAY
-		FROM MEMBER
-		WHERE
-		ID = #{id}
-	</select>
+   <select id="getuserDetail" parameterType="String"
+      resultMap="memberDtoMap">
+      SELECT m.id, m.NAME, f.fintech_use_num, m.role, m.email,
+      m.address, m.phone, m.memberid, m.pay,
+      f.bank_name,f.account_num_masked, f.money
+      FROM member m right OUTER
+      JOIN fintech f ON
+      m.memberid = f.memberid
+      WHERE name = #{name}
+   </select>
 
-	<update id="userUpdate" parameterType="memberDto">
-		UPDATE MEMBER
-		SET PASSWORD
-		= #{password}
-		WHERE ID = #{id}
-	</update>
+   <select id="getuserAccount" parameterType="String"
+      resultMap="memberDtoMap">
+      SELECT m.id, m.NAME, f.fintech_use_num,
+      f.bank_name,f.account_num_masked, f.money
+      FROM member m right OUTER
+      JOIN fintech f ON
+      m.memberid = f.memberid
+      WHERE id = #{id}
+   </select>
 
-	<update id="Plus" parameterType="AccountDto">
-		UPDATE fintech
-		SET money = money
-		+ #{money}
-		WHERE memberid = #{memberid}
-	</update>
+   <select id="idChk" parameterType="String" resultType="String">
+      SELECT ID
+      FROM MEMBER WHERE ID = #{id}
+   </select>
 
-	<update id="Pay" parameterType="memberDto">
-		UPDATE MEMBER
-		SET PAY = #{pay}
-		WHERE name = #{name}
-	</update>
+   <select id="loginUser" parameterType="String"
+      resultType="memberDto">
+      SELECT MEMBERID, ID, NAME, PASSWORD, EMAIL, ADDRESS, ROLE
+      FROM MEMBER
+      WHERE ID = #{id}
+   </select>
+
+   <select id="getUser" parameterType="String"
+      resultType="memberDto">
+      SELECT MEMBERID, ID, PASSWORD, NAME, EMAIL, ADDRESS,
+      ROLE,USERACCESSTOKEN,USERREFRESHTOKEN,USERSEQNO,PHONE,PAY
+      FROM MEMBER
+      WHERE
+      ID = #{id}
+   </select>
+
+   <update id="userUpdate" parameterType="memberDto">
+      UPDATE MEMBER
+      SET PASSWORD
+      = #{password}
+      WHERE ID = #{id}
+   </update>
+
+   <update id="Plus" parameterType="AccountDto">
+      UPDATE fintech
+      SET money = money
+      + #{money}
+      WHERE memberid = #{memberid}
+   </update>
+
+   <update id="Pay" parameterType="memberDto">
+      UPDATE MEMBER
+      SET PAY = #{pay}
+      WHERE name = #{name}
+   </update>
 </mapper>
-
 
 
 
