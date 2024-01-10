@@ -31,6 +31,8 @@ public interface CalMapper {
    public List<CalDto> calViewList(String yyyyMM);
    //한달의 총 급여
    public List<CalDto> getmonth(Map<String, String>map);
+   //한달의 총 근무리스트
+   public List<CalDto> mworkList(Map<String, String>map);
    //한달의 총 근무시간
    public List<CalDto> totalworktime(Map<String, String>map);
    //일일의 일정개수 보여주기

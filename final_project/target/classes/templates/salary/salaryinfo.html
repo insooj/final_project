@@ -17,32 +17,54 @@
 body {
 	overflow: hidden;
 }
-#monthsalary{
-	font-family: 'GmarketSans';
+
+#totalsalary {
+
+	font-family: 'GongGothicMedium';	
 	font-weight: bold;
 	color: black;
 	opacity: 1.0;;
 	position: absolute;
-	left: 55%;
-	bottom: 13%;
+	left: 80%;
+	top: 73%;
+	font-size: 45px;
+}
+#firstpaysalary {
+	font-family: 'GongGothicMedium';	
+	font-weight: bold;
+	color: black;
+	opacity: 1.0;;
+	position: absolute;
+	left: 80%;
+	top: 53%;
+	font-size: 45px;
+}
+#monthsalary {
+	font-family: 'GongGothicMedium';	
+	font-weight: bold;
+	color: black;
+	opacity: 1.0;;
+	position: absolute;
+	left: 80%;
+	top: 33%;
 	font-size: 45px;
 }
 
-
 #worktime {
-	font-family: 'GmarketSans';
+	font-family: 'GongGothicMedium';	
 	font-weight: bold;
 	color: black;
 	opacity: 1.0;;
 	position: absolute;
-	left: 35%;
-	bottom: 13%;
+	left: 80%;
+	top: 13%;
 	font-size: 45px;
 }
 
 #ctitle {
 	font-family: 'GmarketSans';
 	font-weight: bold;
+	color: black;
 	color: black;
 	opacity: 1.0;;
 	margin-top: 3%;
@@ -59,6 +81,22 @@ a.t:hover {
 	text-decoration: underline;
 }
 
+.table {
+	font-family: 'GmarketSans';
+	font-weight: bold;
+	color: black;
+	opacity: 1.0;;
+	position: absolute;
+	left: 33%;
+	width: 700px;
+	text-align: center;
+	height: 500px;
+	top: 15%;
+	font-size: 25px;
+	height: 20px;;
+	border-collapse: collapse;
+}
+
 .slider {
 	z-index: 1;
 	opacity: 0.75;
@@ -70,57 +108,115 @@ a.t:hover {
 	position: absolute;
 	background-size: cover;
 	background-position: center;
-	background-image: url("/css/background.jpg");
+	background-color: #E7EAF9;
 }
 </style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<!-- 	<form action= "/salary/plus" th:object="${adduserCommand}" method="get"  onsubmit="return plus()"> -->
-		<input type="hidden" name="sold_id" th:value="${session.mdto.id}" />
 		<div class="slider">
+			<table class="table">
+				<col width="20px" />
+				<col width="20px" />
+				<col width="20px" />
+				<col width="20px" />
+				<tr>
+					<th style="text-align: center;">업무날짜</th>
+					<th style="text-align: center;">업무시간</th>
+					<th style="text-align: center;">근무시간</th>
+					<th style="text-align: center;">급여</th>
+				</tr>
+				<th:block th:if="${#lists.isEmpty(wlist)}">
+					<tr>
+						<td colspan="4" style="text-align: center">근무 내역이 없습니다.</td>
+					</tr>
+				</th:block>
+				<th:block th:unless="${#lists.isEmpty(wlist)}">
+					<tr th:each="dto:${wlist}">
+						<td th:text="${@util.toDates(dto.mdate)}"
+							th:style="'font-size: 18px; font-weight: bold;'"></td>
+						<td><span th:text="${dto.sdate}"
+							th:style="'font-size: 18px; font-weight: bold; color:' + ${@util.scheduletime()}"></span>
+							<span>~</span> <span th:text="${dto.edate}"
+							th:style="'font-size: 18px; font-weight: bold; color:' + ${@util.scheduletime()}"></span>
+						</td>
+						<td><span th:text="${dto.work_hours}"
+							th:style="'font-size: 18px; font-weight: bold;'"></span></td>
+						<td><span th:text="${dto.month_pay}"
+							th:style="'font-size: 18px; font-weight: bold;'"></span></td>
+					</tr>
+				</th:block>
+			</table>
 
 			<div id="worktime">
-				<span style="font-size: 30px">이번달 근무시간</span><br/>
+			<img
+					src="/css/worktime.png" style="width: 50px; height: 50px;" />
+				<span style="font-size: 25px">이번달 누적 근무시간</span><br />
 				<th:block th:unless="${#lists.isEmpty(clist)}">
 					<tr th:each="dto : ${clist}">
 						<td th:if="${dto.total_hours != null}"><span
 							th:text="${dto.total_hours}"></span><span th:text="시간"></span><span
-							th:text="${dto.total_minutes}"></span><span th:text="분"></span>
-						</td>
+							th:text="${dto.total_minutes}"></span><span th:text="분"></span></td>
 					</tr>
 				</th:block>
 			</div>
-			
-			<div id="monthsalary">
-				<span style="font-size: 30px">이번달 예상급여</span><br/>
+			<div id="firstpaysalary">
+			<img
+					src="/css/firstpay.png" style="width: 60px; height: 60px;" />
+				<span style="font-size: 25px">선지급으로 차감된 금액</span><br />
 				<th:block th:unless="${#lists.isEmpty(plist)}">
 					<tr th:each="dto : ${plist}">
 						<td th:if="${dto.total_hours != null}"><span
-							th:text="${dto.month_pay}"></span><span th:text="원"></span>
-						</td>
+							th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+					</tr>
+				</th:block>
+			</div>
+			<div id="monthsalary">
+			<img
+					src="/css/payroll.png" style="width: 50px; height: 50px;" />
+				<span style="font-size: 25px" >이번달 예상급여</span><br />
+				<th:block th:unless="${#lists.isEmpty(plist)}">
+					<tr th:each="dto : ${plist}">
+						<td th:if="${dto.total_hours != null}"><span
+							 th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+					</tr>
+				</th:block>
+			</div>
+			<div id="totalsalary">
+			<img
+					src="/css/money.png" style="width: 50px; height: 50px;" />
+				<span style="font-size: 25px">이번달 급여</span><br />
+				<th:block th:unless="${#lists.isEmpty(plist)}">
+					<tr th:each="dto : ${plist}">
+						<td th:if="${dto.total_hours != null}"><span
+							th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
 					</tr>
 				</th:block>
 			</div>
 			<div id="ctitle">
 				<a class="t" style="margin-left: 35%;"
-					th:href="@{/salary/salaryinfo(year=${calMap.year-1},month=${calMap.month})}">◁</a>
-				<a class="t"
-					th:href="@{/salary/salaryinfo(year=${calMap.year},month=${calMap.month-1})}">◀</a>
-				<span class="y" th:text="${calMap.year}"></span> <span>년</span> <span
+					th:href="@{/salary/salaryinfo(year=${calMap.year-1},month=${calMap.month})}"><img
+					src="/css/doubleleft.png" style="width: 30px; height: 30px;" /></a> <a
+					class="t"
+					th:href="@{/salary/salaryinfo(year=${calMap.year},month=${calMap.month-1})}"><img
+					src="/css/left.png" style="width: 35px; height: 35px;" /></a> <span
+					class="y" th:text="${calMap.year}"></span> <span>년</span> <span
 					class="m" th:text="${calMap.month}"></span> <span>월</span> <span
 					style="font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 1.0;">급여
 					정보</span> <a class="t"
-					th:href="@{/salary/salaryinfo(year=${calMap.year},month=${calMap.month+1})}">▶</a>
-				<a class="t"
-					th:href="@{/salary/salaryinfo(year=${calMap.year+1},month=${calMap.month})}">▷</a>
+					th:href="@{/salary/salaryinfo(year=${calMap.year},month=${calMap.month+1})}"><img
+					src="/css/right.png" style="width: 35px; height: 35px;" /></a> <a
+					class="t"
+					th:href="@{/salary/salaryinfo(year=${calMap.year+1},month=${calMap.month})}"><img
+					src="/css/doubleright.png" style="width: 30px; height: 30px;" /></a>
 			</div>
 
 			<th:block th:unless="${#lists.isEmpty(list)}">
 				<tr th:each="dto:${list}">
-					<th:block th:if="${session.mdto.id eq dto.fileUserDto[0].id}">
+					<th:block th:if="${session.mdto.id eq dto.fileUserDto[0	].id}">
 						<td><img name="p"
-							style="position: absolute; margin-left: 13%; border-radius: 50%; width: 250px; height: 250px; background-color: #FFFFFF; z-index: 200;"
+							style="position: absolute; left: 8%; border-radius: 50%; width: 300px; height: 300px; background-color: #FFFFFF; z-index: 200;"
 							th:src="@{'/upload/' + ${dto.fileUserDto[0].stored_filename}}"
 							alt="Image"></td>
 					</th:block>
@@ -128,11 +224,11 @@ a.t:hover {
 			</th:block>
 
 			<div
-				style="position: absolute; margin-left: 30%; top: 15%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 75%; z-index: 200;">
+				style="position: absolute; margin-left: 30%; top: 12%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 78%; z-index: 200;">
 			</div>
 
 			<p
-				style="position: absolute; margin-left: 13%; top: 33%; font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black;">
+				style="position: absolute; left: 9%; top: 40%; font-size: 45px; font-family: 'GmarketSans'; font-weight: bold; color: black;">
 				<span th:text="${session.mdto.name}"></span> <span
 					th:text="${session.mdto.role}"></span>님
 			</p>

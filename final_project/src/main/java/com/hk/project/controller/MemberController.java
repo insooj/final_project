@@ -208,11 +208,16 @@ public class MemberController {
 
 	@GetMapping(value = "/mypage")
 	public String mypage(Model model) {
-		MemberDto dto = new MemberDto();
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		
 		System.out.println("마이페이지 이동");
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
+			
 		model.addAttribute("addUserCommand", new AddUserCommand());
+		System.out.println(list);
 
 		return "member/mypage";
 	}
@@ -282,6 +287,7 @@ public class MemberController {
 			MultipartRequest multipartRequest // multipart data를 처리할때 사용
 			, HttpServletRequest request, Model model) throws IllegalStateException, IOException {
 		memberService.insertfile(multipartRequest, dto, request);
+			
 		return "member/mypopupclose";
 
 	}
