@@ -106,7 +106,7 @@ public class SalaryController {
 		cMap.put("id", id);
 
 		List<CalDto> clist = calService.totalworktime(cMap);
-
+		//월별 근무시간
 		model.addAttribute("clist", clist);
 		
 		Map<String, String> pMap = new HashMap<>();
@@ -114,10 +114,18 @@ public class SalaryController {
 		pMap.put("yyyyMM", yyyy);
 		pMap.put("id", id);
 		List<CalDto> plist = calService.getmonth(pMap);
-
+		
+		//월별 급여합계
 		model.addAttribute("plist", plist);
 		System.out.println(plist);
-
+		
+		Map<String, String> wMap = new HashMap<>();
+		wMap.put("yyyyMM", yyyy);
+		wMap.put("id", id);
+		List<CalDto> wlist = calService.mworkList(wMap);
+		model.addAttribute("wlist", wlist);
+		System.out.println(wlist);
+		
 //		fintech 정보 조회
 		String useraccesstoken = dto.getUseraccesstoken();
 		System.out.println(useraccesstoken);

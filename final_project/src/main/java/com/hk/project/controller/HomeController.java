@@ -13,6 +13,9 @@ import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.service.MemberService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class HomeController {
 	@Autowired
@@ -20,8 +23,10 @@ public class HomeController {
 	Logger logger=LoggerFactory.getLogger(getClass());
 	
 	@GetMapping(value = "/")
-	public String home(Model model) {
-		MemberDto dto= new MemberDto();
+	public String home(Model model, HttpServletRequest request) {
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list",list);
 		logger.info("HOME페이지이동");

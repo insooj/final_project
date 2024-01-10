@@ -32,6 +32,8 @@ public interface ICalService {
    public List<CalDto> calViewList(String yyyyMM);
  //한달의 근무시간보여주기
    public List<CalDto> getmonth(Map<String, String>map);
+ //한달의 근무리스트보여주기
+   public List<CalDto> mworkList(Map<String, String>map);
    //한달의 급여
    public List<CalDto> totalworktime(Map<String, String>map);
    //일일의 일정개수 보여주기

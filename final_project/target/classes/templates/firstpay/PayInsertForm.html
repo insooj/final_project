@@ -1,59 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    var moneyInput = document.getElementById('moneyInput');
+    var maxAllowedValue = [[${plist[0].month_pay}]];
 
+    moneyInput.addEventListener("input", function() {
+        console.log('Input event triggered');
+        var inputValue = parseFloat(moneyInput.value);
+        
+        if (inputValue > maxAllowedValue) {
+            moneyInput.setCustomValidity('값은 ' + maxAllowedValue + ' 이하로 입력해주세요.');
+        } else {
+            moneyInput.setCustomValidity('');
+        }
+    });
+});
 </script>
 <style type="text/css">
-
 </style>
 </head>
 <body>
-<div layout:fragment="content">
-<div id="container">
-<h1>선지급 요청 작성하기</h1>
-<form action="/pay/RequestInsert" method="post"
-	  enctype="multipart/form-data" th:object="${insertPayCommand}">
-	<input type="hidden" name="id" th:value="${session.mdto.id}"/>
-	<input type="hidden" name="name" th:value="${session.mdto.name}"/>
-	<input type="hidden" name="role" th:value="${session.mdto.role}"/>
-	<table class="table">
-		<tr>
-			<th>작성자[ID]</th>
-			<td th:text="${session.mdto.id}"></td>
-		</tr>
-		<tr>
-			<th>이름</th>
-			<td th:text="${session.mdto.name}"></td>
-		</tr>
-		<tr>
-			<th>등급</th>
-			<td th:text="${session.mdto.role}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td>
-				<input type="text" name="money" th:field="*{money}" 
-												class="form-control"/>
-				<span th:if="${#fields.hasErrors('money')}" 
-					  th:errors="*{money}"></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<button type="submit" class="btn">등록</button>
-				<button type="button" class="btn"
-				 th:onclick="|location.href='@{/board/boardList}'|">목록</button>
-			</td>
-		</tr>
-	</table>
-</form>
-</div>
-</div>
+	<div layout:fragment="content">
+		<div id="container">
+			<h1>선지급 요청 작성하기</h1>
+			<form action="/pay/RequestInsert" method="post"
+				enctype="multipart/form-data" th:object="${insertPayCommand}"
+				onsubmit="return validateInput()">
+				<input type="hidden" name="id" th:value="${session.mdto.id}" /> <input
+					type="hidden" name="name" th:value="${session.mdto.name}" /> <input
+					type="hidden" name="role" th:value="${session.mdto.role}" />
+				<table class="table">
+					<tr>
+						<th>작성자[ID]</th>
+						<td th:text="${session.mdto.id}"></td>
+					</tr>
+					<tr>
+						<th>이름</th>
+						<td th:text="${session.mdto.name}"></td>
+					</tr>
+					<tr>
+						<th>등급</th>
+						<td th:text="${session.mdto.role}"></td>
+					</tr>
+					<tr>
+						<th>선지급요청 가능 금액</th>
+						<th:block th:unless="${#lists.isEmpty(plist)}">
+							<tr th:each="dto : ${plist}">
+								<td th:if="${dto.total_hours != null}"><span
+									th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+							</tr>
+						</th:block>
+					</tr>
+					<tr>
+						<th>선지급요청 금액</th>
+						<td><input type="number" name="money" id="moneyInput"
+							class="form-control" required /> <span
+							th:if="${#fields.hasErrors('money')}" th:errors="*{money}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="submit" class="btn">등록</button>
+							<button type="button" class="btn"
+								th:onclick="|location.href='@{/pay/RequestList}'|">목록</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
 

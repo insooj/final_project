@@ -8,6 +8,8 @@
       <result property="name" column="NAME" />
       <result property="work_hours" column="WORK_HOURS" />
       <result property="mdate" column="MDATE" />
+      <result property="sdate" column="SDATE" />
+      <result property="edate" column="EDATE" />
       <result  property="month_pay" column="MONTH_PAY" />
       <result  property="total_hours" column="TOTAL_HOURS" />
       <result  property="total_minutes" column="TOTAL_MINUTES" />
@@ -239,6 +241,40 @@
               AND s.id =#{id}
  ]]>
    </select>
+   <select id="mworkList" parameterType="Map" resultMap="calDtoMap"> 
+    <![CDATA[
+	   SELECT 
+	  s.id, s.mdate, 
+	  s.sdate,s.edate,s.work_hours,
+	   COALESCE(
+	    CAST(
+	      (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
+	      + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) 
+	      AS SIGNED
+	    ), 0
+	  ) AS total_hours,
+	  COALESCE(
+	    SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) % 60, 0
+	  ) AS total_minutes,
+	  COALESCE(
+	    CAST(
+	      (SUM(CAST(SUBSTRING(s.work_hours, 1, POSITION(':' IN COALESCE(s.work_hours, '0:0')) - 1) AS INT)) 
+	      + SUM(CAST(SUBSTRING(s.work_hours, POSITION(':' IN COALESCE(s.work_hours, '0:0')) + 1) AS INT)) / 60) * m.pay
+	      AS SIGNED
+	    ), 0
+	  ) AS month_pay
+	FROM 
+	  schedule s
+	JOIN 
+	  member m ON s.id = m.id
+	WHERE 
+	  SUBSTRING(s.mdate, 1, 4) = SUBSTRING(#{yyyyMM}, 1, 4)
+	  AND SUBSTRING(s.mdate, 5, 2) = SUBSTRING(#{yyyyMM}, 5, 2)
+	 AND s.id =#{id}
+	GROUP BY 
+	 s.id, s.mdate, s.name, s.sdate, s.edate, s.work_hours
+    ]]>
+    </select>
 </mapper>
 
 

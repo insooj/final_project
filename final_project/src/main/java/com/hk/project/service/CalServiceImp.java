@@ -152,7 +152,10 @@ public class CalServiceImp implements ICalService{
    public List<CalDto> calViewList(String yyyyMM) {
       return calMapper.calViewList(yyyyMM);
    }
-   
+   @Override
+   public List<CalDto> mworkList(Map<String, String>map) {
+      return calMapper.mworkList(map);
+   }
    @Override
    public List<CalDto> getmonth(Map<String, String>map) {
       return calMapper.getmonth(map);
