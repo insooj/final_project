@@ -5,6 +5,7 @@ import java.util.Map;
 
 
 import com.hk.project.command.InsertCalCommand;
+import com.hk.project.command.InsertMonthCommand;
 import com.hk.project.command.UpdateCalCommand;
 import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.MemberDto;
@@ -18,6 +19,8 @@ public interface ICalService {
    
    //일정 추가
    public boolean insertCalBoard(InsertCalCommand insertCalCommand) throws Exception  ;
+ //월별 스케쥴 추가
+   public boolean insertMonthschedule(InsertCalCommand insertMonthCommand) throws Exception  ;
    //일정 목록
    public List<CalDto> calBoardList(String yyyyMMdd);
    //근무시간 목록
@@ -30,6 +33,8 @@ public interface ICalService {
    public boolean calMulDel(Map<String, String[]>map);
    //한달의 일정보여주기
    public List<CalDto> calViewList(String yyyyMM);
+ //한달의 일정보여주기
+   public List<CalDto> monthViewList(String yyyyMM);
  //한달의 근무시간보여주기
    public List<CalDto> getmonth(Map<String, String>map);
    //한달의 급여

@@ -119,16 +119,16 @@
 <div class="slider">
    <div id="container" style="font-family: 'GmarketSans';">
       <div class="cal">
-      <h1 style="font-size:30px;">업무 일지</h1>
+      <h1 style="font-size:30px;">월별 스케줄</h1>
          <div id="ctitle">
-            <a class = "t" th:href="@{/schedule/calendar(year=${calMap.year-1},month=${calMap.month})}">◁</a>
-            <a class = "t" th:href="@{/schedule/calendar(year=${calMap.year},month=${calMap.month-1})}">◀</a>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year-1},month=${calMap.month})}">◁</a>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year},month=${calMap.month-1})}">◀</a>
             <span class="y" th:text="${calMap.year}"></span>
             <span>년</span>
             <span class="m" th:text="${calMap.month}"></span>
             <span>월</span>
-            <a class = "t" th:href="@{/schedule/calendar(year=${calMap.year},month=${calMap.month+1})}">▶</a>
-            <a class = "t" th:href="@{/schedule/calendar(year=${calMap.year+1},month=${calMap.month})}">▷</a>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year},month=${calMap.month+1})}">▶</a>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year+1},month=${calMap.month})}">▷</a>
          </div>
          <div id="thead" style="margin-top: 50px;">
             <div>일</div><div>월</div><div>화</div><div>수</div>
@@ -138,20 +138,18 @@
             <th:block th:if="${calMap.dayOfWeek>1}">
                <div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>            
             </th:block>
-			<th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
-			    <div>
-			        <a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
-			            th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
-			        </a>
-				<a th:if="${calMap.year < currentYear 
-				          || (calMap.year == currentYear && calMap.month < currentMonth) 
-				          || (calMap.year == currentYear && calMap.month == currentMonth && i <= currentDay)}"
-				   th:href="@{/schedule/addCalBoardForm(year=${calMap.year},month=${calMap.month},date=${i})}">
-				   <img class="pen" th:src="@{/img/calendar-icon.png}" />
-				</a>
-			        [(${@util.getCalViewList(i,clist)})]
-			    </div>
-			</th:block>
+            <th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
+               <div>
+                  <span class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
+<!--                     th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}"-->
+                     
+                  </span>
+                  <a th:href="@{/schedule/addMonthForm(year=${calMap.year},month=${calMap.month},date=${i})}">
+                     <img class="pen" th:src="@{/img/calendar-icon.png}" />
+                  </a>
+                  [(${@util.getMonth_scheduleList(i,slist)})]
+               </div>
+            </th:block>
          </div>
       </div>
       </div>

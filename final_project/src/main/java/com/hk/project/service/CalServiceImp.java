@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hk.project.command.InsertCalCommand;
+import com.hk.project.command.InsertMonthCommand;
 import com.hk.project.command.UpdateCalCommand;
 import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.MemberDto;
@@ -65,7 +66,10 @@ public class CalServiceImp implements ICalService{
       //makeCalendar()에서 실행해야 12->1   1->12 처리시 정상실행할 수 있음
             String yyyyMM=year+Util.isTwo(month+"");//202311 6자리변환
             List<CalDto>clist=calViewList(yyyyMM);
-      request.setAttribute("clist", clist);
+            List<CalDto>slist=monthViewList(yyyyMM);
+     
+            request.setAttribute("clist", clist);
+            request.setAttribute("slist", slist);
             
       map.put("year", year);
       map.put("month", month);
@@ -154,6 +158,14 @@ public class CalServiceImp implements ICalService{
    }
    
    @Override
+   public List<CalDto> monthViewList(String yyyyMM) {
+      return calMapper.monthViewList(yyyyMM);
+   }
+//   @Override
+//   public List<CalDto> mworkList(Map<String, String>map) {
+//      return calMapper.mworkList(map);
+//   }
+   @Override
    public List<CalDto> getmonth(Map<String, String>map) {
       return calMapper.getmonth(map);
    }
@@ -165,5 +177,46 @@ public class CalServiceImp implements ICalService{
    public int calBoardCount(String yyyyMMdd) {
       return calMapper.calBoardCount(yyyyMMdd);
    }
+
+
+   @Override
+   public boolean insertMonthschedule(InsertCalCommand insertMonthCommand) throws Exception {
+      // command --> dto로  값을 이동
+      // DB에서는 mdate 컬럼 , command에서는 year, month... : 12자리로 변환작업
+      String mdate=insertMonthCommand.getYear()
+                +Util.isTwo(insertMonthCommand.getMonth()+"")
+                +Util.isTwo(insertMonthCommand.getDate()+"")
+                +Util.isTwo(insertMonthCommand.getHour()+"")
+                +Util.isTwo(insertMonthCommand.getMin()+"");
+      
+      // 202311151335 12자리
+      // 20231181110  11자리....ㅜㅜ
+      
+      //command --> dto 값 복사 
+      CalDto dto=new CalDto();
+      dto.setId(insertMonthCommand.getId());
+//      dto.setTitle(insertCalCommand.getTitle());
+      dto.setContent(insertMonthCommand.getContent());
+      dto.setSdate(insertMonthCommand.getSdate());
+      dto.setEdate(insertMonthCommand.getEdate());
+      dto.setMdate(mdate);
+      dto.setRole(insertMonthCommand.getRole());
+      dto.setName(insertMonthCommand.getName());
+      
+      int count=calMapper.insertMonthschedule(dto);
+      
+//      //예외발생코드 추가
+//      if(count>0) {
+//         throw new Exception("트랜젝션 실행됨");
+//      }
+      
+      return count>0?true:false;
+   }
+
+
+
+
+
+
 
 }

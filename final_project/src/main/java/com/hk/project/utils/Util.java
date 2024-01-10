@@ -56,7 +56,7 @@ public class Util {
       for (int j = 0; j < clist.size(); j++) {
          //한달 일정 목록중에 해당일(i)값과 일치하는지 여부 판단
          if(clist.get(j).getMdate().substring(6, 8).equals(d)){
-            calList+="<p>"
+            calList+="<p style='font-size:14px;'>"
                   +(clist.get(j).getSdate().length()>7?
                     clist.get(j).getSdate().substring(0, 7)+"..":
                     clist.get(j).getSdate())
@@ -70,6 +70,33 @@ public class Util {
       }
       return calList;
    }
+   
+   
+// 월별스케쥴 일정 목록 구하는 기능
+ public static String getMonth_scheduleList(int i,List<CalDto> slist) {
+    String d=isTwo(i+"");// 1 --> "01" 2자리로 변환
+    String monthList="";//"<p>title</p><p>title</p><p>title</p>"
+    for (int j = 0; j < slist.size(); j++) {
+       //한달 일정 목록중에 해당일(i)값과 일치하는지 여부 판단
+       if(slist.get(j).getMdate().substring(6, 8).equals(d)){
+          monthList+="<p style='font-size:14px;'>"
+                +(slist.get(j).getName().length()>8?
+                  slist.get(j).getName().substring(0, 8)+"..":
+                  slist.get(j).getName())
+                +"|"
+                +(slist.get(j).getSdate().length()>7?
+                  slist.get(j).getSdate().substring(0, 7)+"..":
+                  slist.get(j).getSdate()) 
+                +"~"
+                +(slist.get(j).getEdate().length()>7?
+                        slist.get(j).getEdate().substring(0, 7)+"..":
+                        slist.get(j).getEdate()) 
+                +"</p>";
+       
+       }
+    }
+    return monthList;
+ }
    public static String roleColor(String role) {
       String str="black";   
       

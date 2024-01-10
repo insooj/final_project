@@ -56,6 +56,33 @@
 );
  ]]>
    </insert>
+   
+   <insert id="insertMonthschedule" parameterType="CalDto">
+    <![CDATA[
+    INSERT INTO month_schedule (seq, id, name, role, content, mdate, sdate, edate, work_hours)
+      VALUES (NULL, #{id}, #{name}, #{role}, #{content}, #{mdate}, #{sdate}, #{edate},
+       CONCAT(
+        HOUR(SEC_TO_TIME(
+            TIMESTAMPDIFF(SECOND,
+                IF(STR_TO_DATE(edate, '%H:%i') < STR_TO_DATE(sdate, '%H:%i'), 
+                   ADDTIME(STR_TO_DATE(edate, '%H:%i'), '24:00'), 
+                   STR_TO_DATE(edate, '%H:%i')), 
+                STR_TO_DATE(sdate, '%H:%i')
+            )
+        )),
+        ':',
+        MINUTE(SEC_TO_TIME(
+            TIMESTAMPDIFF(SECOND,
+                IF((STR_TO_DATE(edate, '%H:%i')) < (STR_TO_DATE(sdate, '%H:%i')), 
+                   ADDTIME(STR_TO_DATE(edate, '%H:%i'), '24:00'), 
+                   STR_TO_DATE(edate, '%H:%i')), 
+                STR_TO_DATE(sdate, '%H:%i')
+            )
+        ))
+    )
+);
+ ]]>
+   </insert>
 
    <select id="calBoardList" parameterType="Map"
       resultType="CalDto">
@@ -153,6 +180,16 @@
       ORDER BY mdate) rn
       , seq, id,name,content, mdate, sdate,edate
       FROM schedule
+      WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
+      ) cal
+      WHERE rn BETWEEN 1 AND 3
+   </select>
+   <select id="monthViewList" parameterType="Map" resultType="CalDto">
+      SELECT rn,seq, id,name,content, mdate, sdate,edate
+      from (SELECT ROW_NUMBER() over(PARTITION BY SUBSTR(mdate,1,8)
+      ORDER BY mdate) rn
+      , seq, id,name,content, mdate, sdate,edate
+      FROM month_schedule
       WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
       ) cal
       WHERE rn BETWEEN 1 AND 3

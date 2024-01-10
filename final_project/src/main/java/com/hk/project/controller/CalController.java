@@ -1,5 +1,6 @@
 package com.hk.project.controller;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,17 @@ public class CalController {
       String year = request.getParameter("year");
       String month = request.getParameter("month");
       
+      
+      
+      LocalDate currentDate = LocalDate.now();
+      int currentYear = currentDate.getYear();
+      int currentMonth = currentDate.getMonthValue();
+      int currentDay = currentDate.getDayOfMonth();
+
+      model.addAttribute("currentYear", currentYear);
+      model.addAttribute("currentMonth", currentMonth);
+      model.addAttribute("currentDay", currentDay);
+      
       MemberDto dto = new MemberDto();
       List<FileUserDto> list = memberService.fileuser(dto);
       model.addAttribute("list", list);
@@ -75,6 +87,50 @@ public class CalController {
 
       return "board/calendar";
    }
+//   
+//   @GetMapping("/calendar")
+//   public String yourHandlerMethod(Model model) {
+//       LocalDate currentDate = LocalDate.now();
+//       int currentYear = currentDate.getYear();
+//       int currentMonth = currentDate.getMonthValue();
+//       model.addAttribute("currentYear", currentYear);
+//       model.addAttribute("currentMonth", currentMonth);
+//       
+//       // 다른 모델 속성 설정
+//       
+//       return "board/calendar";
+//   }
+   
+   
+   @PostMapping(value = "/Month_calendar")
+   public String Month_calendar(Model model, HttpServletRequest request) {
+
+      logger.info("달력보기");
+
+      // 달력에서 일일별 일정목록 구하기
+
+      String year = request.getParameter("year");
+      String month = request.getParameter("month");
+      
+      MemberDto dto = new MemberDto();
+      List<FileUserDto> zlist = memberService.fileuser(dto);
+      model.addAttribute("zlist", zlist);
+      
+      if (year == null || month == null) {
+         Calendar cal = Calendar.getInstance();
+         year = cal.get(Calendar.YEAR) + "";
+         month = (cal.get(Calendar.MONTH) + 1) + "";
+      }
+      // 달력만들기위한 값 구하기
+      Map<String, Integer> map = calService.makeCalendar(request);
+      model.addAttribute("calMap", map);
+
+
+
+
+
+      return "board/month_calendar";
+   }
 
    @GetMapping(value = "/addCalBoardForm")
    public String addCalBoardForm(Model model, InsertCalCommand insertCalCommand) {
@@ -87,11 +143,11 @@ public class CalController {
       model.addAttribute("insertCalCommand", insertCalCommand);
       return "board/addCalBoardForm";
    }
-
+   
    @PostMapping(value = "/addCalBoard")
-   public String addCalBoard(@Validated InsertCalCommand insertCalCommand,Model model, BindingResult result) throws Exception {
+   public String addCalBoard(@Validated InsertCalCommand insertMonthCommand,Model model, BindingResult result) throws Exception {
       logger.info("일정추가하기");
-      System.out.println(insertCalCommand);
+      System.out.println(insertMonthCommand);
       MemberDto dto = new MemberDto();
       List<FileUserDto> list = memberService.fileuser(dto);
       model.addAttribute("list", list);
@@ -100,11 +156,48 @@ public class CalController {
          return "board/addCalBoardForm";
       }
 
-      calService.insertCalBoard(insertCalCommand);
+      calService.insertCalBoard(insertMonthCommand);
 
-      return "redirect:/schedule/calendar?year=" + insertCalCommand.getYear() + "&month="
-            + insertCalCommand.getMonth();
+      return "redirect:/schedule/calendar?year=" + insertMonthCommand.getYear() + "&month="
+            + insertMonthCommand.getMonth();
    }
+
+   
+   @PostMapping(value = "/addMonthschedule")
+   public String addMonthschedule(@Validated InsertCalCommand insertMonthCommand,Model model, BindingResult result) throws Exception {
+      logger.info("월별 스케쥴 추가하기");
+      System.out.println(insertMonthCommand);
+      MemberDto dto = new MemberDto();
+      List<FileUserDto> slist = memberService.fileuser(dto);
+      model.addAttribute("slist", slist);
+      if (result.hasErrors()) {
+         System.out.println(" 모두 입력해야 함");
+         return "board/addMonthscheduleForm";
+      }
+
+      calService.insertMonthschedule(insertMonthCommand);
+
+      return "redirect:/schedule/Month_calendar?year=" + insertMonthCommand.getYear() + "&month="
+            + insertMonthCommand.getMonth();
+   }
+   
+   
+   
+   
+   @GetMapping(value = "/addMonthForm")
+   public String addMonthForm(Model model, InsertCalCommand insertCalCommand) {
+      logger.info("월별 스케쥴 추가 폼이동");
+      System.out.println(insertCalCommand);
+      MemberDto dto = new MemberDto();
+      List<FileUserDto> slist = memberService.fileuser(dto);
+      model.addAttribute("slist", slist);
+      // addCalBoardfForm 페이지에서 유효값 처리를 위해 insertCalCommand 받고 있기때문에
+      model.addAttribute("insertCalCommand", insertCalCommand);
+      return "board/addMonthscheduleForm";
+   }
+
+   
+
 
    @GetMapping(value = "/calBoardList")
    public String calBoardList(@RequestParam Map<String, String> map, HttpServletRequest request, Model model) {

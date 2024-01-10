@@ -46,8 +46,8 @@
 <body>
 <div layout:fragment="content">
 <div id="container">
-   <h1>업무일지 작성</h1>
-   <form th:action="@{/schedule/addCalBoard}" method="post" 
+   <h1>나의 Schedule 작성</h1>
+   <form th:action="@{/schedule/addMonthschedule}" method="post" 
                                     th:object="${insertCalCommand}">
           <input type="hidden" name ="id" th:value="${session.mdto.id}"/>
           <input type="hidden" name ="role" th:value="${session.mdto.role}"/>

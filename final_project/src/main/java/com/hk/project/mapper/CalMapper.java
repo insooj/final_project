@@ -13,6 +13,8 @@ public interface CalMapper {
 
    //일정 추가
    public int insertCalBoard(CalDto dto);
+ //일정 추가
+   public int insertMonthschedule(CalDto dto);
    //일정 목록
    public List<CalDto> calBoardList(String yyyyMMdd);
    //일정 상세조회
@@ -23,6 +25,8 @@ public interface CalMapper {
    public boolean calBoardUpdate(CalDto dto);
    //일정 삭제하기
    public boolean calMulDel(Map<String, String[]>map);
+   //한달의 일정보여주기
+   public List<CalDto> monthViewList(String yyyyMM);
    //한달의 일정보여주기
    public List<CalDto> calViewList(String yyyyMM);
    //한달의 총 급여

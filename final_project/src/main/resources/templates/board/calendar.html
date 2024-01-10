@@ -138,18 +138,20 @@
             <th:block th:if="${calMap.dayOfWeek>1}">
                <div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>            
             </th:block>
-            <th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
-               <div>
-                  <a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
-                     th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
-                  </a>
-                  <a th:href="@{/schedule/addCalBoardForm(year=${calMap.year},month=${calMap.month},date=${i})}">
-                     <img class="pen" th:src="@{/img/calendar-icon.png}" />
-                  </a>
-                  [(${@util.getCalViewList(i,clist)})]
-                  
-               </div>
-            </th:block>
+			<th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
+			    <div>
+			        <a class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
+			            th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
+			        </a>
+				<a th:if="${calMap.year < currentYear 
+				          || (calMap.year == currentYear && calMap.month < currentMonth) 
+				          || (calMap.year == currentYear && calMap.month == currentMonth && i <= currentDay)}"
+				   th:href="@{/schedule/addCalBoardForm(year=${calMap.year},month=${calMap.month},date=${i})}">
+				   <img class="pen" th:src="@{/img/calendar-icon.png}" />
+				</a>
+			        [(${@util.getCalViewList(i,clist)})]
+			    </div>
+			</th:block>
          </div>
       </div>
       </div>
