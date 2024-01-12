@@ -92,11 +92,9 @@ public class MangementController {
       accountDto.setMemberid(dto.getMemberId());
       System.out.println("송금하기");
       accountDto.setMoney(adduserCommand.getMoney());
-//      accountDto.setMoney(adduserCommand.getMoney());
       memberService.Plus(accountDto);
       model.addAttribute("accountDto", accountDto);
       System.out.println(accountDto);
-//      return "redirect:/board/UserManagement";
       return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
    }
 

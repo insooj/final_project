@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.InsertPayCommand;
 import com.hk.project.command.UpdateBoardCommand;
+import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.FileBoardDto;
 import com.hk.project.dtos.PaymentDto;
@@ -78,7 +79,8 @@ public class PayService {
 //		}
 		
 		//요청 승인
-		public boolean complete(String board_seq) {
+		public boolean complete(String board_seq,
+				String name , String role, String id, String money) {
 			return payrequestMapper.complete(board_seq);
 		}
 		//요청 거절
@@ -88,9 +90,17 @@ public class PayService {
 
 
 
+		 
 		public void approveRequest(Long id) {
 			
 			
+		}
+
+
+
+		public PaymentDto getpayboard(String name, String board_seq, String role, String id, String money) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }
 

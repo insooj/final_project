@@ -58,7 +58,7 @@
 	<insert id="addUser" parameterType="memberDto">
 		INSERT INTO MEMBER
 		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken},
-		#{userrefreshtoken},#{userseqno}, #{phone} )
+		#{userrefreshtoken},#{userseqno}, #{phone} ,null)
 	</insert>
 
 

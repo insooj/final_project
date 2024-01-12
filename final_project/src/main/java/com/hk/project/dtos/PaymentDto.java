@@ -18,20 +18,15 @@ public class PaymentDto {
 	private Date regdate;
 	private int money;
 	private String delflag;
+	
+	private int paymoney;
 
 	
 	
 	
 	
-	public PaymentDto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-	
-	
-	public PaymentDto(int board_seq, String id, String name, String role, Date regdate, int money, String delflag) {
+	public PaymentDto(int board_seq, String id, String name, String role, Date regdate, int money, String delflag,
+			int paymoney) {
 		super();
 		this.board_seq = board_seq;
 		this.id = id;
@@ -40,12 +35,46 @@ public class PaymentDto {
 		this.regdate = regdate;
 		this.money = money;
 		this.delflag = delflag;
+		this.paymoney = paymoney;
 	}
+
+
+
+
+	public int getPaymoney() {
+		return paymoney;
+	}
+
+
+
+
+	public void setPaymoney(int paymoney) {
+		this.paymoney = paymoney;
+	}
+
+
+
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+
+
+
+	public PaymentDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	
+	
 	
 	@Override
 	public String toString() {
 		return "PaymentDto [board_seq=" + board_seq + ", id=" + id + ", name=" + name + ", role=" + role + ", regdate="
-				+ regdate + ", money=" + money + ", delflag=" + delflag + "]";
+				+ regdate + ", money=" + money + ", delflag=" + delflag + ", paymoney=" + paymoney + "]";
 	}
 	
 	
@@ -81,9 +110,6 @@ public class PaymentDto {
 	}
 	public int getMoney() {
 		return money;
-	}
-	public void setMoney(int money) {
-		this.money = money;
 	}
 	public String getDelflag() {
 		return delflag;

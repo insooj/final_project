@@ -212,10 +212,10 @@ public class MemberController {
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto dto = memberService.getUser(mdto);
 		
-		System.out.println("마이페이지 이동");
+		
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
-			
+		System.out.println("마이페이지 이동");
 		model.addAttribute("addUserCommand", new AddUserCommand());
 		System.out.println(list);
 

@@ -46,7 +46,7 @@
       SET TITLE=#{title}, CONTENT=#{content}
       WHERE BOARD_SEQ=#{board_seq}
    </update>
-   
+
    <update id="complete" parameterType="String">
       UPDATE FIRSTPAYBOARD
       SET DELFLAG = 'Y'
