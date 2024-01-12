@@ -12,6 +12,21 @@
 		}
 		return false
 	}
+	onload = function() {
+		var month_pay_input = document.getElementById('month_pay');
+		var firstmoney_input = document.getElementById('firstmoney');
+		var tmoney_span = document.getElementById('tmoney');
+		// 요소의 텍스트(content)만을 출력
+		console.log(month_pay_input.textContent);
+		console.log(firstmoney_input.textContent);
+
+		// 값(value)을 정수로 형변환하여 계산
+		var tmoney = parseInt(month_pay_input.textContent, 10)
+				- parseInt(firstmoney_input.textContent, 10);
+
+		console.log(tmoney);
+		tmoney_span.textContent = tmoney + "원";
+	}
 </script>
 <style type="text/css">
 body {
@@ -19,8 +34,7 @@ body {
 }
 
 #totalsalary {
-
-	font-family: 'GongGothicMedium';	
+	font-family: 'GongGothicMedium';
 	font-weight: bold;
 	color: black;
 	opacity: 1.0;;
@@ -29,18 +43,20 @@ body {
 	top: 73%;
 	font-size: 45px;
 }
+
 #firstpaysalary {
-	font-family: 'GongGothicMedium';	
+	font-family: 'GongGothicMedium';
 	font-weight: bold;
-	color: black;
+	color: red;
 	opacity: 1.0;;
 	position: absolute;
 	left: 80%;
 	top: 53%;
 	font-size: 45px;
 }
+
 #monthsalary {
-	font-family: 'GongGothicMedium';	
+	font-family: 'GongGothicMedium';
 	font-weight: bold;
 	color: black;
 	opacity: 1.0;;
@@ -51,7 +67,7 @@ body {
 }
 
 #worktime {
-	font-family: 'GongGothicMedium';	
+	font-family: 'GongGothicMedium';
 	font-weight: bold;
 	color: black;
 	opacity: 1.0;;
@@ -114,7 +130,7 @@ a.t:hover {
 </head>
 <body>
 	<div layout:fragment="content">
-		<!-- 	<form action= "/salary/plus" th:object="${adduserCommand}" method="get"  onsubmit="return plus()"> -->
+		<!--    <form action= "/salary/plus" th:object="${adduserCommand}" method="get"  onsubmit="return plus()"> -->
 		<div class="slider">
 			<table class="table">
 				<col width="20px" />
@@ -150,8 +166,7 @@ a.t:hover {
 			</table>
 
 			<div id="worktime">
-			<img
-					src="/css/worktime.png" style="width: 50px; height: 50px;" />
+				<img src="/css/worktime.png" style="width: 50px; height: 50px;" />
 				<span style="font-size: 25px">이번달 누적 근무시간</span><br />
 				<th:block th:unless="${#lists.isEmpty(clist)}">
 					<tr th:each="dto : ${clist}">
@@ -162,13 +177,12 @@ a.t:hover {
 				</th:block>
 			</div>
 			<div id="firstpaysalary">
-			<img
-					src="/css/firstpay.png" style="width: 60px; height: 60px;" />
+				<img src="/css/firstpay.png" style="width: 60px; height: 60px;" />
 				<span style="font-size: 25px">이번달 선지급 받은 금액</span><br />
-				<th:block th:unless="${#lists.isEmpty(plist)}">
-					<tr th:each="dto : ${plist}">
-						<td th:if="${dto.total_hours != null}"><span
-							th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+				<th:block th:unless="${#lists.isEmpty(flist)}">
+					<tr th:each="dto : ${flist}">
+						<td th:if="${dto.id != null}"><span id="firstmoney"
+							th:text="${dto.firstmoney}"></span><span th:text="원"></span></td>
 					</tr>
 				</th:block>
 			</div>
@@ -178,15 +192,16 @@ a.t:hover {
 				<span style="font-size: 25px" >이번달 월급 예상급여</span><br />
 				<th:block th:unless="${#lists.isEmpty(plist)}">
 					<tr th:each="dto : ${plist}">
-						<td th:if="${dto.total_hours != null}"><span
-							 th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+						<td th:if="${dto.total_hours != null}"><span id="month_pay"
+							th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
 					</tr>
 				</th:block>
 			</div>
 			<div id="totalsalary">
-			<img
-					src="/css/money.png" style="width: 50px; height: 50px;" />
-				<span style="font-size: 25px">이번달 실수령금액</span><br />
+				<img src="/css/money.png" style="width: 50px; height: 50px;" /> <span
+					style="font-size: 25px">이번달 실수령금액</span><br /> <span id="tmoney"></span><span
+					id=tmoney></span>
+		
 				<th:block th:unless="${#lists.isEmpty(plist)}">
 					<tr th:each="dto : ${plist}">
 						<td th:if="${dto.total_hours != null}"><span
@@ -214,7 +229,7 @@ a.t:hover {
 
 			<th:block th:unless="${#lists.isEmpty(list)}">
 				<tr th:each="dto:${list}">
-					<th:block th:if="${session.mdto.id eq dto.fileUserDto[0	].id}">
+					<th:block th:if="${session.mdto.id eq dto.fileUserDto[0].id}">
 						<td><img name="p"
 							style="position: absolute; left: 8%; border-radius: 50%; width: 300px; height: 300px; background-color: #FFFFFF; z-index: 200;"
 							th:src="@{'/upload/' + ${dto.fileUserDto[0].stored_filename}}"
@@ -234,11 +249,10 @@ a.t:hover {
 			</p>
 		</div>
 
-		<!-- 	</form> -->
+		<!--    </form> -->
 	</div>
 </body>
 </html>
-
 
 
 

@@ -70,8 +70,8 @@
    
    
    a.t{color:black;
-   		font-size:20px;}
- 	a.t:hover { color: skyblue; text-decoration: underline;}
+         font-size:20px;}
+    a.t:hover { color: skyblue; text-decoration: underline;}
    
   
 </style>
@@ -142,6 +142,8 @@
                <div>
                   <span class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
                      th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
+<!--                    th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">-->
+
                      
                   </span>
                   <a th:href="@{/schedule/addMonthForm(year=${calMap.year},month=${calMap.month},date=${i})}">
@@ -158,7 +160,6 @@
 
 </body>
 </html>
-
 
 
 

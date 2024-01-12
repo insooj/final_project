@@ -62,6 +62,7 @@ public class PaymentController {
 
 	    List<PaymentDto> plist = payService.getAllList();
 		model.addAttribute("plist", plist);
+
 		model.addAttribute("delBoardCommand", new DelBoardCommand());
 
 		System.out.println(plist);

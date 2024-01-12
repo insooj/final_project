@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
      layout:decorate="~{layouts/layout}">
@@ -121,11 +121,11 @@
 <!--                        사장일때-->
                         <th:block th:if="${session.mdto.role == '사장'}">
                    <th:block th:if="${dto.delflag == 'N'}">
-							<td>
-				<a href="javascript:void(0);" class="center"
-				   th:style="'font-size: 18px; font-weight: bold;'"
-				   th:onclick="'openWindow(\'' + @{/pay/opensuccess(name=${dto.name})} + '\')'">승인</a>
-                   	   
+                     <td>
+            <a href="javascript:void(0);" class="center"
+               th:style="'font-size: 18px; font-weight: bold;'"
+               th:onclick="'openWindow(\'' + @{/pay/opensuccess(name=${dto.name})} + '\')'">승인</a>
+                         
                             <form th:action="@{/pay/refuse}" method="post">
                                 <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
                                 <button type="button" id="showRejectModalBtn" 

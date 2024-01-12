@@ -148,6 +148,11 @@ public class MemberService {
 
       return memberMapper.fileUser(dto);
    }
+   
+   public List<FileUserDto> fileUserList(MemberDto dto) {
+
+	      return memberMapper.fileUserList(dto);
+	   }
 
    @Transactional
    public void insertfile(MultipartRequest multipartRequest, MemberDto dto, HttpServletRequest request)

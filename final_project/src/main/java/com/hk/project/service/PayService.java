@@ -3,6 +3,7 @@ package com.hk.project.service;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.hk.project.command.InsertPayCommand;
 import com.hk.project.command.UpdateBoardCommand;
 import com.hk.project.dtos.AccountDto;
 import com.hk.project.dtos.BoardDto;
+import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.FileBoardDto;
 import com.hk.project.dtos.PaymentDto;
 import com.hk.project.mapper.BoardMapper;
@@ -33,7 +35,10 @@ public class PayService {
 			return payrequestMapper.getAllList();
 		}
 		
-		
+		 
+		   public List<PaymentDto> firstpaymoney(Map<String, String>map) {
+		      return payrequestMapper.firstpaymoney(map);
+		   }
 		
 		//글 추가, 파일업로드및 파일정보 추가
 		@Transactional

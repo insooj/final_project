@@ -26,6 +26,8 @@ public interface MemberMapper {
    
    public List<FileUserDto> fileUser(MemberDto dto);
    
+   public List<FileUserDto> fileUserList(MemberDto dto);
+   
    public boolean addAccount(AccountDto dto);
    
    public int getmemberid(String id);

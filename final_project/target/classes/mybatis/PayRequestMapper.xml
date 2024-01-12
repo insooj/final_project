@@ -12,6 +12,21 @@
       <result property="money" column="MONEY"/>
 <!--       <result property="delflag" column="DELFLAG"/> -->
    </resultMap>
+    <select id="firstpaymoney" parameterType="Map" resultType="paymentDto">
+	   SELECT id, 
+	       SUBSTRING(regdate, 1, 4) AS year,
+	       SUBSTRING(regdate, 6, 2) AS month,
+	       SUM(money) AS firstmoney,
+	       delflag
+	FROM firstpayboard
+	WHERE delflag='Y' AND 
+	      id=#{id} and SUBSTRING(regdate, 1, 5) =SUBSTRING(#{yyyy-MM}, 1, 5)
+	      AND SUBSTRING(regdate, 6, 2) = SUBSTRING(#{yyyy-MM}, 6, 2)
+	GROUP BY year, month, delflag;
+</select>
+   
+   
+   
    
    
    <select id="getAllList" resultType="paymentDto">
@@ -28,13 +43,7 @@
       WHERE BOARD_SEQ = #{board_seq}
    </select>
    
-<!--    useGeneratedKeys="true" keyProperty="board_seq"
-        : 증가된 board_seq값을 BoardDto에 전달 : insertBoard(boardDto) -->
-<!--    <insert id="insertPayment" parameterType="paymentDto" -->
-<!--       useGeneratedKeys="true" keyProperty="board_seq"> -->
-<!--       INSERT INTO FIRSTPAYBOARD -->
-<!--       VALUES(NULL,#{id},#{name},#{role},sysdate(),#{money},'N') -->
-<!--    </insert> -->
+
    
    <insert id="insertPayment" parameterType="paymentDto" useGeneratedKeys="true" keyProperty="board_seq">
     INSERT INTO FIRSTPAYBOARD (id, name, role, regdate, money, delflag)

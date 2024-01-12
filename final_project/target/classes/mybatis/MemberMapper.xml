@@ -46,10 +46,13 @@
 	</resultMap>
 
 
-	<select id="fileUser" parameterType="memberDto"  resultMap="memberDtoMap">
-		SELECT m.id, m.NAME , f.file_seq, f.origin_filename, f.stored_filename
+	<select id="fileUser" parameterType="memberDto"
+		resultMap="memberDtoMap">
+		SELECT m.id, m.NAME , f.file_seq, f.origin_filename,
+		f.stored_filename
 		FROM member m right OUTER JOIN userfile f
-		ON m.id = f.id
+		ON m.id =
+		f.id
 		WHERE m.id = #{id}
 		ORDER BY f.file_seq DESC
 		LIMIT 1;
@@ -58,7 +61,7 @@
 	<insert id="addUser" parameterType="memberDto">
 		INSERT INTO MEMBER
 		VALUES(null,#{id},#{password},#{name},#{email},#{address},#{role},#{useraccesstoken},
-		#{userrefreshtoken},#{userseqno}, #{phone} ,null)
+		#{userrefreshtoken},#{userseqno}, #{phone},null )
 	</insert>
 
 
@@ -139,6 +142,21 @@
 		SET PAY = #{pay}
 		WHERE name = #{name}
 	</update>
+	<select id="fileUserList" resultMap="memberDtoMap">
+		SELECT m.id, m.NAME, f.file_seq, f.origin_filename, f.stored_filename
+		FROM member m
+		RIGHT OUTER JOIN userfile f ON m.id = f.id
+		WHERE (f.id, f.file_seq) IN (
+		SELECT id, MAX(file_seq) AS max_file_seq
+		FROM userfile
+		GROUP BY id
+		)
+		ORDER BY m.id, f.file_seq DESC
+	</select>
+
+	
+
+	
 </mapper>
 
 

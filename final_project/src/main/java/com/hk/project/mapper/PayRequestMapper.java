@@ -1,9 +1,11 @@
 package com.hk.project.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.PaymentDto;
 
 @Mapper
@@ -20,6 +22,7 @@ public interface PayRequestMapper {
 	//요청승인
 	public boolean complete(String seqs);
 	
+	 public List<PaymentDto> firstpaymoney(Map<String, String>map);
 	//요청거절
 	public boolean refuse(String seqs);
 	
