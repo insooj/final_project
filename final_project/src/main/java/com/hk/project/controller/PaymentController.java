@@ -56,19 +56,10 @@ public class PaymentController {
 	@GetMapping(value = "/RequestList")
 	public String payList(Model model, String name) {
 		System.out.println("요청목록 보기");
-		MemberDto dto = memberService.getuserDetail(name);
-		AccountDto accountDto = new AccountDto();
-	    accountDto.setMemberid(dto.getMemberId());
-	    memberService.Plus(accountDto);
 		
 	    List<PaymentDto> plist = payService.getAllList();
 		model.addAttribute("plist", plist);
 		
-		PaymentDto pdto = new PaymentDto();
-		int money = pdto.getMoney();
-		accountDto.setMoney(money);
-		memberService.Plus(accountDto);
-		System.out.println(accountDto);
 
 		model.addAttribute("delBoardCommand", new DelBoardCommand());
 
@@ -173,7 +164,7 @@ public class PaymentController {
 		System.out.println("board_seq : " + board_seq);
 		payService.complete(board_seq);
 		System.out.println("요청승인");
-
+		
 		return "redirect:/pay/RequestList";
 	}
 

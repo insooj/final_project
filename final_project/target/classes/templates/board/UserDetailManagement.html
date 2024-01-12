@@ -1,166 +1,310 @@
-.<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-   function plus() {
-      if (confirm("급여를 지급하시겠습니까?")) {
-         return true;
-      }
-      return false
-   }
+	function plus() {
+		if (confirm("급여를 지급하시겠습니까?")) {
+			return true;
+		}
+		return false
+	}
 
-   //    function pay() {
-   //        location.href = "/manage/pay";
+	onload = function() {
+	    var month_pay_input = document.getElementById('month_pay');
+	    var firstmoney_input = document.getElementById('firstmoney');
+	    var tmoney_span = document.getElementById('tmoney');
+	    
+	    // Set a default value of 0 if firstmoney_input is not present
+	    var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
 
-   //    }
+	    // 값(value)을 정수로 형변환하여 계산
+	    var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
+
+	    console.log(tmoney);
+	    tmoney_span.textContent = tmoney + "원";
+	}
+
 </script>
 <style type="text/css">
-h2 {
-   font-weight: border;
+body {
+	overflow: hidden;
 }
 
-.hr1 {
-   border: 0;
-   height: 2px;
-   background: #d3d3d3;
+#totalsalary {
+	font-family: 'GongGothicMedium';
+	font-weight: bold;
+	color: blue;
+	opacity: 1.0;;
+	position: absolute;
+	left: 80%;
+	top: 54%;
+	font-size: 45px;
 }
 
-.grey {
-   color: #727272;
+#firstpaysalary {
+	font-family: 'GongGothicMedium';
+	font-weight: bold;
+	color: red;
+	opacity: 1.0;;
+	position: absolute;
+	left: 80%;
+	top: 40%;
+	font-size: 45px;
 }
 
-#strong {
-   font-weight: 900;
+#monthsalary {
+	font-family: 'GongGothicMedium';
+	font-weight: bold;
+	color: black;
+	opacity: 1.0;;
+	position: absolute;
+	left: 80%;
+	top: 27%;
+	font-size: 45px;
 }
 
-table {
-   width: 100%;
-   border-top: 1px solid #d3d3d3;
-   border-collapse: collapse;
+#worktime {
+	font-family: 'GongGothicMedium';
+	font-weight: bold;
+	color: black;
+	opacity: 1.0;;
+	position: absolute;
+	left: 80%;
+	top: 13%;
+	font-size: 45px;
 }
 
-th {
-   background-color: #d3d3d3;
-   border-top: 3px solid #727272;
+#ctitle {
+	font-family: 'GmarketSans';
+	font-weight: bold;
+	color: black;
+	color: black;
+	opacity: 1.0;;
+	margin-top: 3%;
+	font-size: 40px;
 }
 
-th, td {
-   border-bottom: 1px solid #d3d3d3;
-   padding: 10px;
+#address {
+	margin-top: 13%;
 }
 
-.btn {
-   width: 100px;
-   height: 30px;
-   font-weight: 900;
-   color: white;
-   text-align: center;
-   background: grey;
-   border: solid 2px white;
-   border-radius: 5px;
+a.t {
+	color: black;
+	font-size: 30px;
 }
 
-#error {
-   color: red;
+a.t:hover {
+	color: skyblue;
+	text-decoration: underline;
 }
 
-a:link {
-   color: blue;
-   height: bold;
-   text-decoration: none;
+.table {
+	font-family: 'GmarketSans';
+	font-weight: bold;
+	color: black;
+	opacity: 1.0;;
+	position: absolute;
+	left: 33%;
+	width: 700px;
+	text-align: center;
+	height: 500px;
+	top: 15%;
+	font-size: 25px;
+	height: 20px;;
+	border-collapse: collapse;
 }
 
-a:visited {
-   color: blue;
-   height: bold;
-   text-decoration: none;
-}
-
-a:hover {
-   color: red;
-   height: bold;
-   text-decoration: underline;
-}
-
-a {
-   color: black;
-   height: bold;
-   text-decoration-line: none;
+.slider {
+	z-index: 1;
+	opacity: 0.75;
+	overflow: hidden;
+	top: 70px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-size: cover;
+	background-position: center;
+	background-color: #E7EAF9;
 }
 </style>
 </head>
 <body>
-   <div layout:fragment="content">
-      <div id="container">
-         <h2>직원 관리</h2>
-         <hr class="hr1" noshade>
-<!--          <form action="/manage/plus" th:object="${adduserCommand}" -->
-<!--             method="get"> -->
-         
+	<div layout:fragment="content">
+		<div class="slider">
+			<table class="table">
+				<col width="20px" />
+				<col width="20px" />
+				<col width="20px" />
+				<col width="20px" />
+
+				<tr>
+					<th style="text-align: center;">업무날짜</th>
+					<th style="text-align: center;">업무시간</th>
+					<th style="text-align: center;">근무시간</th>
+					<th style="text-align: center;">급여</th>
+
+				</tr>
+				<th:block th:if="${#lists.isEmpty(wlist)}">
+					<tr>
+						<td colspan="4" style="text-align: center">근무 내역이 없습니다.</td>
+					</tr>
+				</th:block>
+				<th:block th:unless="${#lists.isEmpty(wlist)}">
+					<tr th:each="dto:${wlist}">
+						<td th:text="${@util.toDates(dto.mdate)}"
+							th:style="'font-size: 18px; font-weight: bold;'"></td>
+						<td><span th:text="${dto.sdate}"
+							th:style="'font-size: 18px; font-weight: bold; color:' + ${@util.scheduletime()}"></span>
+							<span>~</span> <span th:text="${dto.edate}"
+							th:style="'font-size: 18px; font-weight: bold; color:' + ${@util.scheduletime()}"></span>
+						</td>
+						<td><span th:text="${dto.work_hours}"
+							th:style="'font-size: 18px; font-weight: bold;'"></span></td>
+						<td><span th:text="${dto.month_pay}"
+							th:style="'font-size: 18px; font-weight: bold;'"></span></td>
+					</tr>
+				</th:block>
+			</table>
+
+			<div id="worktime">
+				<img src="/css/worktime.png" style="width: 50px; height: 50px;" />
+				<span style="font-size: 25px">이번달 누적 근무시간</span><br />
+				<th:block th:unless="${#lists.isEmpty(clist)}">
+					<tr th:each="dto : ${clist}">
+						<td th:if="${dto.total_hours != null}"><span
+							th:text="${dto.total_hours}"></span><span th:text="시간"></span><span
+							th:text="${dto.total_minutes}"></span><span th:text="분"></span></td>
+					</tr>
+				</th:block>
+			</div>
+			<div id="firstpaysalary">
+				<img src="/css/firstpay.png" style="width: 60px; height: 60px;" />
+				<span style="font-size: 25px">이번달 선지급 받은 금액</span><br />
+				<th:block th:unless="${#lists.isEmpty(flist)}">
+					<tr th:each="dto : ${flist}">
+						<td th:if="${dto.id != null}"><span id="firstmoney"
+							th:text="${dto.firstmoney}"></span><span th:text="원"></span></td>
+					</tr>
+				</th:block>
+			</div>
+			<div id="monthsalary">
+				<img src="/css/payroll.png" style="width: 50px; height: 50px;" /> <span
+					style="font-size: 25px">이번달 월급 예상급여</span><br />
+				<th:block th:unless="${#lists.isEmpty(plist)}">
+					<tr th:each="dto : ${plist}">
+						<td th:if="${dto.total_hours != null}"><span id="month_pay"
+							th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+					</tr>
+				</th:block>
+			</div>
+			<div id="totalsalary">
+				<img src="/css/money.png" style="width: 50px; height: 50px;" /> <span
+					style="font-size: 25px">이번달 실수령금액</span><br /> <span id="tmoney"></span><span
+					id=tmoney></span>
+			</div>
+			<div id="ctitle">
+				<a class="t" style="margin-left: 35%;"
+					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year-1},month=${calMap.month})}"><img
+					src="/css/doubleleft.png" style="width: 30px; height: 30px;" /></a> <a
+					class="t"
+					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year},month=${calMap.month-1})}"><img
+					src="/css/left.png" style="width: 35px; height: 35px;" /></a> <span
+					class="y" th:text="${calMap.year}"></span> <span>년</span> <span
+					class="m" th:text="${calMap.month}"></span> <span>월</span> <span
+					style="font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 1.0;">급여
+					정보</span> <a class="t"
+					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year},month=${calMap.month+1})}"><img
+					src="/css/right.png" style="width: 35px; height: 35px;" /></a> <a
+					class="t"
+					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year+1},month=${calMap.month})}"><img
+					src="/css/doubleright.png" style="width: 30px; height: 30px;" /></a>
+			</div>
+
+			<th:block th:unless="${#lists.isEmpty(list)}">
+				<tr th:each="dto:${list}">
+					<th:block th:if="${dto.fileUserDto[0].id}">
+						<td><img name="p"
+							style="position: absolute; left: 8%; border-radius: 50%; width: 300px; height: 300px; background-color: #FFFFFF; z-index: 200;"
+							th:src="@{'/upload/' + ${dto.fileUserDto[0].stored_filename}}"
+							alt="Image"></td>
+					</th:block>
+				</tr>
+			</th:block>
+
+			<div
+				style="position: absolute; margin-left: 30%; top: 12%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 78%; z-index: 200;">
+			</div>
+
+			<p
+				style="position: absolute; left: 9%; top: 40%; font-size: 45px; font-family: 'GmarketSans'; font-weight: bold; color: black;">
+				<span th:text="${dto.name}"></span> <span th:text="${dto.role}"></span>님<br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 50%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+				Email: <span th:text="${dto.address}"></span><br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 55%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+
+				주소: <span th:text="${dto.email}"></span><br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 60%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+
+				전화번호: <span th:text="${dto.phone}"></span><br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 65%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+
+				핀테크번호: <br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 70%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+				<span th:text="${dto.accountDto.fintech_use_num}"></span><br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 75%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+
+				금융기관: <span th:text="${dto.accountDto.bank_name}"></span><br />
+			</p>
+			<p
+				style="position: absolute; left: 5%; top: 80%; font-size: 30px; font-family: 'GongGothicMedium'; font-weight: bold; color: black;">
+
+				계좌번호: <span th:text="${dto.accountDto.Account_num_masked}"></span>
+			</p>
 
 
-            <table>
-               <tr>
-                  <th>이름</th>
-                  <th>아이디</th>
-                  <th>등급</th>
-                  <th>은행</th>
-                  <th>계좌번호</th>
-                  <th>email</th>
-                  <th>주소</th>
-                  <th>전화번호</th>
-                  <th>fintech_number</th>
-               </tr>
-               <tr>
-                  <td class="center" th:text="${dto.name}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.id}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.role}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="left" th:text="${dto.accountDto.bank_name}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.accountDto.Account_num_masked}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.address}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.email}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.phone}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.accountDto.fintech_use_num}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
 
-               </tr>
-               <tr>
-                  <td colspan="4">
-                     <!--               <button type="button" class="btn" th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>-->
-                     <th:block th:if="${session.mdto.role == '사장'}">
 
-                     </th:block>
-                  </td>
-               </tr>
-            </table>
+			<form th:action="@{/manage/plus}" onsubmit="return plus()"
+				method="get" th:object="${adduserCommand}">
+				<input type="hidden" name="name" th:value="${dto.name}" /> <input
+					type="text" name="money"
+					style="font-size: 20px; width: 200px; font-family: 'GongGothicMedium'; position: absolute; top: 80%; left: 78%;" />
+				<button type="submit"
+					style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 80%; left: 88%;"
+					class="btn">이번달 급여 지급하기</button>
+			</form>
 
-            <form th:action="@{/manage/plus}" onsubmit="return plus()" method="get"th:object="${adduserCommand}">
-               <input type="hidden" name="name" th:value="${dto.name}" />
-               <input type="text" name="money" />
-               <button type="submit"  style="width:200px;"class="btn">급여 지급하기</button>
-            </form>
+			<form th:action="@{/manage/pay}" method="get"
+				th:object="${adduserCommand}">
+				<input type="hidden" name="name" th:value="${dto.name}" /> <input
+					type="text" name="pay" th:value="${dto.pay}"
+					style="font-size: 20px; font-family: 'GongGothicMedium'; width: 200px; position: absolute; top: 70%; left: 78%;" />
+				<button type="submit"
+					style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 70%; left: 88%;"
+					class="btn">시간당 급여 입력</button>
+			</form>
+		</div>
 
-            <form th:action="@{/manage/pay}" method="get"th:object="${adduserCommand}">
-               <input type="hidden" name="name" th:value="${dto.name}" />
-               
-               <input type="text" name="pay" th:value="${dto.pay}"    />
-               <button type="submit" style="width:200px;"class="btn">시간당 급여 입력</button>
-            </form>
 
-      </div>
-   </div>
+	</div>
 </body>
 </html>
 

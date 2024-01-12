@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-    
+<!--    <link href="/resources/css/styles.css" rel="stylesheet" />-->
+<!--   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
 <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function() {
             // JavaScript 코드를 이곳에 추가
@@ -30,28 +31,41 @@
             var approveBtn = document.getElementById("approveBtn");
             var rejectBtn = document.getElementById("rejectBtn");
             var closeButtons = document.getElementsByClassName("close");
+            
+            
+        
+            function showConfirmation(money) {
+            showModal("approveModal");
+            document.querySelector('#moneyValue').textContent = money;
+        }
 
             // 승인 모달 열기 버튼 클릭 이벤트
             showApproveModalBtn.onclick = function () {
+            
+            var tableRows = document.querySelectorAll('table.table tr');
+            tableRows.forEach(function(row, index) {
+                if (index !== 0) {
+                    row.addEventListener('click', function() {
+                        var moneyValue = row.querySelector('td:nth-child(5)').textContent;
+                        showConfirmation(moneyValue);
+                    });
+                }
+            });
                 showModal("approveModal");
-            };
+            closeModal("rejectModal"); // 거절 모달 닫기
+         };
 
-            // 거절 모달 열기 버튼 클릭 이벤트
-            showRejectModalBtn.onclick = function () {
-                showModal("rejectModal");
-            };
+               showRejectModalBtn.onclick = function () {
+             closeModal("approveModal"); // 승인 모달 닫기
+             showModal("rejectModal");
+         };
 
-            // 모달 닫기 버튼 클릭 이벤트
-            for (var i = 0; i < closeButtons.length; i++) {
-                closeButtons[i].onclick = function () {
-                    var modalId = this.parentElement.parentElement.id;
-                    closeModal(modalId);
-                };
-            };
+ 
 
             // 승인 버튼 클릭 이벤트
             approveBtn.onclick = function () {
                 // 여기에 승인 동작 처리 코드를 추가하세요
+
                 document.querySelector('form[action="/pay/complete"]').submit();
                 closeModal("approveModal"); // 모달 닫기
             };
@@ -63,38 +77,48 @@
                 closeModal("rejectModal"); // 모달 닫기
             };
         };
+        
+            // 모달 닫기 버튼 클릭 이벤트
+            var closeButtons = document.querySelectorAll('.close');
+            closeButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var modalId = this.parentElement.id;
+                    closeModal(modalId);
+                });
+            });
 </script>
     <style type="text/css">
         h2 { font-weight: border; }
         .hr1 { border: 0; height: 2px; background:  #d3d3d3; }
         
         
-       	 .button-group {
+        
+        .butt button{
+           
+            background-color:grey;
+            color: white;
+        }
+           .button-group {
             display: flex; /* 버튼들을 가로로 정렬하기 위해 Flexbox 사용 */
             gap: 5px; /* 버튼 사이의 간격 조절 */
- 				}
- 				
- 				
-		            table {
-		            width: 100%;
-		            border-top: 1px solid #d3d3d3;
-		            border-collapse: collapse;
-		            }
-		            th { background-color: #d3d3d3 ; 
-		            border-top: 3px solid #727272;
- 					text-align: center;
-		            
-		            }
-		            th, td {
-		            border-bottom: 1px solid #d3d3d3;
-		            padding: 10px;
-		             text-align: center;
-		            }
-		            
-		            
-		            
-		            
-		          /* 모달 스타일 */
+            
+             }
+                  table {
+                  width: 100%;
+                  border-top: 1px solid #d3d3d3;
+                  border-collapse: collapse;
+                  }
+                  th { background-color: #d3d3d3 ; 
+                  border-top: 3px solid #727272;
+                text-align: center;
+                  
+                  }
+                  th, td {
+                  border-bottom: 1px solid #d3d3d3;
+                  padding: 10px;
+                   text-align: center;
+                  }
+                /* 모달 스타일 */
         .modal {
             display: none; /* 모달 숨김 */
             position: fixed;
@@ -143,21 +167,22 @@
 
 <div layout:fragment="content">
 
-<!-- 승인 모달 -->
-<div id="approveModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>승인하시겠습니까?</p>
-        <button id="approveBtn">승인</button>
+    <!-- 모달 -->
+    <div id="approveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('approveModal')">&times;</span>
+            <p th:style="'font-size:20px;'+'font-weight:bold;'">승인하시겠습니까?</p>
+            <p th:style="'font-size:20px;'+'font-weight:bold;'">금액: <span th:style="'font-size:20px;'+'font-weight:bold;'"id="moneyValue"></span> </p>
+            <button th:style="'font-size:20px;'+'font-weight:bold;'" id="approveBtn" onclick="approveAction()">승인</button>
+        </div>
     </div>
-</div>
 
 <!-- 거절 모달 -->
 <div id="rejectModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>거절하시겠습니까?</p>
-        <button id="rejectBtn">거절</button>
+        <span th:style="'font-size:20px;'+'font-weight:bold;'" class="close" onclick="closeModal('rejectModal')">&times;</span>
+        <p th:style="'font-size:20px;'+'font-weight:bold;'" >거절하시겠습니까?</p>
+        <button th:style="'font-size:20px;'+'font-weight:bold;'" id="rejectBtn" >거절</button>
     </div>
 </div>
 
@@ -210,24 +235,22 @@
                            
                         </th:block>
                       <th:block th:if="${session.mdto.role == '사장'}">
-					    <th:block th:if="${dto.delflag == 'N'}">
-					        <td>
-					            <span class="button-group">
-  								<form th:action="@{/pay/complete}" method="post">
-								    <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-								    <button type="button" id="showApproveModalBtn"
-								    		 class="approval-btn" onclick="showConfirmation()">승인</button>
-								</form>
-                               
-                            <form th:action="@{/pay/refuse}" method="post">
-                                <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-                                <button type="button" id="showRejectModalBtn" 
-                                		class="reject-btn" onclick="showRefuseConfirmation()">거절</button>
-                            </form>
-			
-					            </span>
-					        </td>
-					    </th:block>
+                   <th:block th:if="${dto.delflag == 'N'}">
+                       <td class="butt">
+                           <span class="button-group" >
+                          <form th:action="@{/pay/complete}" method="post">
+                            <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
+                            <button type="button" id="showApproveModalBtn"
+                                   class="approval-btn" onclick="showConfirmation()">승인</button>
+                        </form>
+                                 <form th:action="@{/pay/refuse}" method="post">
+                                   <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
+                                   <button type="button" id="showRejectModalBtn" 
+                                         class="reject-btn" onclick="showRefuseConfirmation()">거절</button>
+                                  </form>
+                           </span>
+                       </td>
+                   </th:block>
                             <th:block th:if="${dto.delflag == 'R'}">
                                 <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
                                     <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
@@ -237,10 +260,10 @@
                                 <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
                                     <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
                                 </td>
-                            </th:block>					    
-						</th:block>
-                      	  </th:block>
-                      	   
+                            </th:block>                   
+                  </th:block>
+                           </th:block>
+                            
                     </tr>
 
             </table>

@@ -47,11 +47,13 @@ import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.CalDto;
 import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
+import com.hk.project.dtos.PaymentDto;
 import com.hk.project.feignMapper.OpenBankingFeign;
 import com.hk.project.service.FileService;
 import com.hk.project.service.FileUserService;
 import com.hk.project.service.ICalService;
 import com.hk.project.service.MemberService;
+import com.hk.project.service.PayService;
 import com.hk.project.status.RoleStatus;
 import com.hk.project.utils.Util;
 
@@ -67,6 +69,8 @@ public class SalaryController {
 	private OpenBankingFeign openBankingFeign;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private PayService payService;
 
 	@Autowired
 	private ICalService calService;
@@ -98,6 +102,7 @@ public class SalaryController {
 		System.out.println(map);
 
 		String yyyy = year + Util.isTwo(month);// 202311 6자리변환
+		String yyyymm = year +"-"+ Util.isTwo(month);// 2023-11 7자리변환
 		String id = dto.getId();
 		System.out.println(yyyy);
 //	      String MM =  Util.isTwo(month);
@@ -125,6 +130,23 @@ public class SalaryController {
 		List<CalDto> wlist = calService.mworkList(wMap);
 		model.addAttribute("wlist", wlist);
 		System.out.println(wlist);
+		
+		// 승인된 선지급 급여합계 
+		Map<String, String> fMap = new HashMap<>();
+		fMap.put("yyyy-MM", yyyymm);
+		fMap.put("id", id);
+		List<PaymentDto> flist = payService.firstpaymoney(fMap);
+		model.addAttribute("flist", flist);
+		System.out.println(flist);
+		
+		
+		Map<Object, Object> tMap = new HashMap<>();
+		tMap.put("plist", plist);
+		tMap.put("flist", flist);
+		
+		model.addAttribute("tMap",tMap);
+		System.out.println(tMap);
+		
 		
 //		fintech 정보 조회
 		String useraccesstoken = dto.getUseraccesstoken();

@@ -2,259 +2,168 @@
 <html xmlns:th="http://www.thymeleaf.org"
      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
      layout:decorate="~{layouts/layout}">
+     
 <head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
+<meta charset="UTF-8">
+<title></title>
+<style type="text/css">
+
+
+<!--   .cal{width:100%;}-->
+
+   .cal #thead > div, .cal #tbody > div{display: inline-block;
+                               width: 140px;
+                               }
+      
+   .cal #thead > div{ text-align:center;
+            }   
+   
+/*     날짜표현 div */
+    .cal #tbody > div{
+       height: 120px;
+       vertical-align: top;
+       border-top:1px solid gray;
+       position: relative;
+    }            
+    #ctitle{
+       text-align: center;
+    }         
     
+    .pen{
+       width: 20px;
+       height: 20px;
+    }      
+    .d{
+       font-weight: bold;
+    }    
+    
+    .cp{
+       position:absolute;
+       left:20px;
+       top:-30px;
+       width:40px;
+       height:40px;
+       border-radius: 20px 20px 20px 1px;
+       background-color:#BCA9F5;
+       text-align: center;
+       font-weight: bold;
+    }
+    .Y,h1{
+       font-size: 25px;
+       font-weight:800;
+    }
+    h2{
+       font-size: 15px;
+       font-weight:500;
+    }
+    .name{
+       font-size:20px;
+       font-weight:bold;
+    }
+   body{
+       background-color : #E7EAF9;
+   }
+   
+   .cal{
+   font-size : 25px;
+   }
+   
+   
+   a.t{color:black;
+         font-size:20px;}
+    a.t:hover { color: skyblue; text-decoration: underline;}
+   
+  
+</style>
 <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function() {
-            // JavaScript 코드를 이곳에 추가
-        });
-
-        // 모달 표시 함수
-        function showModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
-
-        // 모달 닫기 함수
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-
-        // 페이지 로드 시 실행
-        window.onload = function () {
-            var showApproveModalBtn = document.getElementById("showApproveModalBtn");
-            var showRejectModalBtn = document.getElementById("showRejectModalBtn");
-            var approveBtn = document.getElementById("approveBtn");
-            var rejectBtn = document.getElementById("rejectBtn");
-            var closeButtons = document.getElementsByClassName("close");
-
-            // 승인 모달 열기 버튼 클릭 이벤트
-            showApproveModalBtn.onclick = function () {
-                showModal("approveModal");
-            };
-
-            // 거절 모달 열기 버튼 클릭 이벤트
-            showRejectModalBtn.onclick = function () {
-                showModal("rejectModal");
-            };
-
-            // 모달 닫기 버튼 클릭 이벤트
-            for (var i = 0; i < closeButtons.length; i++) {
-                closeButtons[i].onclick = function () {
-                    var modalId = this.parentElement.parentElement.id;
-                    closeModal(modalId);
-                };
-            };
-
-            // 승인 버튼 클릭 이벤트
-            approveBtn.onclick = function () {
-                // 여기에 승인 동작 처리 코드를 추가하세요
-                document.querySelector('form[action="/pay/complete"]').submit();
-                closeModal("approveModal"); // 모달 닫기
-            };
-
-            // 거절 버튼 클릭 이벤트
-            rejectBtn.onclick = function () {
-                // 여기에 거절 동작 처리 코드를 추가하세요
-                document.querySelector('form[action="/pay/refuse"]').submit();
-                closeModal("rejectModal"); // 모달 닫기
-            };
-        };
-</script>
-    <style type="text/css">
-        h2 { font-weight: border; }
-        .hr1 { border: 0; height: 2px; background:  #d3d3d3; }
-        
-        
-           .button-group {
-            display: flex; /* 버튼들을 가로로 정렬하기 위해 Flexbox 사용 */
-            gap: 5px; /* 버튼 사이의 간격 조절 */
-             }
-             
-             
-                  table {
-                  width: 100%;
-                  border-top: 1px solid #d3d3d3;
-                  border-collapse: collapse;
-                  }
-                  th { background-color: #d3d3d3 ; 
-                  border-top: 3px solid #727272;
-                text-align: center;
-                  
-                  }
-                  th, td {
-                  border-bottom: 1px solid #d3d3d3;
-                  padding: 10px;
-                   text-align: center;
-                  }
-                  
-                  
-                  
-                  
-                /* 모달 스타일 */
-        .modal {
-            display: none; /* 모달 숨김 */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* 배경을 어둡게 함 */
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            animation-name: animatetop;
-            animation-duration: 0.4s;
-        }
-
-        @keyframes animatetop {
-            from {top: -300px; opacity: 0}
-            to {top: 0; opacity: 1}
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-
-<body>
-
-<div layout:fragment="content">
-
-<!-- 승인 모달 -->
-<div id="approveModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>승인하시겠습니까?</p>
-        <button id="approveBtn">승인</button>
-    </div>
-</div>
-
-<!-- 거절 모달 -->
-<div id="rejectModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>거절하시겠습니까?</p>
-        <button id="rejectBtn">거절</button>
-    </div>
-</div>
-
-    <div id="container">
-        <h2>선지급요청 리스트</h2>
-        <hr class="hr1" noshade>
-<!--        <form action="/pay/complete" method="post" >-->
-            <table class="table">
-                <tr  th:style="'font-size : 20px;'+'font-weight : bold;'">
-                    <th>요청자</th>
-                    <th>아이디</th>
-                    <th>등급</th>
-                    <th>작성일</th>
-                    <th>요청금액</th>
-                    <th>승인여부</th>
-                </tr>
-                <th:block th:if="${#lists.isEmpty(plist)}">
-                    <tr>
-                        <td colspan="4" style="text-align: center;" >---작성된 요청이 없습니다.---</td>
-                    </tr>
-                </th:block>
-                <th:block th:unless="${#lists.isEmpty(plist)}">
-                    <tr th:each="dto:${plist}">          
-                        <!-- 기타 td 열 코드 -->
-                        <td class="center" th:text="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                        <td class="center" th:text="${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                        <td class="center" th:text="${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'+'color:blue;'"></td>
-                        <td class ="center" th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                        <td th:style="'font-size : 18px;'+'font-weight : bold;'">
-                            <span class="center" th:text="${dto.money}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원
-                        </td>
-                        <!-- 승인여부 -->
-                        <th:block th:if="${session.mdto.role == '직원'}">
-                        
-                            <th:block th:if="${dto.delflag == 'N'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #3DFF92;'">
-                                    <span th:if="${dto != null && dto.delflag == 'N'}">승인대기</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'R'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
-                                    <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'Y'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
-                                    <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
-                                </td>
-                            </th:block>
-                           
-                        </th:block>
-                      <th:block th:if="${session.mdto.role == '사장'}">
-                   <th:block th:if="${dto.delflag == 'N'}">
-                       <td>
-                           <span class="button-group">
-                          <form th:action="@{/pay/complete}" method="post">
-                            <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-                            <button type="button" id="showApproveModalBtn"
-                                   class="approval-btn" onclick="showConfirmation()">승인</button>
-                        </form>
-                               
-                            <form th:action="@{/pay/refuse}" method="post">
-                                <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-                                <button type="button" id="showRejectModalBtn" 
-                                      class="reject-btn" onclick="showRefuseConfirmation()">거절</button>
-                            </form>
+   $(function(){
+      $(".d").hover(function(){
+   // controller로 전달할 파라미터 yyyyMM을 구함
+         var aDate=$(this);
+         var year=$(".y").text().trim();//년도
+         var month=$(".m").text().trim();//월
+         var date=aDate.text().trim();//일
+         var yyyyMMdd=year+(month.length<2?"0"+month:month)
+                      +(date.length<2?"0"+date:date);
+      //   alert(yyyyMMdd);
+      
+      if(aDate.nextAll("p").length>0){
+      $.ajax({
+         url:"/schedule/calCountAjax",
+         method:"get",
+         data:{"yyyyMMdd":yyyyMMdd},
+         dataType:"json",
+         async:false,
          
-                           </span>
-                       </td>
-                   </th:block>
-                            <th:block th:if="${dto.delflag == 'R'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
-                                    <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'Y'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
-                                    <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
-                                </td>
-                            </th:block>                   
-                  </th:block>
-                           </th:block>
-                            
-                    </tr>
+         success:function(data){
+         //   alert(data.count);
+            aDate.after("<div class='cp'>"+data.count+"</div>");
+         },
+         error:function(){
+            alert("통신실패");
+         }
+      });
+   }
+      },function(){
+         $(".cp").remove();
+      });
+      
+   });
 
-            </table>
-<!--        </form>-->
 
-                 <th:block th:if="${session.mdto.role == '직원'}">
-                  <tr>
-                   <button type="button" class="btn" th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
-                   </tr>
-                 </th:block>
-    </div>
+</script>
+</head>
+<body style="overflow:hidden;">
+<!--<form action="/schedule/calendar" method="post">-->
+<div layout:fragment="content">
+<div class="slider">
+   <div id="container" style="font-family: 'GmarketSans';">
+      <div class="cal">
+      <h1 style="font-size:30px;">월별 스케줄</h1>
+         <div id="ctitle">
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year-1},month=${calMap.month})}">◁</a>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year},month=${calMap.month-1})}">◀</a>
+            <span class="y" th:text="${calMap.year}"></span>
+            <span>년</span>
+            <span class="m" th:text="${calMap.month}"></span>
+            <span>월</span>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year},month=${calMap.month+1})}">▶</a>
+            <a class = "t" th:href="@{/schedule/Month_calendar(year=${calMap.year+1},month=${calMap.month})}">▷</a>
+         </div>
+         <div id="thead" style="margin-top: 50px;">
+            <div>일</div><div>월</div><div>화</div><div>수</div>
+            <div>목</div><div>금</div><div>토</div>
+         </div>
+         <div id="tbody">
+            <th:block th:if="${calMap.dayOfWeek>1}">
+               <div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>            
+            </th:block>
+            <th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
+               <div>
+                  <span class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}">
+<!--                     th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}"-->
+                     
+                  </span>
+                  <a th:href="@{/schedule/addMonthForm(year=${calMap.year},month=${calMap.month},date=${i})}">
+                     <img class="pen" th:src="@{/img/calendar-icon.png}" />
+                  </a>
+                  [(${@util.getMonth_scheduleList(i,slist)})]
+               </div>
+            </th:block>
+         </div>
+      </div>
+      </div>
+   </div>
 </div>
-
-
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
