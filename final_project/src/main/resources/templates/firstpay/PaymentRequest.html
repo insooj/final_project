@@ -1,108 +1,28 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
      layout:decorate="~{layouts/layout}">
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-<!--    <link href="/resources/css/styles.css" rel="stylesheet" />-->
-<!--   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+    
 <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function() {
-            // JavaScript 코드를 이곳에 추가
-        });
 
-        // 모달 표시 함수
-        function showModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
-
-        // 모달 닫기 함수
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-
-        // 페이지 로드 시 실행
-        window.onload = function () {
-            var showApproveModalBtn = document.getElementById("showApproveModalBtn");
-            var showRejectModalBtn = document.getElementById("showRejectModalBtn");
-            var approveBtn = document.getElementById("approveBtn");
-            var rejectBtn = document.getElementById("rejectBtn");
-            var closeButtons = document.getElementsByClassName("close");
-            
-            
-        
-            function showConfirmation(money) {
-            showModal("approveModal");
-            document.querySelector('#moneyValue').textContent = money;
-        }
-
-            // 승인 모달 열기 버튼 클릭 이벤트
-            showApproveModalBtn.onclick = function () {
-            
-            var tableRows = document.querySelectorAll('table.table tr');
-            tableRows.forEach(function(row, index) {
-                if (index !== 0) {
-                    row.addEventListener('click', function() {
-                        var moneyValue = row.querySelector('td:nth-child(5)').textContent;
-                        showConfirmation(moneyValue);
-                    });
-                }
-            });
-                showModal("approveModal");
-            closeModal("rejectModal"); // 거절 모달 닫기
-         };
-
-               showRejectModalBtn.onclick = function () {
-             closeModal("approveModal"); // 승인 모달 닫기
-             showModal("rejectModal");
-         };
-
- 
-
-            // 승인 버튼 클릭 이벤트
-            approveBtn.onclick = function () {
-                // 여기에 승인 동작 처리 코드를 추가하세요
-
-                document.querySelector('form[action="/pay/complete"]').submit();
-                closeModal("approveModal"); // 모달 닫기
-            };
-
-            // 거절 버튼 클릭 이벤트
-            rejectBtn.onclick = function () {
-                // 여기에 거절 동작 처리 코드를 추가하세요
-                document.querySelector('form[action="/pay/refuse"]').submit();
-                closeModal("rejectModal"); // 모달 닫기
-            };
-        };
-        
-            // 모달 닫기 버튼 클릭 이벤트
-            var closeButtons = document.querySelectorAll('.close');
-            closeButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var modalId = this.parentElement.id;
-                    closeModal(modalId);
-                });
-            });
+    function openWindow(url) {
+        window.open(url, '_blank', 'width=600,height=400'); // 크기는 필요에 따라 조절 가능
+    }
 </script>
     <style type="text/css">
         h2 { font-weight: border; }
         .hr1 { border: 0; height: 2px; background:  #d3d3d3; }
         
         
-        
-        .butt button{
-           
-            background-color:grey;
-            color: white;
-        }
            .button-group {
             display: flex; /* 버튼들을 가로로 정렬하기 위해 Flexbox 사용 */
             gap: 5px; /* 버튼 사이의 간격 조절 */
-            
              }
+             
+             
                   table {
                   width: 100%;
                   border-top: 1px solid #d3d3d3;
@@ -118,6 +38,10 @@
                   padding: 10px;
                    text-align: center;
                   }
+                  
+                  
+                  
+                  
                 /* 모달 스타일 */
         .modal {
             display: none; /* 모달 숨김 */
@@ -164,30 +88,10 @@
 </head>
 
 <body>
-
 <div layout:fragment="content">
 
-    <!-- 모달 -->
-    <div id="approveModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('approveModal')">&times;</span>
-            <p th:style="'font-size:20px;'+'font-weight:bold;'">승인하시겠습니까?</p>
-            <p th:style="'font-size:20px;'+'font-weight:bold;'">금액: <span th:style="'font-size:20px;'+'font-weight:bold;'"id="moneyValue"></span> </p>
-            <button th:style="'font-size:20px;'+'font-weight:bold;'" id="approveBtn" onclick="approveAction()">승인</button>
-        </div>
-    </div>
-
-<!-- 거절 모달 -->
-<div id="rejectModal" class="modal">
-    <div class="modal-content">
-        <span th:style="'font-size:20px;'+'font-weight:bold;'" class="close" onclick="closeModal('rejectModal')">&times;</span>
-        <p th:style="'font-size:20px;'+'font-weight:bold;'" >거절하시겠습니까?</p>
-        <button th:style="'font-size:20px;'+'font-weight:bold;'" id="rejectBtn" >거절</button>
-    </div>
-</div>
-
     <div id="container">
-        <h2>선지급요청 리스트</h2>
+        <h2>선지급 승인</h2>
         <hr class="hr1" noshade>
 <!--        <form action="/pay/complete" method="post" >-->
             <table class="table">
@@ -214,6 +118,23 @@
                         <td th:style="'font-size : 18px;'+'font-weight : bold;'">
                             <span class="center" th:text="${dto.money}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원
                         </td>
+<!--                        사장일때-->
+                        <th:block th:if="${session.mdto.role == '사장'}">
+                   <th:block th:if="${dto.delflag == 'N'}">
+                     <td>
+            <a href="javascript:void(0);" class="center"
+               th:style="'font-size: 18px; font-weight: bold;'"
+               th:onclick="'openWindow(\'' + @{/pay/opensuccess(name=${dto.name})} + '\')'">승인</a>
+                         
+                            <form th:action="@{/pay/refuse}" method="post">
+                                <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
+                                <button type="button" id="showRejectModalBtn" 
+                                      class="reject-btn" onclick="showRefuseConfirmation()">거절</button>
+                            </form>
+         
+                           </span>
+                       </td>
+                   </th:block>
                         <!-- 승인여부 -->
                         <th:block th:if="${session.mdto.role == '직원'}">
                         
@@ -234,23 +155,7 @@
                             </th:block>
                            
                         </th:block>
-                      <th:block th:if="${session.mdto.role == '사장'}">
-                   <th:block th:if="${dto.delflag == 'N'}">
-                       <td class="butt">
-                           <span class="button-group" >
-                          <form th:action="@{/pay/complete}" method="post">
-                            <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-                            <button type="button" id="showApproveModalBtn"
-                                   class="approval-btn" onclick="showConfirmation()">승인</button>
-                        </form>
-                                 <form th:action="@{/pay/refuse}" method="post">
-                                   <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-                                   <button type="button" id="showRejectModalBtn" 
-                                         class="reject-btn" onclick="showRefuseConfirmation()">거절</button>
-                                  </form>
-                           </span>
-                       </td>
-                   </th:block>
+                      
                             <th:block th:if="${dto.delflag == 'R'}">
                                 <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
                                     <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
@@ -276,8 +181,6 @@
                  </th:block>
     </div>
 </div>
-
-
 
 </body>
 </html>

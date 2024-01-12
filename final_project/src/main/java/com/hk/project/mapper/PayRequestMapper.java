@@ -26,6 +26,10 @@ public interface PayRequestMapper {
 	//요청거절
 	public boolean refuse(String seqs);
 	
+	
+
+	
+	
 }
 
 

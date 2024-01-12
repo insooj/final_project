@@ -99,22 +99,21 @@ public class MangementController {
 //   }   
 //   
 
-	@GetMapping(value = "/plus")
-	public String plus(@Validated AddUserCommand adduserCommand, BindingResult result, String name, String id,
-			Model model) {
-		AccountDto accountDto = new AccountDto();
-		MemberDto dto = memberService.getuserDetail(name);
-		model.addAttribute("dto", dto);
-		accountDto.setMemberid(dto.getMemberId());
-		System.out.println("송금하기");
-		accountDto.setMoney(adduserCommand.getMoney());
-//      accountDto.setMoney(adduserCommand.getMoney());
-		memberService.Plus(accountDto);
-		model.addAttribute("accountDto", accountDto);
-		System.out.println(accountDto);
-//      return "redirect:/board/UserManagement";
-		return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
-	}
+   
+   @GetMapping(value = "/plus")
+   public String plus(@Validated AddUserCommand adduserCommand, BindingResult result,String name, String id,Model model) {
+      AccountDto accountDto = new AccountDto();
+      MemberDto dto = memberService.getuserDetail(name);
+      model.addAttribute("dto", dto);
+      accountDto.setMemberid(dto.getMemberId());
+      System.out.println("송금하기");
+      accountDto.setMoney(adduserCommand.getMoney());
+      memberService.Plus(accountDto);
+      model.addAttribute("accountDto", accountDto);
+      System.out.println(accountDto);
+      return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
+   }
+
 
 	@GetMapping(value = "/usermanagement")
 	public String boardList(Model model) {

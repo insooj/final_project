@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.hk.project.command.AddUserCommand;
 import com.hk.project.command.DelBoardCommand;
 import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.InsertPayCommand;
@@ -56,10 +59,9 @@ public class PaymentController {
 	@GetMapping(value = "/RequestList")
 	public String payList(Model model, String name) {
 		System.out.println("요청목록 보기");
-		
+
 	    List<PaymentDto> plist = payService.getAllList();
 		model.addAttribute("plist", plist);
-		
 
 		model.addAttribute("delBoardCommand", new DelBoardCommand());
 
@@ -112,57 +114,42 @@ public class PaymentController {
 		return "redirect:/pay/RequestList";
 	}
 
-	// 상세보기
-	@GetMapping(value = "/RequestDetail")
-	public String boardDetail(int board_seq, Model model) {
-		PaymentDto pdto = payService.getBoard(board_seq);
 
-		// 유효값처리용
-		model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
-		// 출력용
-		model.addAttribute("pdto", pdto);
-		System.out.println(pdto);
-		return "firstpay/PayDetail";
-	}
-
-	// 수정하기
-//   @PostMapping(value = "/boardUpdate")
-//   public String boardUpdate(
-//            @Validated UpdateBoardCommand updateBoardCommand
-//            ,BindingResult result) {
-//      
-//      if(result.hasErrors()) {
-//         System.out.println("수정내용을 모두 입력하세요");
-//         return "board/boardDetail";
-//      }
-//      
-//      boardService.updateBoard(updateBoardCommand);
-//      
-//      return "redirect:/board/boardDetail?board_seq="
-//            + updateBoardCommand.getBoard_seq();
-//   }
-//   
-
-//   @RequestMapping(value="complete",method = {RequestMethod.POST,RequestMethod.GET})
-//   
-//   public String complete(@Validated DelBoardCommand delBoardCommand
-//                   ,BindingResult result
-//                      , Model model) {
-////      if(result.hasErrors()) {
-////         System.out.println("최소하나 체크하기");
-////         return "firstpay/PaymentRequest";
-////      }	
-//      payService.complete(delBoardCommand.getSeq());
-//      System.out.println("승인완료");
-//      return "redirect:/pay/RequestList";
-//   }
-
+	//최종 승인 폼 이동
+	   @GetMapping(value = "/opensuccess")
+	   public String userDetail(String name, AddUserCommand adduserCommand, Model model, HttpServletRequest request) {
+	      MemberDto dto = memberService.getuserDetail(name);
+	      System.out.println(name);
+	      // 유효값처리용
+	      model.addAttribute("dto", dto);
+	      System.out.println(dto);
+	      return "firstpay/PaymentMini";
+	   }
+	// 승인 최종 확인
+	   @GetMapping(value = "/success")
+	   public String plus(@Validated AddUserCommand adduserCommand, BindingResult result,String name, String id,Model model) {
+	      AccountDto accountDto = new AccountDto();
+	      MemberDto dto = memberService.getuserDetail(name);
+	      model.addAttribute("dto", dto);
+	      accountDto.setMemberid(dto.getMemberId());
+	      System.out.println("송금하기");
+	      accountDto.setMoney(adduserCommand.getMoney());
+	      memberService.Plus(accountDto);
+	      model.addAttribute("accountDto", accountDto);
+	      System.out.println(accountDto);
+	      
+	      return "redirect:/pay/opensuccess?name=" + adduserCommand.getName();
+//	      String str = "<script type='text/javascript'>" + "     self.close();" + "</script>";
+//			return str;
+	   }
 	// 요청 승인
 	@RequestMapping(value = "complete", method = { RequestMethod.POST, RequestMethod.GET })
-	public String mulDel(@Validated DelBoardCommand delBoardCommand, BindingResult result, Model model,
-			String board_seq) {
-		System.out.println("board_seq : " + board_seq);
-		payService.complete(board_seq);
+	public String mulDel(@Validated DelBoardCommand delBoardCommand,
+							BindingResult result, Model model,String board_seq,
+							String name , String role, String id, String money) {
+		
+		System.out.println("board_seq... : " + board_seq + name + role + id + money);
+		payService.complete(board_seq,name,role,id,money);
 		System.out.println("요청승인");
 		
 		return "redirect:/pay/RequestList";
