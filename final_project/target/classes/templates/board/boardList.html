@@ -21,64 +21,211 @@
    }
 </script>
 <style type="text/css">
-		h2 { font-weight: border; }
-		.hr1 { border: 0;
-		height: 2px;
-		background:  #d3d3d3;}
-		    .grey { 
-		     color: #727272;}
-		     #strong { font-weight: 900;}
+		table {
+		  border-collapse: collapse;
+		  border-spacing: 0;
+		}
+		section.notice {
+		  padding: 40px 0;
+		}
 		
-		            table {
-		            width: 100%;
-		            border-top: 1px solid #d3d3d3;
-		            border-collapse: collapse;
-		            }
-		            th { background-color: #d3d3d3 ; 
-		            border-top: 3px solid #727272;
-		            
-		            }
-		            th, td {
-		            border-bottom: 1px solid #d3d3d3;
-		            padding: 10px;
-		            }
-		
-		  .btn {
-		  width: 100px;
-		  height: 30px;
-		  font-weight: 900;
-		  color: white;
+		.page-title {
+		  margin-bottom: 60px;
+		}
+		.page-title h2 {
+		  font-size: 28px;
+		  color: #333333;
+		  font-weight:600;
 		  text-align: center;
-		  background: grey;
-		  border: solid 2px white;
-		  border-radius: 5px;
-		  }
+		}
 		
-		#error{
-			color:red;
-			}
-
-		a:link { color: blue; text-decoration: none;}
- 		a:visited { color: grey; text-decoration: none;}
- 		a:hover { color: black; height:bold; text-decoration: underline;}
- 		a {color:black; text-decoration-line : none;}
+		
+		#board-search .search-window .search-wrap .btn {
+		  position: absolute;
+		  right: 0;
+		  top: 0;
+		  bottom: 0;
+		  width: 108px;
+		  padding: 0;
+		  font-size: 16px;
+		}
+		
+		.board-table {
+		  font-size: 13px;
+		  width: 100%;
+		  border-top: 1px solid #ccc;
+		  border-bottom: 1px solid #ccc;
+		}
+		
+		.board-table a {
+		  color: #333;
+		  display: inline-block;
+		  line-height: 1.4;
+		  word-break: break-all;
+		  vertical-align: middle;
+		}
+		.board-table a:hover {
+		  text-decoration: underline;
+		}
+		.board-table th {
+		  text-align: center;
+		  
+		}
+		
+		.board-table .th-num {
+		  width: 100px;
+		  text-align: center;
+		}
+		
+		.board-table .th-date {
+		  width: 200px;
+		}
+		
+		.board-table th, .board-table td {
+		  padding: 14px 0;
+		  text-align: center;
+		}
+		
+		.board-table tbody td {
+		  border-top: 1px solid #e7e7e7;
+		  text-align: center;
+		}
+		.board-table tbody td a{
+			text-align: left;
+		}
+		.board-table tbody th {
+		  padding-left: 28px;
+		  padding-right: 14px;
+		  border-top: 1px solid #e7e7e7;
+		  text-align: left;
+		}
+		#title{
+		  padding-left: 28px;
+		  padding-right: 14px;
+		  text-align: left;
+		}
+		
+		.board-table tbody th p{
+		  display: none;
+		}
+		
+		.btn {
+		  display: inline-block;
+		  padding: 0 30px;
+		  font-size: 20px;
+		  font-weight: 400;
+		  background: transparent;
+		  text-align: center;
+		  white-space: nowrap;
+		  vertical-align: middle;
+		  -ms-touch-action: manipulation;
+		  touch-action: manipulation;
+		  cursor: pointer;
+		  -webkit-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		  border: 1px solid transparent;
+		  text-transform: uppercase;
+		  -webkit-border-radius: 0;
+		  -moz-border-radius: 0;
+		  border-radius: 0;
+		  -webkit-transition: all 0.3s;
+		  -moz-transition: all 0.3s;
+		  -ms-transition: all 0.3s;
+		  -o-transition: all 0.3s;
+		  transition: all 0.3s;
+		}
+		
+		.btn-dark {
+		  background: #555;
+		  color: #fff;
+		}
+		
+		.btn-dark:hover, .btn-dark:focus {
+		  background: #373737;
+		  border-color: #373737;
+		  color: #fff;
+		}
+		
+		.btn-dark {
+		  background: #555;
+		  color: #fff;
+		}
+		
+		.btn-dark:hover, .btn-dark:focus {
+		  background: #373737;
+		  border-color: #373737;
+		  color: #fff;
+		}
+		
+		/* reset */
+		
+		* {
+		  list-style: none;
+		  text-decoration: none;
+		  padding: 0;
+		  margin: 0;
+		  box-sizing: border-box;
+		}
+		.clearfix:after {
+		  content: '';
+		  display: block;
+		  clear: both;
+		}
+		.container {
+		  width: 1100px;
+		  margin: 0 auto;
+		}
+		.blind {
+		  position: absolute;
+		  overflow: hidden;
+		  clip: rect(0 0 0 0);
+		  margin: -1px;
+		  width: 1px;
+		  height: 1px;
+		}
 		   
+		   body{
+		  background-color: #dcdcdc;
+		  	font-family: 'GmarketSans';
+			font-weight: bold;
+			
+		   }
 </style>
 </head>
 <body>
 <div layout:fragment="content">
 <div id="container">
-<h2>게시판</h2>
+<section class="notice">
+  <div class="page-title">
+        <div class="container">
+            <h2>공지사항</h2>
+        </div>
+    </div>
+             <tr>
+            <td colspan="4">
+               <button type="button" class="btn btn-dark" th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>
+               <th:block th:if="${session.mdto.role == '사장'}">
+               
+               		<button type="submit" class="btn">삭제</button>
+              	    <span id="error" th:if="${#fields.hasErrors('seq')}"
+                     th:errors="*{seq}"></span>
+               </th:block>
+            </td>
+         </tr>
 <hr class ="hr1" noshade>
 <form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
-   <table class="table">
+<div class="board-list">
+<div class="container">
+   <table class="board-table">
       <tr>
          <th><input type="checkbox" name="all" 
                               onclick="allSel(this.checked)" /></th>
-         <th>작성자</th>
-         <th>등급</th>
-         <th>제목</th>
-         <th>작성일</th>
+         <th style="font-size:24px;" >작성자</th>
+         <th style="font-size:24px;" scope="col" class="th-role">등급</th>
+         <th style="font-size:24px; text-align: center;" scope="col" class="th-title">제목</th>
+         <th style="font-size:24px;" scope="col" class= "th-date">작성일</th>
       </tr>
       <th:block th:if="${#lists.isEmpty(blist)}">
          <tr>
@@ -89,31 +236,24 @@
          <tr th:each="dto:${blist}">
             <td><input type="checkbox" class="center" th:field="*{seq}"
                                  th:value="${dto.board_seq}"/></td>
-            <td class="center" th:text="${dto.id}"></td>
-            <td class="center" th:text="${dto.role}" th:style="'color:'+${@util.roleColor(dto.role)}"></td>
+            <td style="font-size:16px;" class="center" th:text="${dto.id}" th:style="'color:'+${@util.roleColor(dto.role)}"></td>
+            <td style="font-size:16px;"class="center" th:text="${dto.role}" th:style="'color:'+${@util.roleColor(dto.role)}"></td>
             <td>
                <a id ="title" th:href="@{/board/boardDetail(board_seq=${dto.board_seq})}"
                   th:text="${dto.title}" class ="left" th:style="'font-size : 20px;'+
                   									'font-weight : bold;'+'color:'+${@util.roleColor(dto.role)}"></a>
             </td>
-            <td class ="center" th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"></td>
+            <td style="font-size:16px;" class ="center" th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"></td>
          </tr>
       </th:block>
-         <tr>
-            <td colspan="4">
-               <button type="button" class="btn" th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>
-               <th:block th:if="${session.mdto.role == '사장'}">
-               
-               		<button type="submit" class="btn">삭제</button>
-              	    <span id="error" th:if="${#fields.hasErrors('seq')}"
-                     th:errors="*{seq}"></span>
-               </th:block>
-            </td>
-         </tr>
+
    </table>
 </form>
 </div>
 </div>
+</div>
+</div>
+</section>
 </body>
 </html>
 

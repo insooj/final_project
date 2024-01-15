@@ -13,6 +13,67 @@
     }
 </script>
     <style type="text/css">
+    body{
+    		background-color:#f3f3f3;
+    	}
+    					.btn {
+		  display: inline-block;
+		  padding: 0 30px;
+		  font-size: 20px;
+		  font-weight: 400;
+		  background: transparent;
+		  text-align: center;
+		  white-space: nowrap;
+		  vertical-align: middle;
+		  -ms-touch-action: manipulation;
+		  touch-action: manipulation;
+		  cursor: pointer;
+		  -webkit-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		  border: 1px solid transparent;
+		  text-transform: uppercase;
+		  -webkit-border-radius: 0;
+		  -moz-border-radius: 0;
+		  border-radius: 0;
+		  -webkit-transition: all 0.5s;
+		  -moz-transition: all 0.5s;
+		  -ms-transition: all 0.5s;
+		  -o-transition: all 0.5s;
+		  transition: all 0.5s;
+		}
+		
+		.btn-dark {
+		  background: #c8c8c8;
+		  color: #fff;
+		  font-size: 35px;
+		  margin-left : 80%;
+		}
+		
+		.btn-dark:hover, .btn-dark:focus {
+		  background: #373737;
+		  border-color: #373737;
+		  color: #fff;
+		}
+		
+		.btn-dark {
+		  background: #555;
+		  color: #fff;
+		}
+		
+		.btn-dark:hover, .btn-dark:focus {
+		  background: #373737;
+		  border-color: #373737;
+		  color: #fff;
+		}
+		
+    		body{				  
+		  	font-family: 'GmarketSans';
+			font-weight: bold;
+			}
+
+		
         h2 { font-weight: border; }
         .hr1 { border: 0; height: 2px; background:  #d3d3d3; }
         
@@ -25,16 +86,16 @@
              
                   table {
                   width: 100%;
-                  border-top: 1px solid #d3d3d3;
+                  border-top: 1px solid #f6efed;
                   border-collapse: collapse;
                   }
-                  th { background-color: #d3d3d3 ; 
-                  border-top: 3px solid #727272;
-                text-align: center;
+                  th { background-color: #f6efed ; 
+                	   border-top: 3px solid #000000;
+             	  	   text-align: center;
                   
                   }
                   th, td {
-                  border-bottom: 1px solid #d3d3d3;
+                  border-bottom: 1px solid #f6efed;
                   padding: 10px;
                    text-align: center;
                   }
@@ -89,12 +150,17 @@
 
 <body>
 <div layout:fragment="content">
-
+                  <th:block th:if="${session.mdto.role == '직원'}">
+                  <tr>
+                   <button type="button" class="btn-dark" th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
+                   </tr>
+                 </th:block>
     <div id="container">
         <h2>선지급 승인</h2>
         <hr class="hr1" noshade>
 <!--        <form action="/pay/complete" method="post" >-->
             <table class="table">
+
                 <tr  th:style="'font-size : 20px;'+'font-weight : bold;'">
                     <th>요청자</th>
                     <th>아이디</th>
@@ -103,6 +169,8 @@
                     <th>요청금액</th>
                     <th>승인여부</th>
                 </tr>
+                            
+               
                 <th:block th:if="${#lists.isEmpty(plist)}">
                     <tr>
                         <td colspan="4" style="text-align: center;" >---작성된 요청이 없습니다.---</td>
@@ -134,7 +202,20 @@
          
                            </span>
                        </td>
-                   </th:block>
+                          </th:block>                     
+                      
+                            <th:block th:if="${dto.delflag == 'R'}">
+                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
+                                    <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
+                                </td>
+                            </th:block>
+                            <th:block th:if="${dto.delflag == 'Y'}">
+                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
+                                    <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
+                                </td>
+                            </th:block>                   
+                  </th:block>
+                  
                         <!-- 승인여부 -->
                         <th:block th:if="${session.mdto.role == '직원'}">
                         
@@ -153,32 +234,16 @@
                                     <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
                                 </td>
                             </th:block>
-                           
-                        </th:block>
-                      
-                            <th:block th:if="${dto.delflag == 'R'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
-                                    <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'Y'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
-                                    <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
-                                </td>
-                            </th:block>                   
-                  </th:block>
                            </th:block>
-                            
+
+                           </th:block>
+
                     </tr>
 
             </table>
+
 <!--        </form>-->
 
-                 <th:block th:if="${session.mdto.role == '직원'}">
-                  <tr>
-                   <button type="button" class="btn" th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
-                   </tr>
-                 </th:block>
     </div>
 </div>
 
