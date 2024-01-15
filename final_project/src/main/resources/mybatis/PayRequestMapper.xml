@@ -10,7 +10,7 @@
       <result property="role" column="ROLE" />
       <result property="regdate" column="REGDATE" />
       <result property="money" column="MONEY"/>
-<!--       <result property="delflag" column="DELFLAG"/> -->
+      <result property="delflag" column="DELFLAG"/>
    </resultMap>
     <select id="firstpaymoney" parameterType="Map" resultType="paymentDto">
 	   SELECT id, 
@@ -33,11 +33,11 @@
       SELECT BOARD_SEQ, ID, NAME, ROLE, REGDATE,MONEY , DELFLAG
       FROM FIRSTPAYBOARD
 <!--       WHERE DELFLAG = 'N' -->
-      ORDER BY REGDATE DESC
+      ORDER BY BOARD_SEQ DESC
    </select>
    
-   <select id="getBoard" parameterType="Integer" resultMap="paymentDtoMap">
-      SELECT BOARD_SEQ, ID,  NAME, ROLE, REGDATE
+   <select id="getBoard" parameterType="Integer" resultType="paymentDto">
+      SELECT BOARD_SEQ, ID,  NAME, ROLE, REGDATE,
        MONEY , DELFLAG
       FROM FIRSTPAYBOARD
       WHERE BOARD_SEQ = #{board_seq}
@@ -56,30 +56,15 @@
       WHERE BOARD_SEQ=#{board_seq}
    </update>
 
-   <update id="complete" parameterType="String">
+   <update id="complete" parameterType="paymentDto">
       UPDATE FIRSTPAYBOARD
       SET DELFLAG = 'Y'
       WHERE BOARD_SEQ = #{board_seq}
    </update>
    
-   <update id="refuse" parameterType="String">
+   <update id="refuse" parameterType="paymentDto">
       UPDATE FIRSTPAYBOARD
       SET DELFLAG = 'R'
       WHERE BOARD_SEQ = #{board_seq}
    </update>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

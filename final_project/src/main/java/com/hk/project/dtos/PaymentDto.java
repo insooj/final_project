@@ -16,7 +16,7 @@ public class PaymentDto {
 	private String name;
 	private String role;
 	private Date regdate;
-	private int money;
+	private String money;
 	private String delflag;
 	private String month;
 	private String year;
@@ -51,10 +51,10 @@ public class PaymentDto {
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
-	public int getMoney() {
+	public String getMoney() {
 		return money;
 	}
-	public void setMoney(int money) {
+	public void setMoney(String money) {
 		this.money = money;
 	}
 	public String getDelflag() {
@@ -87,7 +87,7 @@ public class PaymentDto {
 				+ regdate + ", money=" + money + ", delflag=" + delflag + ", month=" + month + ", year=" + year
 				+ ", firstmoney=" + firstmoney + "]";
 	}
-	public PaymentDto(int board_seq, String id, String name, String role, Date regdate, int money, String delflag,
+	public PaymentDto(int board_seq, String id, String name, String role, Date regdate, String money, String delflag,
 			String month, String year, String firstmoney) {
 		super();
 		this.board_seq = board_seq;

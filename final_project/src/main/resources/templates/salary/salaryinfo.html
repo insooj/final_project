@@ -13,20 +13,20 @@
 		return false
 	}
 	onload = function() {
-		var month_pay_input = document.getElementById('month_pay');
-		var firstmoney_input = document.getElementById('firstmoney');
-		var tmoney_span = document.getElementById('tmoney');
-		// 요소의 텍스트(content)만을 출력
-		console.log(month_pay_input.textContent);
-		console.log(firstmoney_input.textContent);
+	    var month_pay_input = document.getElementById('month_pay');
+	    var firstmoney_input = document.getElementById('firstmoney');
+	    var tmoney_span = document.getElementById('tmoney');
+	    
+	    // Set a default value of 0 if firstmoney_input is not present
+	    var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
 
-		// 값(value)을 정수로 형변환하여 계산
-		var tmoney = parseInt(month_pay_input.textContent, 10)
-				- parseInt(firstmoney_input.textContent, 10);
+	    // 값(value)을 정수로 형변환하여 계산
+	    var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
 
-		console.log(tmoney);
-		tmoney_span.textContent = tmoney + "원";
+	    console.log(tmoney);
+	    tmoney_span.textContent = tmoney + "원";
 	}
+
 </script>
 <style type="text/css">
 body {
@@ -36,7 +36,7 @@ body {
 #totalsalary {
 	font-family: 'GongGothicMedium';
 	font-weight: bold;
-	color: black;
+	color: blue;
 	opacity: 1.0;;
 	position: absolute;
 	left: 80%;
@@ -204,8 +204,7 @@ a.t:hover {
 		
 				<th:block th:unless="${#lists.isEmpty(plist)}">
 					<tr th:each="dto : ${plist}">
-						<td th:if="${dto.total_hours != null}"><span
-							th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
+						<td th:if="${dto.total_hours != null}"></span></td>
 					</tr>
 				</th:block>
 			</div>

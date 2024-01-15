@@ -21,6 +21,7 @@ import com.hk.project.command.InsertBoardCommand;
 import com.hk.project.command.UpdateBoardCommand;
 import com.hk.project.dtos.BoardDto;
 import com.hk.project.dtos.FileBoardDto;
+import com.hk.project.dtos.FileUserDto;
 import com.hk.project.dtos.MemberDto;
 import com.hk.project.service.BoardService;
 import com.hk.project.service.FileService;
@@ -28,6 +29,7 @@ import com.hk.project.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "/board")
@@ -41,9 +43,13 @@ public class BoardController {
    private FileService fileService;
 
    @GetMapping(value = "/boardList")
-   public String boardList(Model model) {
+   public String boardList(Model model,HttpServletRequest request) {
       System.out.println("글목록 보기");
-
+      HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
       List<BoardDto> blist = boardService.getAllList();
       model.addAttribute("blist", blist);
       model.addAttribute("delBoardCommand", new DelBoardCommand());
@@ -51,8 +57,14 @@ public class BoardController {
    }
 
    @GetMapping(value = "/boardInsert")
-   public String boardInsertForm(Model model) {
+   public String boardInsertForm(Model model,HttpServletRequest request) {
       model.addAttribute("insertBoardCommand", new InsertBoardCommand());
+      HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+      
       return "board/boardInsertForm";
    }
 
@@ -60,7 +72,13 @@ public class BoardController {
    public String boardInsert(@Validated InsertBoardCommand insertBoardCommand, BindingResult result,
          MultipartRequest multipartRequest // multipart data를 처리할때 사용
          , HttpServletRequest request, Model model) throws IllegalStateException, IOException {
-      if (result.hasErrors()) {
+	   HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto fdto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(fdto);
+		model.addAttribute("list", list);
+	   
+	   if (result.hasErrors()) {
          System.out.println("글을 모두 입력하세요");
          return "board/boardInsertForm";
       }
@@ -72,9 +90,13 @@ public class BoardController {
 
    // 상세보기
    @GetMapping(value = "/boardDetail")
-   public String boardDetail(int board_seq, Model model) {
+   public String boardDetail(int board_seq, Model model,HttpServletRequest request) {
       BoardDto dto = boardService.getBoard(board_seq);
-
+      HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto fdto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(fdto);
+		model.addAttribute("list", list);
       // 유효값처리용
       model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
       // 출력용
@@ -87,8 +109,12 @@ public class BoardController {
 
    // 수정하기
    @PostMapping(value = "/boardUpdate")
-   public String boardUpdate(@Validated UpdateBoardCommand updateBoardCommand, BindingResult result) {
-
+   public String boardUpdate(@Validated UpdateBoardCommand updateBoardCommand,Model model,HttpServletRequest request, BindingResult result) {
+	   HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto fdto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(fdto);
+		model.addAttribute("list", list);
       if (result.hasErrors()) {
          System.out.println("수정내용을 모두 입력하세요");
          return "board/boardDetail";

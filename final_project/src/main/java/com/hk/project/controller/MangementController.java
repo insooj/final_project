@@ -82,23 +82,6 @@ public class MangementController {
 		return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
 	}
 
-//   @GetMapping(value = "/pay")
-//   public String pay(@Validated AddUserCommand adduserCommand,  BindingResult result,String name, String id,Model model) {
-//      MemberDto dto = memberService.getuserDetail(name);
-//      model.addAttribute("dto", dto);
-//      System.out.println("시급입력");
-//      
-//      
-////      memberService.Pay(dto);
-//      System.out.println(dto);
-////      accountDto.setMoney(adduserCommand.getMoney());
-//      model.addAttribute("dto", dto);
-//      System.out.println(dto);
-////      return "redirect:/board/UserManagement";
-//      return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
-//   }   
-//   
-
    
    @GetMapping(value = "/plus")
    public String plus(@Validated AddUserCommand adduserCommand, BindingResult result,String name, String id,Model model) {
@@ -118,7 +101,9 @@ public class MangementController {
 	@GetMapping(value = "/usermanagement")
 	public String boardList(Model model) {
 		System.out.println("직원 관리 폼");
-		MemberDto dto = new MemberDto();
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
 		List<FileUserDto> list = memberService.fileuser(dto);
 		model.addAttribute("list", list);
 //		System.out.println(list);
@@ -135,10 +120,18 @@ public class MangementController {
 		MemberDto dto = memberService.getuserDetail(name);
 		System.out.println("정보");
 		System.out.println(name);
-		MemberDto mdto = memberService.getUser(dto);
-		List<FileUserDto> list = memberService.fileuser(mdto);
+		
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto fdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto filedto = memberService.getUser(fdto);
+		List<FileUserDto> list = memberService.fileuser(filedto);
 		model.addAttribute("list", list);
 		System.out.println(list);
+		
+		MemberDto mdto = memberService.getUser(dto);
+		List<FileUserDto> filelist = memberService.fileuser(mdto);
+		model.addAttribute("filelist", filelist);
+		System.out.println(filelist);
 		
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
@@ -204,18 +197,4 @@ public class MangementController {
 		return "board/UserDetailManagement";
 	}
 
-//   @RequestMapping(value="mulDel",method = {RequestMethod.POST,RequestMethod.GET})
-//   public String mulDel(@Validated DelBoardCommand delBoardCommand
-//                   ,BindingResult result
-//                      , Model model) {
-//      if(result.hasErrors()) {
-//         System.out.println("최소하나 체크하기");
-//         List<BoardDto> blist=boardService.getAllList();
-//         model.addAttribute("blist", blist);
-//         return "board/boardlist";
-//      }
-//      boardService.mulDel(delBoardCommand.getSeq());
-//      System.out.println("글삭제함");
-//      return "redirect:/board/boardList";
-//   }
 }

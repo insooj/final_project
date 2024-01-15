@@ -6,9 +6,30 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
+onload = function() {
+    var month_pay_input = document.getElementById('month_pay');
+    var firstmoney_input = document.getElementById('firstmoney');
+    var tmoney_span = document.getElementById('tmoney');
+    
+    // Set a default value of 0 if firstmoney_input is not present
+    var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
+
+    // 값(value)을 정수로 형변환하여 계산
+    var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
+
+    console.log(tmoney);
+    tmoney_span.textContent = tmoney + "원";
+}
 document.addEventListener("DOMContentLoaded", function() {
+	  var month_pay_input = document.getElementById('month_pay');
+	    var firstmoney_input = document.getElementById('firstmoney');
+	    var tmoney_span = document.getElementById('tmoney');
+	    var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
+
+	    // 값(value)을 정수로 형변환하여 계산
+	    var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
     var moneyInput = document.getElementById('moneyInput');
-    var maxAllowedValue = [[${plist[0].month_pay}]];
+    var maxAllowedValue = tmoney;
 
     moneyInput.addEventListener("input", function() {
         console.log('Input event triggered');
@@ -21,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
 </script>
 <style type="text/css">
 </style>
@@ -52,17 +74,32 @@ document.addEventListener("DOMContentLoaded", function() {
 						<th>선지급요청 가능 금액</th>
 						<th:block th:unless="${#lists.isEmpty(plist)}">
 							<tr th:each="dto : ${plist}">
-								<td th:if="${dto.total_hours != null}"><span
+								<td th:if="${dto.total_hours != null}"><span id="month_pay"
 									th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
 							</tr>
 						</th:block>
 					</tr>
 					<tr>
+						<div id="firstpaysalary">
+							<th:block th:unless="${#lists.isEmpty(flist)}">
+								<tr th:each="dto : ${flist}">
+									<td th:if="${dto.id != null}"><span id="firstmoney"
+										th:text="${dto.firstmoney}"></span><span th:text="원"></span></td>
+								</tr>
+							</th:block>
+						</div>
+					</tr>
+					<tr>
+
 						<th>선지급요청 금액</th>
 						<td><input type="number" name="money" id="moneyInput"
-							class="form-control" required /> <span
-							th:if="${#fields.hasErrors('money')}" th:errors="*{money}"></span>
-						</td>
+							class="form-control" required /></td>
+					</tr>
+					<tr>
+						<div id="totalsalary">
+							 <span
+								id="tmoney"></span><span id=tmoney></span>
+						</div>
 					</tr>
 					<tr>
 						<td colspan="2">

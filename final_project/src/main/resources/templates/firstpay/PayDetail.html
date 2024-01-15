@@ -1,130 +1,196 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript">
-	function updateEX(){
-		if(confirm("수정하시겠습니까?")){
-			return true;
-		}
-		return false
-	}
-</script>
-<style type="text/css">
 
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    var moneyInput = document.getElementById('moneyInput');
+    var plusButton = document.getElementById('plusButton'); // 버튼 엘리먼트 가져오기
+    var maxAllowedValue = [[${dto.money}]];
+
+    // 초기에 버튼 비활성화
+    plusButton.disabled = true;
+
+    moneyInput.addEventListener("input", function() {
+        console.log('Input event triggered');
+        var inputValue = parseFloat(moneyInput.value);
+        
+        if (inputValue !== maxAllowedValue || inputValue == null) {
+            moneyInput.setCustomValidity('값을 ' + maxAllowedValue + '으로 입력해주세요.');
+            plusButton.disabled = true; // 버튼 비활성화
+        } else {
+            moneyInput.setCustomValidity('');
+            plusButton.disabled = false; // 버튼 활성화
+        }
+    });
+});
+
+function plus() {
+    if (confirm("급여를 지급하시겠습니까?")) {
+        return true;
+    }
+    return false;
+}
+</script>
+
+
+<style type="text/css">
+h2 {
+	font-weight: border;
+}
+
+.hr1 {
+	border: 0;
+	height: 2px;
+	background: #d3d3d3;
+}
+
+.button-group {
+	display: flex; /* 버튼들을 가로로 정렬하기 위해 Flexbox 사용 */
+	gap: 5px; /* 버튼 사이의 간격 조절 */
+}
+
+table {
+	width: 100%;
+	border-top: 1px solid #d3d3d3;
+	border-collapse: collapse;
+}
+
+th {
+	background-color: #d3d3d3;
+	border-top: 3px solid #727272;
+	text-align: center;
+}
+
+th, td {
+	border-bottom: 1px solid #d3d3d3;
+	padding: 10px;
+	text-align: center;
+}
+
+/* 모달이 열린 상태에서 오버레이 스타일링 */
+.modal:target {
+	display: block;
+}
+
+/* 오버레이 배경 스타일링 */
+.modal:target:before {
+	content: "";
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: -1;
+	background: rgba(0, 0, 0, 0.4);
+}
+
+/* 모달 스타일 */
+.modal {
+	display: none; /* 모달 숨김 */
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: rgba(0, 0, 0, 0.4); /* 배경을 어둡게 함 */
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 50%;
+	height: 50%;
+	overflow: hidden;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	animation-name: animatetop;
+	animation-duration: 0.4s;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+@
+keyframes animatetop {
+	from {top: -300px;
+	opacity: 0
+}
+
+to {
+	top: 0;
+	opacity: 1
+}
+
+}
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
 </style>
 </head>
-<body>
-<div layout:fragment="content">
-<div id="container">
-<h1>상세보기</h1>
-<form action="/board/boardUpdate" method="post" onsubmit="return updateEX()"
-								th:object="${updateBoardCommand}">
 
-	<input type="hidden" name="board_seq" th:value="${dto.board_seq}"/>
-	
-	
-	<table class="table">
-	<th:block th:if="${session.mdto.id == dto.id or session.mdto.role == '사장'}">
-		<tr>
-			<th>작성자[ID]</th>
-			<td th:text="${dto.id}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td>
-				<input type="text" name="title" th:value="${dto.title}"
-												class="form-control"/>
-				<span th:if="${#fields.hasErrors('title')}" 
-					  th:errors="*{title}"></span>
-			</td>
-		</tr>
-		<tr>
-			<th>파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
-			<th:block th:if="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>첨부파일없음</td>
-			</th:block>
-			<th:block th:unless="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>
-					<th:block th:each="fdto:${dto.fileBoardDto}">
-						<span class="glyphicon glyphicon-folder-open"></span>
-						<a th:text="${fdto.origin_filename}"
-						   th:href="@{/board/download(file_seq=${fdto.file_seq})}" ></a>&nbsp;&nbsp;
-					</th:block>
-				</td>
-			</th:block>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td>
-				<textarea rows="10" cols="60" name="content"
-						  th:text="${dto.content}"
-				          class="form-control"></textarea>
-				<span th:if="${#fields.hasErrors('content')}" 
-					  th:errors="*{content}"></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<button type="submit" class="btn">수정</button>
-				<button type="button" class="btn"
-				 th:onclick="|location.href='@{/board/mulDel(seq=${dto.board_seq})}'|">삭제</button>
-				<button type="button" class="btn"
-				 th:onclick="|location.href='@{/board/boardList}'|">목록</button>
-			</td>
-		</tr>
-		</th:block>
-		<th:block th:unless="${session.mdto.id == dto.id or session.mdto.role == '사장'}">
-		<tr>
-			<th>작성자[ID]</th>
-			<td id = "id" th:text="${dto.id}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td>[[${dto.title}]]
-				<span th:if="${#fields.hasErrors('title')}" 
-					  th:errors="*{title}"></span>
-			</td>
-		</tr>
-		<tr>
-			<th>파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
-			<th:block th:if="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>첨부파일없음</td>
-			</th:block>
-			<th:block th:unless="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>
-					<th:block th:each="fdto:${dto.fileBoardDto}">
-						<span class="glyphicon glyphicon-folder-open"></span>
-						<a th:text="${fdto.origin_filename}"
-						   th:href="@{/board/download(file_seq=${fdto.file_seq})}" ></a>&nbsp;&nbsp;
-					</th:block>
-				</td>
-			</th:block>
-		</tr>
-		<tr>
-			<th scope ="row">내용</th>
-			<td colsapn="3">[[${dto.content}]]
-			</td>
-		</tr>
-		
-		<tr>
-			<td colspan="2">
-				 <button type="button" class="btn"
-				 th:onclick="|location.href='@{/board/boardList}'|">목록</button>
-			</td>
-		</tr>
-	</th:block>
-	</table>
-</form>
-</div>
-</div>
+<body>
+	<div layout:fragment="content">
+
+		<div id="container">
+			<h2>선지급 승인</h2>
+			<hr class="hr1" noshade>
+				<input type="hidden" name="board_seq" th:value="${dto.board_seq}"/>
+			<table class="table">
+				<tr th:style="'font-size : 20px;'+'font-weight : bold;'">
+					<th>신청번호</th>
+					<th>요청자</th>
+					<th>아이디</th>
+					<th>등급</th>
+					<th>작성일</th>
+					<th>요청금액</th>
+				</tr>
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal()">&times;</span>
+						<iframe id="paymentMiniFrame" src="" width="100%" height="500px"></iframe>
+					</div>
+				</div>
+					<td><span th:text="${dto.board_seq}"></span></td>
+					<td><span th:text="${dto.name}"></span></td>
+					<td><span th:text="${dto.id}"></span></td>
+					<td><span th:text="${dto.role}"></span></td>
+					<td><span  th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"></span></td>
+					<td><span th:text="${dto.money}"></span></td>
+
+			</table>
+			<p style=" text-align: center; font-size: 25px;	font-weight: bold; font-family: 'GongGothicMedium';">올바른 금액을 입력해야 지급버튼이 활성화 됩니다.</p>
+					<form th:action="@{/pay/success}" onsubmit="return plus()" 
+				method="get" th:object="${adduserCommand}">
+				<input type="hidden" name="name" th:value="${dto.name}" />
+				<input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
+				 <input
+					type="text" name="money" id="moneyInput"  
+					style="font-size: 20px; width: 200px; font-family: 'GongGothicMedium'; position: absolute; top: 60%; left: 38%;" />
+			<button id="plusButton" type="submit"
+    style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top:60%; left: 68%;"
+    class="btn">선지급하기</button>
+
+			</form>
+		</div>
+	</div>
+
 </body>
 </html>
-
-
-
-
-

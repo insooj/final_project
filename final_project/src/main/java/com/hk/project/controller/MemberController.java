@@ -45,6 +45,7 @@ import com.hk.project.feignMapper.OpenBankingFeign;
 import com.hk.project.service.FileService;
 import com.hk.project.service.FileUserService;
 import com.hk.project.service.MemberService;
+import com.hk.project.service.PayService;
 
 import groovyjarjarantlr4.v4.runtime.ParserInterpreter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,6 +55,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping(value = "/user")
 public class MemberController {
 
+	
 	@Autowired
 	private OpenBankingFeign openBankingFeign;
 	@Autowired

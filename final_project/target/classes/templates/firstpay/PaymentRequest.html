@@ -1,186 +1,280 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-     layout:decorate="~{layouts/layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-    
-<script type="text/javascript">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script th:inline="javascript">
+	function approveAction(boardSeq) {
+		// 모달 열기
+		document.getElementById('modalIframe').src = '/pay/RequestDetail?board_seq='
+				+ boardSeq;
+		document.getElementById('myModal').style.display = 'block';
+	}
+	function refuseAction(boardSeq) {
+		// 모달 열기
+		document.getElementById('modalIframe').src = '/pay/RequestRefuse?board_seq='
+				+ boardSeq;
+		document.getElementById('myModal').style.display = 'block';
+	}
 
-    function openWindow(url) {
-        window.open(url, '_blank', 'width=600,height=400'); // 크기는 필요에 따라 조절 가능
-    }
+	document
+			.addEventListener(
+					'DOMContentLoaded',
+					function() {
+						document
+								.getElementById('closeModalBtn')
+								.addEventListener(
+										'click',
+										function() {
+											try {
+												// iframe의 URL 초기화
+												document
+														.getElementById('modalIframe').src = '';
+												document
+														.getElementById('myModal').style.display = 'none';
+												location.reload();
+											} catch (error) {
+												console.error(
+														"Error closing modal:",
+														error);
+											}
+										});
+					});
+
+	// 모달 외부 클릭 시 닫기
+	window.addEventListener('click', function(event) {
+		if (event.target === document.getElementById('myModal')) {
+			// iframe의 URL 초기화
+			document.getElementById('modalIframe').src = '';
+			document.getElementById('myModal').style.display = 'none';
+			location.reload();
+		}
+	});
 </script>
-    <style type="text/css">
-        h2 { font-weight: border; }
-        .hr1 { border: 0; height: 2px; background:  #d3d3d3; }
-        
-        
-           .button-group {
-            display: flex; /* 버튼들을 가로로 정렬하기 위해 Flexbox 사용 */
-            gap: 5px; /* 버튼 사이의 간격 조절 */
-             }
-             
-             
-                  table {
-                  width: 100%;
-                  border-top: 1px solid #d3d3d3;
-                  border-collapse: collapse;
-                  }
-                  th { background-color: #d3d3d3 ; 
-                  border-top: 3px solid #727272;
-                text-align: center;
-                  
-                  }
-                  th, td {
-                  border-bottom: 1px solid #d3d3d3;
-                  padding: 10px;
-                   text-align: center;
-                  }
-                  
-                  
-                  
-                  
-                /* 모달 스타일 */
-        .modal {
-            display: none; /* 모달 숨김 */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* 배경을 어둡게 함 */
-        }
+<style type="text/css">
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            animation-name: animatetop;
-            animation-duration: 0.4s;
-        }
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px; padding-bottom : 3%;
+	border: 1px solid #888;
+	width: 40%;
+	height: 50%;
+	padding-bottom: 3%;
+}
 
-        @keyframes animatetop {
-            from {top: -300px; opacity: 0}
-            to {top: 0; opacity: 1}
-        }
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+h2 {
+	font-weight: border;
+}
+
+.hr1 {
+	border: 0;
+	height: 2px;
+	background: #d3d3d3;
+}
+
+.button-group {
+	display: flex; /* 버튼들을 가로로 정렬하기 위해 Flexbox 사용 */
+	gap: 5px; /* 버튼 사이의 간격 조절 */
+}
+
+table {
+	width: 100%;
+	border-top: 1px solid #d3d3d3;
+	border-collapse: collapse;
+}
+
+th {
+	background-color: #d3d3d3;
+	border-top: 3px solid #727272;
+	text-align: center;
+}
+
+th, td {
+	border-bottom: 1px solid #d3d3d3;
+	padding: 10px;
+	text-align: center;
+}
+
+keyframes animatetop {
+	from {top: -300px;
+	opacity: 0
+}
+
+to {
+	top: 0;
+	opacity: 1
+}
+
+}
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+</style>
 </head>
 
 <body>
-<div layout:fragment="content">
+	<div layout:fragment="content">
 
-    <div id="container">
-        <h2>선지급 승인</h2>
-        <hr class="hr1" noshade>
-<!--        <form action="/pay/complete" method="post" >-->
-            <table class="table">
-                <tr  th:style="'font-size : 20px;'+'font-weight : bold;'">
-                    <th>요청자</th>
-                    <th>아이디</th>
-                    <th>등급</th>
-                    <th>작성일</th>
-                    <th>요청금액</th>
-                    <th>승인여부</th>
-                </tr>
-                <th:block th:if="${#lists.isEmpty(plist)}">
-                    <tr>
-                        <td colspan="4" style="text-align: center;" >---작성된 요청이 없습니다.---</td>
-                    </tr>
-                </th:block>
-                <th:block th:unless="${#lists.isEmpty(plist)}">
-                    <tr th:each="dto:${plist}">          
-                        <!-- 기타 td 열 코드 -->
-                        <td class="center" th:text="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                        <td class="center" th:text="${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                        <td class="center" th:text="${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'+'color:blue;'"></td>
-                        <td class ="center" th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}" th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                        <td th:style="'font-size : 18px;'+'font-weight : bold;'">
-                            <span class="center" th:text="${dto.money}" th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원
-                        </td>
-<!--                        사장일때-->
-                        <th:block th:if="${session.mdto.role == '사장'}">
-                   <th:block th:if="${dto.delflag == 'N'}">
-                     <td>
-            <a href="javascript:void(0);" class="center"
-               th:style="'font-size: 18px; font-weight: bold;'"
-               th:onclick="'openWindow(\'' + @{/pay/opensuccess(name=${dto.name})} + '\')'">승인</a>
-                         
-                            <form th:action="@{/pay/refuse}" method="post">
-                                <input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
-                                <button type="button" id="showRejectModalBtn" 
-                                      class="reject-btn" onclick="showRefuseConfirmation()">거절</button>
-                            </form>
-         
-                           </span>
-                       </td>
-                   </th:block>
-                        <!-- 승인여부 -->
-                        <th:block th:if="${session.mdto.role == '직원'}">
-                        
-                            <th:block th:if="${dto.delflag == 'N'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #3DFF92;'">
-                                    <span th:if="${dto != null && dto.delflag == 'N'}">승인대기</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'R'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
-                                    <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'Y'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
-                                    <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
-                                </td>
-                            </th:block>
-                           
-                        </th:block>
-                      
-                            <th:block th:if="${dto.delflag == 'R'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
-                                    <span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
-                                </td>
-                            </th:block>
-                            <th:block th:if="${dto.delflag == 'Y'}">
-                                <td th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
-                                    <span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
-                                </td>
-                            </th:block>                   
-                  </th:block>
-                           </th:block>
-                            
-                    </tr>
+		<div id="container">
+			<h2>선지급 요청목록</h2>
+			<h4>[직원은 개인내역만 조회합니다]</h4>
+			<hr class="hr1" noshade>
+			<!--        <form action="/pay/complete" method="post" >-->
+			<table class="table">
+				<tr th:style="'font-size : 20px;'+'font-weight : bold;'">
+					<th>신청번호</th>
+					<th>요청자</th>
+					<th>아이디</th>
+					<th>등급</th>
+					<th>작성일</th>
+					<th>요청금액</th>
+					<th>승인여부</th>
+				</tr>
 
-            </table>
-<!--        </form>-->
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<span class="close" id="closeModalBtn">&times;</span>
+						<iframe id="modalIframe" width="100%" height="100%"></iframe>
+					</div>
+				</div>
 
-                 <th:block th:if="${session.mdto.role == '직원'}">
-                  <tr>
-                   <button type="button" class="btn" th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
-                   </tr>
-                 </th:block>
-    </div>
-</div>
+				<th:block th:if="${#lists.isEmpty(plist)}">
+					<tr>
+						<td colspan="4" style="text-align: center;">---작성된 요청이
+							없습니다.---</td>
+					</tr>
+				</th:block>
+				<th:block th:unless="${#lists.isEmpty(plist)}">
+					<tr th:each="dto:${plist}">
+						<!-- 기타 td 열 코드 -->
+
+						<!--                        사장일때-->
+						<th:block th:if="${session.mdto.role == '사장'}">
+							<td class="center" th:text="${dto.board_seq}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.name}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.id}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.role}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'+'color:blue;'"></td>
+							<td class="center"
+								th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td th:style="'font-size : 18px;'+'font-weight : bold;'"><span
+								class="center" th:text="${dto.money}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원</td>
+							<th:block th:if="${dto.delflag == 'N'}">
+
+								<td>
+									<button type="button"
+										th:onclick="/*<![CDATA[*/ approveAction(/*[(${dto.board_seq})]*/); /*]]>*/">승인</button>
+									<button type="button"
+										th:onclick="/*<![CDATA[*/ refuseAction(/*[(${dto.board_seq})]*/); /*]]>*/">거절</button>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'R'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
+									<span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
+								</td>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'Y'}">
+
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
+									<span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
+								</td>
+							</th:block>
+						</th:block>
+						<!-- 승인여부 -->
+						<th:block
+							th:if="${session.mdto.role == '직원'} and ${dto.id == session.mdto.id}">
+							<td class="center" th:text="${dto.board_seq}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.name}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.id}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.role}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'+'color:blue;'"></td>
+							<td class="center"
+								th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td th:style="'font-size : 18px;'+'font-weight : bold;'"><span
+								class="center" th:text="${dto.money}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원</td>
+							<th:block th:if="${dto.delflag == 'N'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #3DFF92;'">
+									<span th:if="${ dto.delflag == 'N'}">승인대기</span>
+								</td>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'R'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
+									<span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
+								</td>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'Y'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
+									<span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
+								</td>
+							</th:block>
+
+						</th:block>
+				</th:block>
+				</th:block>
+
+				</tr>
+
+			</table>
+			<!--        </form>-->
+
+			<th:block th:if="${session.mdto.role == '직원'}">
+				<tr>
+					<button type="button" class="btn"
+						th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
+				</tr>
+			</th:block>
+		</div>
+	</div>
 
 </body>
 </html>

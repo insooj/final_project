@@ -14,26 +14,18 @@ public interface PayRequestMapper {
 	//요청목록
 	public List<PaymentDto> getAllList();
 	//요청상세조회
-	public PaymentDto getPayment(int board_seq);
+	public PaymentDto getBoard(int board_seq);
 	//요청추가
 	public boolean insertPayment(PaymentDto dto);
-//	글 수정
-//	public boolean updatepay(PaymentDto dto);
 	//요청승인
-	public boolean complete(String seqs);
+	public boolean complete(PaymentDto dto);
 	
 	 public List<PaymentDto> firstpaymoney(Map<String, String>map);
 	//요청거절
-	public boolean refuse(String seqs);
+	public boolean refuse(PaymentDto dto);
 	
 	
 
 	
 	
 }
-
-
-
-
-
-

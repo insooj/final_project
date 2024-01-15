@@ -8,7 +8,7 @@ public class InsertPayCommand {
 	private String role;
 	private String name;
 //	@NotBlank(message = "금액을 입력하세요")
-	private int money;
+	private String money;
 	private String delflag;
 	private int board_seq;
 	
@@ -18,7 +18,7 @@ public class InsertPayCommand {
 
 
 
-	public InsertPayCommand(String id, String role, String name, int money, String delflag, int board_seq) {
+	public InsertPayCommand(String id, String role, String name, String money, String delflag, int board_seq) {
 		super();
 		this.id = id;
 		this.role = role;
@@ -65,10 +65,10 @@ public class InsertPayCommand {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getMoney() {
+	public String getMoney() {
 		return money;
 	}
-	public void setMoney(int money) {
+	public void setMoney(String money) {
 		this.money = money;
 	}
 	

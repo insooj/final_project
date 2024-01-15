@@ -38,283 +38,264 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/schedule", method = RequestMethod.GET)
 public class CalController {
-   // log를 원하는 위치에 설정하여 디버깅 하기
-   private static final Logger logger = LoggerFactory.getLogger(CalController.class);
+	// log를 원하는 위치에 설정하여 디버깅 하기
+	private static final Logger logger = LoggerFactory.getLogger(CalController.class);
 
-   @Autowired
-   private MemberService memberService;
+	@Autowired
+	private MemberService memberService;
 
-   @Autowired
-   private ICalService calService;
+	@Autowired
+	private ICalService calService;
 
-   @PostMapping(value = "/calendar")
-   public String calendar(Model model, HttpServletRequest request) {
+	@PostMapping(value = "/calendar")
+	public String calendar(Model model, HttpServletRequest request) {
 
-      logger.info("달력보기");
+		logger.info("달력보기");
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		// 달력에서 일일별 일정목록 구하기
 
-      // 달력에서 일일별 일정목록 구하기
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
 
-      String year = request.getParameter("year");
-      String month = request.getParameter("month");
-      
-      
-      
-      LocalDate currentDate = LocalDate.now();
-      int currentYear = currentDate.getYear();
-      int currentMonth = currentDate.getMonthValue();
-      int currentDay = currentDate.getDayOfMonth();
+		LocalDate currentDate = LocalDate.now();
+		int currentYear = currentDate.getYear();
+		int currentMonth = currentDate.getMonthValue();
+		int currentDay = currentDate.getDayOfMonth();
 
-      model.addAttribute("currentYear", currentYear);
-      model.addAttribute("currentMonth", currentMonth);
-      model.addAttribute("currentDay", currentDay);
-      
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> list = memberService.fileuser(dto);
-      model.addAttribute("list", list);
-      
-      if (year == null || month == null) {
-         Calendar cal = Calendar.getInstance();
-         year = cal.get(Calendar.YEAR) + "";
-         month = (cal.get(Calendar.MONTH) + 1) + "";
-      }
-      // 달력만들기위한 값 구하기
-      Map<String, Integer> map = calService.makeCalendar(request);
-      model.addAttribute("calMap", map);
+		model.addAttribute("currentYear", currentYear);
+		model.addAttribute("currentMonth", currentMonth);
+		model.addAttribute("currentDay", currentDay);
+		
 
+		if (year == null || month == null) {
+			Calendar cal = Calendar.getInstance();
+			year = cal.get(Calendar.YEAR) + "";
+			month = (cal.get(Calendar.MONTH) + 1) + "";
+		}
+		// 달력만들기위한 값 구하기
+		Map<String, Integer> map = calService.makeCalendar(request);
+		model.addAttribute("calMap", map);
 
+		return "board/calendar";
+	}
 
+	@PostMapping(value = "/Month_calendar")
+	public String Month_calendar(Model model, HttpServletRequest request) {
 
+		logger.info("달력보기");
 
-      return "board/calendar";
-   }
-//   
-//   @GetMapping("/calendar")
-//   public String yourHandlerMethod(Model model) {
-//       LocalDate currentDate = LocalDate.now();
-//       int currentYear = currentDate.getYear();
-//       int currentMonth = currentDate.getMonthValue();
-//       model.addAttribute("currentYear", currentYear);
-//       model.addAttribute("currentMonth", currentMonth);
-//       
-//       // 다른 모델 속성 설정
-//       
-//       return "board/calendar";
-//   }
-   
-   
-   @PostMapping(value = "/Month_calendar")
-   public String Month_calendar(Model model, HttpServletRequest request) {
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
 
-      logger.info("달력보기");
+		List<FileUserDto> zlist = memberService.fileuser(dto);
+		model.addAttribute("zlist", zlist);
 
-      // 달력에서 일일별 일정목록 구하기
+		if (year == null || month == null) {
+			Calendar cal = Calendar.getInstance();
+			year = cal.get(Calendar.YEAR) + "";
+			month = (cal.get(Calendar.MONTH) + 1) + "";
+		}
+		// 달력만들기위한 값 구하기
+		Map<String, Integer> map = calService.makeCalendar(request);
+		model.addAttribute("calMap", map);
 
-      String year = request.getParameter("year");
-      String month = request.getParameter("month");
-      
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> zlist = memberService.fileuser(dto);
-      model.addAttribute("zlist", zlist);
-      
-      if (year == null || month == null) {
-         Calendar cal = Calendar.getInstance();
-         year = cal.get(Calendar.YEAR) + "";
-         month = (cal.get(Calendar.MONTH) + 1) + "";
-      }
-      // 달력만들기위한 값 구하기
-      Map<String, Integer> map = calService.makeCalendar(request);
-      model.addAttribute("calMap", map);
+		return "board/month_calendar";
+	}
 
+	@GetMapping(value = "/addCalBoardForm")
+	public String addCalBoardForm(Model model, InsertCalCommand insertCalCommand, HttpServletRequest request) {
+		logger.info("일정추가폼이동");
+		System.out.println(insertCalCommand);
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		// addCalBoardfForm 페이지에서 유효값 처리를 위해 insertCalCommand 받고 있기때문에
+		model.addAttribute("insertCalCommand", insertCalCommand);
+		return "board/addCalBoardForm";
+	}
 
+	@PostMapping(value = "/addCalBoard")
+	public String addCalBoard(@Validated InsertCalCommand insertMonthCommand, Model model, BindingResult result,HttpServletRequest request)
+			throws Exception {
+		logger.info("일정추가하기");
+		System.out.println(insertMonthCommand);
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		if (result.hasErrors()) {
+			System.out.println("글을 모두 입력해야 함");
+			return "board/addCalBoardForm";
+		}
 
+		calService.insertCalBoard(insertMonthCommand);
 
+		return "redirect:/schedule/calendar?year=" + insertMonthCommand.getYear() + "&month="
+				+ insertMonthCommand.getMonth();
+	}
 
-      return "board/month_calendar";
-   }
+	@PostMapping(value = "/addMonthschedule")
+	public String addMonthschedule(@Validated InsertCalCommand insertMonthCommand, Model model, BindingResult result)
+			throws Exception {
+		logger.info("월별 스케쥴 추가하기");
+		
+		System.out.println(insertMonthCommand);
+		MemberDto dto = new MemberDto();
+		List<FileUserDto> slist = memberService.fileuser(dto);
+		model.addAttribute("slist", slist);
+		if (result.hasErrors()) {
+			System.out.println(" 모두 입력해야 함");
+			return "board/addMonthscheduleForm";
+		}
 
-   @GetMapping(value = "/addCalBoardForm")
-   public String addCalBoardForm(Model model, InsertCalCommand insertCalCommand) {
-      logger.info("일정추가폼이동");
-      System.out.println(insertCalCommand);
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> list = memberService.fileuser(dto);
-      model.addAttribute("list", list);
-      // addCalBoardfForm 페이지에서 유효값 처리를 위해 insertCalCommand 받고 있기때문에
-      model.addAttribute("insertCalCommand", insertCalCommand);
-      return "board/addCalBoardForm";
-   }
-   
-   @PostMapping(value = "/addCalBoard")
-   public String addCalBoard(@Validated InsertCalCommand insertMonthCommand,Model model, BindingResult result) throws Exception {
-      logger.info("일정추가하기");
-      System.out.println(insertMonthCommand);
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> list = memberService.fileuser(dto);
-      model.addAttribute("list", list);
-      if (result.hasErrors()) {
-         System.out.println("글을 모두 입력해야 함");
-         return "board/addCalBoardForm";
-      }
+		calService.insertMonthschedule(insertMonthCommand);
 
-      calService.insertCalBoard(insertMonthCommand);
+		return "redirect:/schedule/Month_calendar?year=" + insertMonthCommand.getYear() + "&month="
+				+ insertMonthCommand.getMonth();
+	}
 
-      return "redirect:/schedule/calendar?year=" + insertMonthCommand.getYear() + "&month="
-            + insertMonthCommand.getMonth();
-   }
+	@GetMapping(value = "/addMonthForm")
+	public String addMonthForm(Model model, InsertCalCommand insertCalCommand,HttpServletRequest request) {
+		logger.info("월별 스케쥴 추가 폼이동");
+		System.out.println(insertCalCommand);
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		// addCalBoardfForm 페이지에서 유효값 처리를 위해 insertCalCommand 받고 있기때문에
+		model.addAttribute("insertCalCommand", insertCalCommand);
+		return "board/addMonthscheduleForm";
+	}
 
-   
-   @PostMapping(value = "/addMonthschedule")
-   public String addMonthschedule(@Validated InsertCalCommand insertMonthCommand,Model model, BindingResult result) throws Exception {
-      logger.info("월별 스케쥴 추가하기");
-      System.out.println(insertMonthCommand);
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> slist = memberService.fileuser(dto);
-      model.addAttribute("slist", slist);
-      if (result.hasErrors()) {
-         System.out.println(" 모두 입력해야 함");
-         return "board/addMonthscheduleForm";
-      }
-
-      calService.insertMonthschedule(insertMonthCommand);
-
-      return "redirect:/schedule/Month_calendar?year=" + insertMonthCommand.getYear() + "&month="
-            + insertMonthCommand.getMonth();
-   }
-   
-   
-   
-   
-   @GetMapping(value = "/addMonthForm")
-   public String addMonthForm(Model model, InsertCalCommand insertCalCommand) {
-      logger.info("월별 스케쥴 추가 폼이동");
-      System.out.println(insertCalCommand);
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> slist = memberService.fileuser(dto);
-      model.addAttribute("slist", slist);
-      // addCalBoardfForm 페이지에서 유효값 처리를 위해 insertCalCommand 받고 있기때문에
-      model.addAttribute("insertCalCommand", insertCalCommand);
-      return "board/addMonthscheduleForm";
-   }
-
-   
-
-
-   @GetMapping(value = "/calBoardList")
-   public String calBoardList(@RequestParam Map<String, String> map, HttpServletRequest request, Model model) {
-      logger.info("일정목록보기");
-      HttpSession session = request.getSession();
+	@GetMapping(value = "/calBoardList")
+	public String calBoardList(@RequestParam Map<String, String> map, HttpServletRequest request, Model model) {
+		logger.info("일정목록보기");
 //      String id=(String) session.getAttribute("id");
 //      String id="jth";//임시로 id 저장
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> list = memberService.fileuser(dto);
-      model.addAttribute("list", list);
-      // command 유효값 처리를 위해 기본 생성해서 보내줌
-      model.addAttribute("deleteCalCommand", new DeleteCalCommand()); 
+		HttpSession session = (HttpSession) request.getSession();
+		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+		MemberDto dto = memberService.getUser(mdto);
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		// command 유효값 처리를 위해 기본 생성해서 보내줌
+		model.addAttribute("deleteCalCommand", new DeleteCalCommand());
 
-      // 일정목록을 조회할때마다 year, month, date를 세션에 저장
+		// 일정목록을 조회할때마다 year, month, date를 세션에 저장
 //      HttpSession session=request.getSession();
 
-      if (map.get("year") == null) {
-         // 조회한 상태이기때문에 ymd가 저장되어 있어서 값을 가져옴
-         map = (Map<String, String>) session.getAttribute("ymdMap");
-      } else {
-         // 일정을 처음 조회했을때 ymd를 저장함
-         session.setAttribute("ymdMap", map);
-      }
+		if (map.get("year") == null) {
+			// 조회한 상태이기때문에 ymd가 저장되어 있어서 값을 가져옴
+			map = (Map<String, String>) session.getAttribute("ymdMap");
+		} else {
+			// 일정을 처음 조회했을때 ymd를 저장함
+			session.setAttribute("ymdMap", map);
+		}
 
-      // 달력에서 전달받은 파라미터 year, month, date를 8자리로 만든다.
-      String yyyyMMdd = map.get("year") + Util.isTwo(map.get("month")) + Util.isTwo(map.get("date"));
-      List<CalDto> flist = calService.calBoardList(yyyyMMdd);
-      
-      model.addAttribute("flist", flist);
-      
-      
-      return "board/calBoardList";
-   }
+		// 달력에서 전달받은 파라미터 year, month, date를 8자리로 만든다.
+		String yyyyMMdd = map.get("year") + Util.isTwo(map.get("month")) + Util.isTwo(map.get("date"));
+		List<CalDto> flist = calService.calBoardList(yyyyMMdd);
 
-   @PostMapping(value = "/calMulDel")
-   public String calMulDel(@Validated DeleteCalCommand deleteCalCommand, BindingResult result,
-         HttpServletRequest request, Model model) {
+		model.addAttribute("flist", flist);
 
-      if (result.hasErrors()) {
-         System.out.println("최소 하나 이상 체크하기");
+		return "board/calBoardList";
+	}
 
-         HttpSession session = request.getSession();
+	@PostMapping(value = "/calMulDel")
+	public String calMulDel(@Validated DeleteCalCommand deleteCalCommand, BindingResult result,
+			HttpServletRequest request, Model model) {
+
+		if (result.hasErrors()) {
+			System.out.println("최소 하나 이상 체크하기");
+
+			HttpSession session = request.getSession();
 //         String id=(String) session.getAttribute("id");
 //         String id="jth";//임시로 id 저장
 
-         // session에 저장된 ymd 값은 목록 조회할때 추가되는 코드임
-         Map<String, String> map = (Map<String, String>) session.getAttribute("ymdMap");
+			// session에 저장된 ymd 값은 목록 조회할때 추가되는 코드임
+			Map<String, String> map = (Map<String, String>) session.getAttribute("ymdMap");
 
-         // 달력에서 전달받은 파라미터 year, month, date를 8자리로 만든다.
-         String yyyyMMdd = map.get("year") + Util.isTwo(map.get("month")) + Util.isTwo(map.get("date"));
-         List<CalDto> list = calService.calBoardList(yyyyMMdd);
-         model.addAttribute("list", list);
-         return "board/calBoardList";
-      }
-      Map<String, String[]> map = new HashMap<>();
-      map.put("seqs", deleteCalCommand.getSeq());
-      calService.calMulDel(map);
+			// 달력에서 전달받은 파라미터 year, month, date를 8자리로 만든다.
+			String yyyyMMdd = map.get("year") + Util.isTwo(map.get("month")) + Util.isTwo(map.get("date"));
+			List<CalDto> list = calService.calBoardList(yyyyMMdd);
+			model.addAttribute("list", list);
+			return "board/calBoardList";
+		}
+		Map<String, String[]> map = new HashMap<>();
+		map.put("seqs", deleteCalCommand.getSeq());
+		calService.calMulDel(map);
 
-      return "redirect:/schedule/calBoardList";
-   }
+		return "redirect:/schedule/calBoardList";
+	}
 
-   @GetMapping("/calMulDel")
-   public String calDel(String[] seq) {
-      logger.info("일정삭제하기");
-      System.out.println(seq[0]);
-      Map<String, String[]> map = new HashMap<>();
-      map.put("seqs", seq);
-      calService.calMulDel(map);
-      return "redirect:/schedule/calBoardList";
-   }
+	@GetMapping("/calMulDel")
+	public String calDel(String[] seq) {
+		logger.info("일정삭제하기");
+		System.out.println(seq[0]);
+		Map<String, String[]> map = new HashMap<>();
+		map.put("seqs", seq);
+		calService.calMulDel(map);
+		return "redirect:/schedule/calBoardList";
+	}
 
-   @GetMapping(value = "/calBoardDetail")
-   public String calBoardDetail(UpdateCalCommand updateCalCommand, int seq, Model model) {
-      logger.info("일정상세보기");
+	@GetMapping(value = "/calBoardDetail")
+	public String calBoardDetail(UpdateCalCommand updateCalCommand, int seq, Model model) {
+		logger.info("일정상세보기");
 
-      CalDto dto = calService.calBoardDetail(seq);
-      MemberDto mdto = new MemberDto();
-      List<FileUserDto> list = memberService.fileuser(mdto);
-      model.addAttribute("list", list);
-      // dto ---> command
-      updateCalCommand.setSeq(dto.getSeq());
+		CalDto dto = calService.calBoardDetail(seq);
+		MemberDto mdto = new MemberDto();
+		List<FileUserDto> list = memberService.fileuser(mdto);
+		model.addAttribute("list", list);
+		// dto ---> command
+		updateCalCommand.setSeq(dto.getSeq());
 //      updateCalCommand.setTitle(dto.getTitle());
-      updateCalCommand.setContent(dto.getContent());
-      updateCalCommand.setYear(Integer.parseInt(dto.getMdate().substring(0, 4)));
-      updateCalCommand.setMonth(Integer.parseInt(dto.getMdate().substring(4, 6)));
-      updateCalCommand.setDate(Integer.parseInt(dto.getMdate().substring(6, 8)));
-      updateCalCommand.setHour(Integer.parseInt(dto.getMdate().substring(8, 10)));
-      updateCalCommand.setMin(Integer.parseInt(dto.getMdate().substring(10)));
-      model.addAttribute("updateCalCommand", updateCalCommand);
+		updateCalCommand.setContent(dto.getContent());
+		updateCalCommand.setYear(Integer.parseInt(dto.getMdate().substring(0, 4)));
+		updateCalCommand.setMonth(Integer.parseInt(dto.getMdate().substring(4, 6)));
+		updateCalCommand.setDate(Integer.parseInt(dto.getMdate().substring(6, 8)));
+		updateCalCommand.setHour(Integer.parseInt(dto.getMdate().substring(8, 10)));
+		updateCalCommand.setMin(Integer.parseInt(dto.getMdate().substring(10)));
+		model.addAttribute("updateCalCommand", updateCalCommand);
 
-      return "board/calBoardDetail";
-   }
+		return "board/calBoardDetail";
+	}
 
-   @PostMapping(value = "/calBoardUpdate")
-   public String calBoardUpdate(@Validated UpdateCalCommand updateCalCommand, BindingResult result, Model model) {
-      logger.info("일정 수정하기");
+	@PostMapping(value = "/calBoardUpdate")
+	public String calBoardUpdate(@Validated UpdateCalCommand updateCalCommand, BindingResult result, Model model) {
+		logger.info("일정 수정하기");
 
-      if (result.hasErrors()) {
-         System.out.println("수정할 목록을 확인하세요");
-         return "board/calBoardDetail";
-      }
-      MemberDto dto = new MemberDto();
-      List<FileUserDto> list = memberService.fileuser(dto);
-      model.addAttribute("list", list);
-      calService.calBoardUpdate(updateCalCommand);
+		if (result.hasErrors()) {
+			System.out.println("수정할 목록을 확인하세요");
+			return "board/calBoardDetail";
+		}
+		MemberDto dto = new MemberDto();
+		List<FileUserDto> list = memberService.fileuser(dto);
+		model.addAttribute("list", list);
+		calService.calBoardUpdate(updateCalCommand);
 
-      return "redirect:/schedule/calBoardDetail?seq=" + updateCalCommand.getSeq();
-   }
+		return "redirect:/schedule/calBoardDetail?seq=" + updateCalCommand.getSeq();
+	}
 
-   @ResponseBody
-   @GetMapping(value = "/calCountAjax")
-   public Map<String, Integer> calCountAjax(String yyyyMMdd) {
-      logger.info("일정개수");
-      Map<String, Integer> map = new HashMap<>();
+	@ResponseBody
+	@GetMapping(value = "/calCountAjax")
+	public Map<String, Integer> calCountAjax(String yyyyMMdd) {
+		logger.info("일정개수");
+		Map<String, Integer> map = new HashMap<>();
 //      String id = "Taeho";
-      int count = calService.calBoardCount(yyyyMMdd);
-      map.put("count", count);
-      return map;
-   }
+		int count = calService.calBoardCount(yyyyMMdd);
+		map.put("count", count);
+		return map;
+	}
 }

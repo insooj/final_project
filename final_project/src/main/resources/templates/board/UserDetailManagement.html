@@ -226,8 +226,8 @@ a.t:hover {
 					src="/css/doubleright.png" style="width: 30px; height: 30px;" /></a>
 			</div>
 
-			<th:block th:unless="${#lists.isEmpty(list)}">
-				<tr th:each="dto:${list}">
+			<th:block th:unless="${#lists.isEmpty(filelist)}">
+				<tr th:each="dto:${filelist}">
 					<th:block th:if="${dto.fileUserDto[0].id}">
 						<td><img name="p"
 							style="position: absolute; left: 8%; border-radius: 50%; width: 300px; height: 300px; background-color: #FFFFFF; z-index: 200;"
@@ -236,6 +236,8 @@ a.t:hover {
 					</th:block>
 				</tr>
 			</th:block>
+			
+			
 
 			<div
 				style="position: absolute; margin-left: 30%; top: 12%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 78%; z-index: 200;">

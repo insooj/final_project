@@ -1,163 +1,33 @@
-.<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript" th:inline="javascript">
-function plus() {
-    if (confirm("승인/송금을 하시겠습니까?")) {
-        console.log("승인이 선택되었습니다.");
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/    
+            // 페이지 로드 후 3초 후에 모달 닫기와 페이지 닫기 실행
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    closePage();
+                }, 3000);
+            });
 
-        setTimeout(function() {
-          window.close();
-        }, 500);
-
-        alert("최종 승인/송금이 완료되었습니다.");
-
-        // 폼을 찾아서 submit
-        document.getElementById("completeForm").submit();
-
-        return true;
-    } else {
-        console.log("취소가 선택되었습니다.");
-        return false;
-    }
-}
-</script>
-<style type="text/css">
-h2 {
-   font-weight: border;
-}
-
-.hr1 {
-   border: 0;
-   height: 2px;
-   background: #d3d3d3;
-}
-
-.grey {
-   color: #727272;
-}
-
-#strong {
-   font-weight: 900;
-}
-
-table {
-   width: 100%;
-   border-top: 1px solid #d3d3d3;
-   border-collapse: collapse;
-}
-
-th {
-   background-color: #d3d3d3;
-   border-top: 3px solid #727272;
-}
-
-th, td {
-   border-bottom: 1px solid #d3d3d3;
-   padding: 10px;
-}
-
-.btn {
-   width: 100px;
-   height: 30px;
-   font-weight: 900;
-   color: white;
-   text-align: center;
-   background: grey;
-   border: solid 2px white;
-   border-radius: 5px;
-}
-
-#error {
-   color: red;
-}
-
-a:link {
-   color: blue;
-   height: bold;
-   text-decoration: none;
-}
-
-a:visited {
-   color: blue;
-   height: bold;
-   text-decoration: none;
-}
-
-a:hover {
-   color: red;
-   height: bold;
-   text-decoration: underline;
-}
-
-a {
-   color: black;
-   height: bold;
-   text-decoration-line: none;
-}
-</style>
+            // 페이지 닫기 함수
+            function closePage() {
+                // 창 닫기
+                window.close();
+            }
+        /*]]>*/
+    </script>
+    <style type="text/css">
+        /* 추가적인 스타일이 필요한 경우 여기에 추가하세요. */
+    </style>
 </head>
 <body>
    <div layout:fragment="content">
       <div id="container">
-         <h2>선지급 요청 최종 승인</h2>
-         <hr class="hr1" noshade>
-<!--          <form action="/manage/plus" th:object="${adduserCommand}" -->
-<!--             method="get"> -->
-         
-
-
-            <table>
-               <tr>
-                  <th>이름</th>
-                  <th>아이디</th>
-                  <th>등급</th>
-                  <th>은행</th>
-                  <th>계좌번호</th>
-                  <th>email</th>
-                  <th>주소</th>
-                  <th>전화번호</th>
-                  <th>fintech_number</th>
-               </tr>
-               <tr>
-                  <td class="center" th:text="${dto.name}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.id}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.role}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="left" th:text="${dto.accountDto.bank_name}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.accountDto.Account_num_masked}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.address}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.email}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.phone}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-                  <td class="center" th:text="${dto.accountDto.fintech_use_num}"
-                     th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
-
-               </tr>
-
-            </table>
-<form th:action="@{/pay/complete}" method="post" id="completeForm"></form>
-<form th:action="@{/pay/success}"id="plus" onsubmit="return plus()" method="get" th:object="${adduserCommand}">
-    <input type="hidden" name="name" th:value="${dto.name}" />
-    <input type="text" name="money" />
-<button type="submit"  style="width:200px;" class="btn">승인/송금 하기</button>
-</form>
-
-
-
-
+			급여가 성공적으로 지급되었습니다.
       </div>
    </div>
-   <script th:utext="${closeWindowScript}"></script>
 </body>
 </html>
-
