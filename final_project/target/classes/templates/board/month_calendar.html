@@ -141,7 +141,9 @@
             <th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
                <div>
                   <span class="d" th:text="${i}" th:style="'color:'+${@util.fontColor(i,calMap.dayOfWeek)}"
-                    th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
+                     th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">
+<!--                    th:href="@{/schedule/calBoardList(year=${calMap.year},month=${calMap.month},date=${i})}">-->
+
                      
                   </span>
                   <a th:href="@{/schedule/addMonthForm(year=${calMap.year},month=${calMap.month},date=${i})}">
