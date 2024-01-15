@@ -6,19 +6,59 @@
 <meta charset="UTF-8">
 <title></title>
 <style type="text/css">
-   .btn{
-      
-        padding: 7px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        background-color: #3a3a3a;
-        cursor: pointer;
-        outline: none;
+
+   body{
+       background-color : #CCE1FF;
    }
-    .btn:link { color: white; text-decoration: none;}
-     .btn:visited { color: white; text-decoration: none;}
-     .btn:hover { color: blue; text-decoration: underline;} 
+ 					.btn {
+		  display: inline-block;
+		  padding: 0 30px;
+		  font-size: 20px;
+		  font-weight: 400;
+		  background: transparent;
+		  text-align: center;
+		  white-space: nowrap;
+		  vertical-align: middle;
+		  -ms-touch-action: manipulation;
+		  touch-action: manipulation;
+		  cursor: pointer;
+		  -webkit-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		  border: 1px solid transparent;
+		  text-transform: uppercase;
+		  -webkit-border-radius: 0;
+		  -moz-border-radius: 0;
+		  border-radius: 0;
+		  -webkit-transition: all 0.3s;
+		  -moz-transition: all 0.3s;
+		  -ms-transition: all 0.3s;
+		  -o-transition: all 0.3s;
+		  transition: all 0.3s;
+		}
+		
+		.btn-dark {
+		  background: #555;
+		  color: #fff;
+		}
+		
+		.btn-dark:hover, .btn-dark:focus {
+		  background: #373737;
+		  border-color: #373737;
+		  color: #fff;
+		}
+		
+		.btn-dark {
+		  background: #929094;
+		  color: #fff;
+		}
+		
+		.btn-dark:hover, .btn-dark:focus {
+		  background: #373737;
+		  border-color: #373737;
+		  color: #fff;
+		}
 </style>
 <script type="text/javascript">
      var mainTable = document.getElementById('container');
@@ -144,8 +184,8 @@
          </tr>
          <tr>
             <td colspan="2">
-               <input class="btn"type="submit" value="업무추가"/>
-               <input class="btn"type="button" value="뒤로가기"
+               <input class="btn-dark"type="submit" value="업무추가"/>
+               <input class="btn-dark"type="button" value="뒤로가기"
                               th:onclick="|location.href='@{/schedule/calendar}'|"/>
             </td>
          </tr>
