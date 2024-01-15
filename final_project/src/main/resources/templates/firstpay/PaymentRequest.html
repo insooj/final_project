@@ -69,8 +69,7 @@
 		.btn-dark {
 		  background: #555;
 		  color: #fff;
-		  
-		  		  display: inline-block;
+		  display: inline-block;
 		  padding: 0 30px;
 		  font-size: 20px;
 		  font-weight: 400;
@@ -124,7 +123,7 @@
    height: 100%;
    overflow: hidden;
    background-color: rgba(0, 0, 0, 0.5);
-}
+
 
 .modal-content {
    background-color: #fefefe;
@@ -206,7 +205,11 @@ to {
 </head>
 
 <body>
+<<<<<<< HEAD
    <div layout:fragment="content">
+=======
+	<div layout:fragment="content">
+>>>>>>> branch 'main' of https://github.com/insooj/final_project.git
 
       <div id="container">
          <h2>선지급 요청목록</h2>
@@ -224,6 +227,7 @@ to {
                <th>승인여부</th>
             </tr>
 
+<<<<<<< HEAD
             <div id="myModal" class="modal">
                <div class="modal-content">
                   <span class="close" id="closeModalBtn">&times;</span>
@@ -323,7 +327,16 @@ to {
 
          </table>
          <!--        </form>-->
+=======
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<span class="close" id="closeModalBtn">&times;</span>
+						<iframe id="modalIframe" width="100%" height="100%"></iframe>
+					</div>
+				</div>
+>>>>>>> branch 'main' of https://github.com/insooj/final_project.git
 
+<<<<<<< HEAD
          <th:block th:if="${session.mdto.role == '직원'}">
             <tr>
                <button type="button" class="btn-dark"
@@ -332,6 +345,110 @@ to {
          </th:block>
       </div>
    </div>
+=======
+				<th:block th:if="${#lists.isEmpty(plist)}">
+					<tr>
+						<td colspan="4" style="text-align: center;">---작성된 요청이
+							없습니다.---</td>
+					</tr>
+				</th:block>
+				<th:block th:unless="${#lists.isEmpty(plist)}">
+					<tr th:each="dto:${plist}">
+						<!-- 기타 td 열 코드 -->
+
+						<!--                        사장일때-->
+						<th:block th:if="${session.mdto.role == '사장'}">
+							<td class="center" th:text="${dto.board_seq}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.name}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.id}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.role}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'+'color:blue;'"></td>
+							<td class="center"
+								th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td th:style="'font-size : 18px;'+'font-weight : bold;'"><span
+								class="center" th:text="${dto.money}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원</td>
+							<th:block th:if="${dto.delflag == 'N'}">
+
+								<td>
+									<button type="button"
+										th:onclick="/*<![CDATA[*/ approveAction(/*[(${dto.board_seq})]*/); /*]]>*/">승인</button>
+									<button type="button"
+										th:onclick="/*<![CDATA[*/ refuseAction(/*[(${dto.board_seq})]*/); /*]]>*/">거절</button>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'R'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
+									<span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
+								</td>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'Y'}">
+
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
+									<span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
+								</td>
+							</th:block>
+						</th:block>
+						<!-- 승인여부 -->
+						<th:block
+							th:if="${session.mdto.role == '직원'} and ${dto.id == session.mdto.id}">
+							<td class="center" th:text="${dto.board_seq}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.name}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.id}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td class="center" th:text="${dto.role}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'+'color:blue;'"></td>
+							<td class="center"
+								th:text="${#dates.format(dto.regdate,'yyyy-MM-dd')}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></td>
+							<td th:style="'font-size : 18px;'+'font-weight : bold;'"><span
+								class="center" th:text="${dto.money}"
+								th:style="'font-size : 18px;'+'font-weight : bold;'"></span> 원</td>
+							<th:block th:if="${dto.delflag == 'N'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #3DFF92;'">
+									<span th:if="${ dto.delflag == 'N'}">승인대기</span>
+								</td>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'R'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #FF3232;'">
+									<span th:if="${dto != null && dto.delflag == 'R'}">승인거절</span>
+								</td>
+							</th:block>
+							<th:block th:if="${dto.delflag == 'Y'}">
+								<td
+									th:style="'font-size: 18px; font-weight: bold; background-color: #00A5FF;'">
+									<span th:if="${dto != null && dto.delflag == 'Y'}">승인완료</span>
+								</td>
+							</th:block>
+
+						</th:block>
+				</th:block>
+				</th:block>
+
+				</tr>
+
+			</table>
+			<!--        </form>-->
+
+			<th:block th:if="${session.mdto.role == '직원'}">
+				<tr>
+					<button type="button" class="btn"
+						th:onclick="|location.href='@{/pay/RequestInsert}'|">지급요청하기</button>
+				</tr>
+			</th:block>
+		</div>
+	</div>
 
 </body>
+
 </html>         
+
