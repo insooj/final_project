@@ -19,7 +19,46 @@ public class AccountDto {
    private String name;
    private String role;
    private String id;
-   
+   public String getStored_filename() {
+	return stored_filename;
+}
+
+
+
+public void setStored_filename(String stored_filename) {
+	this.stored_filename = stored_filename;
+}
+
+
+
+public String getOrigin_filename() {
+	return origin_filename;
+}
+
+
+
+public void setOrigin_filename(String origin_filename) {
+	this.origin_filename = origin_filename;
+}
+
+private String stored_filename;
+   public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name, String account_num_masked,
+		int money, String name, String role, String id, String stored_filename, String origin_filename) {
+	super();
+	this.account_seq = account_seq;
+	this.memberid = memberid;
+	this.fintech_use_num = fintech_use_num;
+	this.bank_name = bank_name;
+	this.account_num_masked = account_num_masked;
+	this.money = money;
+	this.name = name;
+	this.role = role;
+	this.id = id;
+	this.stored_filename = stored_filename;
+	this.origin_filename = origin_filename;
+}
+
+private String origin_filename;
    
 public AccountDto(int account_seq, int memberid, String fintech_use_num, String bank_name, String account_num_masked,
       int money, String name, String role, String id) {
@@ -94,9 +133,10 @@ public int getAccount_seq() {
    }
    @Override
 public String toString() {
-   return "AccountDto [account_seq=" + account_seq + ", memberid=" + memberid + ", fintech_use_num=" + fintech_use_num
-         + ", bank_name=" + bank_name + ", account_num_masked=" + account_num_masked + ", money=" + money + ", name="
-         + name + ", role=" + role + ", id=" + id + "]";
+	return "AccountDto [account_seq=" + account_seq + ", memberid=" + memberid + ", fintech_use_num=" + fintech_use_num
+			+ ", bank_name=" + bank_name + ", account_num_masked=" + account_num_masked + ", money=" + money + ", name="
+			+ name + ", role=" + role + ", id=" + id + ", stored_filename=" + stored_filename + ", origin_filename="
+			+ origin_filename + "]";
 }
 
    public AccountDto() {

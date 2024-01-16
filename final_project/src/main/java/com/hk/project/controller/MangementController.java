@@ -62,7 +62,7 @@ public class MangementController {
 	public String pay(@Validated AddUserCommand adduserCommand, BindingResult result, String name, String id,
 			Model model) {
 		// 이름을 사용하여 MemberDto를 가져옴
-		MemberDto dto = memberService.getuserDetail(name);
+		MemberDto dto = memberService.getuserDetail(id);
 
 		// AddUserCommand에서 pay 값을 가져와서 MemberDto에 설정w
 		dto.setPay(adduserCommand.getPay());
@@ -79,24 +79,72 @@ public class MangementController {
 		// 다른 로직 수행 가능
 
 		// UserDetailManagement 페이지로 리다이렉트
-		return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
+		return "redirect:/manage/UserDetailManagement?id=" + adduserCommand.getId();
 	}
 
-   
-   @GetMapping(value = "/plus")
-   public String plus(@Validated AddUserCommand adduserCommand, BindingResult result,String name, String id,Model model) {
-      AccountDto accountDto = new AccountDto();
-      MemberDto dto = memberService.getuserDetail(name);
-      model.addAttribute("dto", dto);
-      accountDto.setMemberid(dto.getMemberId());
-      System.out.println("송금하기");
-      accountDto.setMoney(adduserCommand.getMoney());
-      memberService.Plus(accountDto);
-      model.addAttribute("accountDto", accountDto);
-      System.out.println(accountDto);
-      return "redirect:/manage/UserDetailManagement?name=" + adduserCommand.getName();
-   }
+	@GetMapping(value = "/plus")
+	public String plus(@Validated AddUserCommand adduserCommand, BindingResult result, String name, String id,
+			Model model) {
+		AccountDto accountDto = new AccountDto();
+		MemberDto dto = memberService.getuserDetail(id);
+		model.addAttribute("dto", dto);
+		accountDto.setMemberid(dto.getMemberId());
+		System.out.println("송금하기");
+		accountDto.setMoney(adduserCommand.getMoney());
+		memberService.Plus(accountDto);
+		model.addAttribute("accountDto", accountDto);
+		System.out.println(accountDto);
+		return "redirect:/manage/UserDetailManagement?id=" + adduserCommand.getId();
+	}
 
+	@GetMapping(value = "/roleUpdate")
+	public String roleUpdate(String id, Model model) {
+		System.out.println(id);
+		// 유효값처리용
+		model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
+		// 출력용
+
+		AccountDto dto = userlistService.UserDetail(id);
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		System.out.println("직급변경 모달");
+
+		return "board/roleUpdate";
+	}
+
+	@GetMapping(value = "/roledown")
+	public String roledown(String id, Model model) {
+		AccountDto dto = new AccountDto();
+		dto = userlistService.getUserDetail(id);
+		userlistService.roledown(dto);
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		// 유효값처리용
+		System.out.println("직원등급으로 변경");
+		return "board/roledown";
+	}
+	@GetMapping(value = "/roleup")
+	public String roleup(String id, Model model) {
+		AccountDto dto = new AccountDto();
+		dto = userlistService.getUserDetail(id);
+		userlistService.roleup(dto);
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		// 유효값처리용
+		System.out.println("사장등급으로 변경");
+		return "board/roleup";
+	}
+	@GetMapping(value = "/rolem")
+	public String rolem(String id, Model model) {
+		AccountDto dto = new AccountDto();
+		dto = userlistService.getUserDetail(id);
+		userlistService.rolem(dto);
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		// 유효값처리용
+		System.out.println("매니저등급으로 변경");
+		return "board/rolem";
+	}
 
 	@GetMapping(value = "/usermanagement")
 	public String boardList(Model model) {
@@ -110,29 +158,30 @@ public class MangementController {
 
 		List<AccountDto> mlist = userlistService.getUser();
 		model.addAttribute("mlist", mlist);
+		System.out.println(mlist);
 		model.addAttribute("delBoardCommand", new DelBoardCommand());
 
 		return "board/UserManagement";// forward 기능, "redirect:board/boardList"
 	}
 
 	@GetMapping(value = "/UserDetailManagement")
-	public String userDetail(String name,  AddUserCommand adduserCommand, Model model, HttpServletRequest request) {
-		MemberDto dto = memberService.getuserDetail(name);
+	public String userDetail(String id, AddUserCommand adduserCommand, Model model, HttpServletRequest request) {
+		MemberDto dto = memberService.getuserDetail(id);
 		System.out.println("정보");
-		System.out.println(name);
-		
+		System.out.println(id);
+
 		HttpSession session = (HttpSession) request.getSession();
 		MemberDto fdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto filedto = memberService.getUser(fdto);
 		List<FileUserDto> list = memberService.fileuser(filedto);
 		model.addAttribute("list", list);
 		System.out.println(list);
-		
+
 		MemberDto mdto = memberService.getUser(dto);
 		List<FileUserDto> filelist = memberService.fileuser(mdto);
 		model.addAttribute("filelist", filelist);
 		System.out.println(filelist);
-		
+
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
 
@@ -146,7 +195,7 @@ public class MangementController {
 		model.addAttribute("calMap", map);
 		String yyyy = year + Util.isTwo(month);// 202311 6자리변환
 		String yyyymm = year + "-" + Util.isTwo(month);// 2023-11 7자리변환
-		String id = dto.getId();
+//		String id = dto.getId();
 
 		System.out.println(yyyy);
 //	      String MM =  Util.isTwo(month);
@@ -183,14 +232,6 @@ public class MangementController {
 		model.addAttribute("flist", flist);
 		System.out.println(flist);
 
-	
-
-//		Map<Object, Object> tMap = new HashMap<>();
-//		tMap.put("plist", plist);
-//		tMap.put("flist", flist);
-//		
-//		model.addAttribute("tMap",tMap);
-//		System.out.println(tMap);
 		// 유효값처리용
 		model.addAttribute("dto", dto);
 		System.out.println(dto);

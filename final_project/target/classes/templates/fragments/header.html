@@ -34,10 +34,10 @@
                </ul>
             </th:block>
             <th:block th:unless="${session.mdto==null}">
-               <th:block th:if="${session.mdto.role=='사장'}">
+               <th:block th:if="${session.mdto.role=='사장' or session.mdto.role=='매니저'}">
                   <ul class="nav navbar-nav navbar-center">
                      <li><a href="/manage/usermanagement"
-                        style="color: black; line-height: 40px; padding-left: 500px;">직원관리</a></li>
+                        style="color: black; line-height: 40px; margin-left: 400px;">직원관리</a></li>
                         <li><a href="/schedule/calendar" style="color: black; line-height: 40px;">업무일지작성</a></li>
                      <li><a href="/schedule/Month_calendar" style="color: black; line-height: 40px;">월별스케줄</a></li>
                      <li><a href="/pay/RequestList" style="color: black; line-height: 40px;">선지급관리</a></li>

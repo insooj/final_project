@@ -159,7 +159,7 @@ public class PaymentController {
 	public String plus(@Validated AddUserCommand adduserCommand, BindingResult result, int board_seq, String name,
 			String id, Model model) {
 		AccountDto accountDto = new AccountDto();
-		MemberDto dto = memberService.getuserDetail(name);
+		MemberDto dto = memberService.getuserDetail(id);
 		model.addAttribute("dto", dto);
 		accountDto.setMemberid(dto.getMemberId());
 		System.out.println("송금하기");

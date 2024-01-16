@@ -67,36 +67,38 @@ public class BoardController {
       
       return "board/boardInsertForm";
    }
-
+  
    @PostMapping(value = "/boardInsert")
-   public String boardInsert(@Validated InsertBoardCommand insertBoardCommand, BindingResult result,
-         MultipartRequest multipartRequest // multipart data를 처리할때 사용
-         , HttpServletRequest request, Model model) throws IllegalStateException, IOException {
+	public String boardInsert(@Validated InsertBoardCommand insertBoardCommand, BindingResult result,
+			MultipartRequest multipartRequest // multipart data를 처리할때 사용
+			, HttpServletRequest request, Model model) throws IllegalStateException, IOException {
 	   HttpSession session = (HttpSession) request.getSession();
-		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
-		MemberDto fdto = memberService.getUser(mdto);
-		List<FileUserDto> list = memberService.fileuser(fdto);
-		model.addAttribute("list", list);
-	   
+	 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
+	 		MemberDto fdto = memberService.getUser(mdto);
+	 		List<FileUserDto> list = memberService.fileuser(fdto);
+	 		model.addAttribute("list", list);
+	 	   
 	   if (result.hasErrors()) {
-         System.out.println("글을 모두 입력하세요");
-         return "board/boardInsertForm";
-      }
+			System.out.println("글을 모두 입력하세요");
+			return "board/boardInsertForm";
+		}
+		boardService.insertBoard(insertBoardCommand, multipartRequest, request);
 
-      boardService.insertBoard(insertBoardCommand, multipartRequest, request);
-
-      return "redirect:/board/boardList";
-   }
+		return "redirect:/board/boardList";
+	}
+  
 
    // 상세보기
    @GetMapping(value = "/boardDetail")
    public String boardDetail(int board_seq, Model model,HttpServletRequest request) {
       BoardDto dto = boardService.getBoard(board_seq);
+      System.out.println(dto);
       HttpSession session = (HttpSession) request.getSession();
 		MemberDto mdto = (MemberDto) session.getAttribute("mdto");
 		MemberDto fdto = memberService.getUser(mdto);
 		List<FileUserDto> list = memberService.fileuser(fdto);
 		model.addAttribute("list", list);
+		
       // 유효값처리용
       model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
       // 출력용
@@ -131,7 +133,7 @@ public class BoardController {
 
       FileBoardDto fdto = fileService.getFileInfo(file_seq);// 파일정보가져오기
 
-      fileService.fileDownload(fdto.getOrigin_filename(), fdto.getStored_filename(), request, response);
+      fileService.fileDownload(fdto.getOrigin_name(), fdto.getStored_name(), request, response);
    }
 
    @RequestMapping(value = "mulDel", method = { RequestMethod.POST, RequestMethod.GET })

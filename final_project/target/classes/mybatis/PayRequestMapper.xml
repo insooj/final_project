@@ -25,10 +25,6 @@
 	GROUP BY year, month, delflag;
 </select>
    
-   
-   
-   
-   
    <select id="getAllList" resultType="paymentDto">
       SELECT BOARD_SEQ, ID, NAME, ROLE, REGDATE,MONEY , DELFLAG
       FROM FIRSTPAYBOARD
@@ -42,8 +38,6 @@
       FROM FIRSTPAYBOARD
       WHERE BOARD_SEQ = #{board_seq}
    </select>
-   
-
    
    <insert id="insertPayment" parameterType="paymentDto" useGeneratedKeys="true" keyProperty="board_seq">
     INSERT INTO FIRSTPAYBOARD (id, name, role, regdate, money, delflag)

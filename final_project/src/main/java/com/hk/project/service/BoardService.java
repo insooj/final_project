@@ -66,8 +66,8 @@ public class BoardService {
 			for (FileBoardDto fDto : uploadFileList) {
 				fileMapper.insertFileBoard(
 				 new FileBoardDto(0, boardDto.getBoard_seq(),//증가된 board_seq값을 넣는다 
-						             fDto.getOrigin_filename(),
-						 			 fDto.getStored_filename())
+						             fDto.getOrigin_name(),
+						 			 fDto.getStored_name())
 				                          );
 			}
 		}

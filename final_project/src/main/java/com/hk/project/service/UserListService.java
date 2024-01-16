@@ -22,48 +22,53 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class UserListService {
-   
-   @Autowired
-   private AccountMapper accountMapper;
+
+	@Autowired
+	private AccountMapper accountMapper;
 //   @Autowired
 //   private MemberMapper memberMapper;
-   
-   //유저목록 조회
-   public List<AccountDto> getUser(){
-	  
-      return accountMapper.getUser();
-   }
-   
-   
-   public AccountDto getUserDetail(String id) {
-	   return accountMapper.getUserDetail(id);
-   }
-   //글 추가, 파일업로드및 파일정보 추가
-   @Transactional
-   public void getUser( MultipartRequest multipartRequest
-                       , HttpServletRequest request) 
-                       throws IllegalStateException, IOException {
-      //command:UI -> dto:DB 데이터 옮겨담기
-      AccountDto accountDto=new AccountDto();
-      accountDto.getAccount_seq();
-      accountDto.getMemberid();
-      accountDto.getFintech_use_num();
-      accountDto.getBank_name();
-      accountDto.getAccount_num_masked();
-      accountDto.getName();
-      accountDto.getRole();
-      accountDto.getId();
-      
-      
-      
-      
-   }
 
-   
+	// 유저목록 조회
+	public List<AccountDto> getUser() {
 
+		return accountMapper.getUser();
+	}
+
+	public AccountDto UserDetail(String id) {
+		return accountMapper.UserDetail(id);
+	}
+
+	public AccountDto getUserDetail(String id) {
+		return accountMapper.getUserDetail(id);
+	}
+
+	public boolean roleup(AccountDto dto) {
+		return accountMapper.roleup(dto);
+	}
+
+	public boolean rolem(AccountDto dto) {
+		return accountMapper.rolem(dto);
+	}
+
+	public boolean roledown(AccountDto dto) {
+		return accountMapper.roledown(dto);
+	}
+
+	// 글 추가, 파일업로드및 파일정보 추가
+	@Transactional
+	public void getUser(MultipartRequest multipartRequest, HttpServletRequest request)
+			throws IllegalStateException, IOException {
+		// command:UI -> dto:DB 데이터 옮겨담기
+		AccountDto accountDto = new AccountDto();
+		accountDto.getAccount_seq();
+		accountDto.getMemberid();
+		accountDto.getFintech_use_num();
+		accountDto.getBank_name();
+		accountDto.getAccount_num_masked();
+		accountDto.getName();
+		accountDto.getRole();
+		accountDto.getId();
+
+	}
 
 }
-
-
-
-

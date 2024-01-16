@@ -19,29 +19,15 @@ ul {
 	list-style: none;
 }
 
-@keyframes ball {
-  0% {
-    top:0px;
-  }
-  95% {
-    width: 100px;
-  }
-  to {
-    top:300px;
-    width:115px;
-    height:90px
-  } 
-}
-
-.D1{
-  position:relative;
-  left: 100px;
-  top:0;
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  background:#000;
-  animation:ball 1s ease-in Infinite Alternate;
+.D1:hover {
+	z-index: 200;
+	background-color: #90EE90;
+	color: white;
+	box-shadow: 5px 5px #ddd;
+	/* 	border: solid 1px; */
+	transition: all 0.5s;
+	transform: translateY(-10px);
+	background-color: #90EE90;
 }
 
 .slider {
@@ -83,6 +69,7 @@ ul {
 					계좌정보</button>
 			</div>
 		</div>
+
 	</div>
 </body>
 </html>

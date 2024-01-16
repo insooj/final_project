@@ -1,182 +1,178 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-	function updateEX(){
-		if(confirm("수정하시겠습니까?")){
+	function updateEX() {
+		if (confirm("수정하시겠습니까?")) {
 			return true;
 		}
 		return false
 	}
 </script>
 <style type="text/css">
+body {
+	background-color: #dcdcdc;
+	font-family: 'GmarketSans';
+	font-weight: bold;
+	color: black;
+}
 
-			body{
-				background-color : #dcdcdc;
-					font-family: 'GmarketSans';
-				font-weight: bold;
-				color: black;
-			}
-					.btn {
-		  display: inline-block;
-		  padding: 0 30px;
-		  font-size: 20px;
-		  font-weight: 400;
-		  background: transparent;
-		  text-align: center;
-		  white-space: nowrap;
-		  vertical-align: middle;
-		  -ms-touch-action: manipulation;
-		  touch-action: manipulation;
-		  cursor: pointer;
-		  -webkit-user-select: none;
-		  -moz-user-select: none;
-		  -ms-user-select: none;
-		  user-select: none;
-		  border: 1px solid transparent;
-		  text-transform: uppercase;
-		  -webkit-border-radius: 0;
-		  -moz-border-radius: 0;
-		  border-radius: 0;
-		  -webkit-transition: all 0.3s;
-		  -moz-transition: all 0.3s;
-		  -ms-transition: all 0.3s;
-		  -o-transition: all 0.3s;
-		  transition: all 0.3s;
-		}
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
+.btn {
+	display: inline-block;
+	padding: 0 30px;
+	font-size: 20px;
+	font-weight: 400;
+	background: transparent;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	text-transform: uppercase;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-ms-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn-dark {
+	background: #555;
+	color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+	background: #373737;
+	border-color: #373737;
+	color: #fff;
+}
+
+.btn-dark {
+	background: #555;
+	color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+	background: #373737;
+	border-color: #373737;
+	color: #fff;
+}
 </style>
 </head>
 <body>
-<div layout:fragment="content">
-<div id="container">
-<h1>상세보기</h1>
-<form action="/board/boardUpdate" method="post" onsubmit="return updateEX()"
-								th:object="${updateBoardCommand}">
+	<div layout:fragment="content">
+		<div id="container">
+			<h1>상세보기</h1>
+			<form action="/board/boardUpdate" method="post"
+				onsubmit="return updateEX()" th:object="${updateBoardCommand}">
 
-	<input type="hidden" name="board_seq" th:value="${dto.board_seq}"/>
-	
-	
-	<table class="table">
-	<th:block th:if="${session.mdto.id == dto.id or session.mdto.role == '사장'}">
-		<tr>
-			<th>작성자[ID]</th>
-			<td th:text="${dto.id}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td>
-				<input type="text" name="title" th:value="${dto.title}"
-												class="form-control"/>
-				<span th:if="${#fields.hasErrors('title')}" 
-					  th:errors="*{title}"></span>
-			</td>
-		</tr>
-		<tr>
-			<th>파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
-			<th:block th:if="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>첨부파일없음</td>
-			</th:block>
-			<th:block th:unless="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>
-					<th:block th:each="fdto:${dto.fileBoardDto}">
-						<span class="glyphicon glyphicon-folder-open"></span>
-						<a th:text="${fdto.origin_filename}"
-						   th:href="@{/board/download(file_seq=${fdto.file_seq})}" ></a>&nbsp;&nbsp;
+				<input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
+
+
+				<table class="table">
+					<th:block
+						th:if="${session.mdto.id == dto.id or session.mdto.role == '사장' or session.mdto.role='매니저'}">
+						<tr>
+							<th>작성자[ID]</th>
+							<td th:text="${dto.id}"></td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td><input type="text" name="title" th:value="${dto.title}"
+								class="form-control" /> <span
+								th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+							</td>
+						</tr>
+						<tr>
+							<th>파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
+							<th:block th:if="${dto.fileBoardDto[0].origin_name==null}">
+								<td>첨부파일없음</td>
+							</th:block>
+							<th:block th:unless="${dto.fileBoardDto[0].origin_name==null}">
+								<td><th:block th:each="fdto:${dto.fileBoardDto}">
+										<span class="glyphicon glyphicon-folder-open"></span>
+										<a th:text="${fdto.origin_name}"
+											th:href="@{/board/download(file_seq=${fdto.file_seq})}"></a>&nbsp;&nbsp;
+					</th:block></td>
+							</th:block>
+						</tr>
+						<tr>
+							<th>이미지</th>
+							<td><img name="p"
+								th:src="@{'/upload/' + ${dto.fileBoardDto[0].stored_name}}"
+								alt="Image" style="width: 300px; height: 300px;"></td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td><textarea rows="10" cols="60" name="content"
+									th:text="${dto.content}" class="form-control"></textarea> <span
+								th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button type="submit" class="btn-dark">수정</button>
+								<button type="button" class="btn-dark"
+									th:onclick="|location.href='@{/board/mulDel(seq=${dto.board_seq})}'|">삭제</button>
+								<button type="button" class="btn-dark"
+									th:onclick="|location.href='@{/board/boardList}'|">목록</button>
+							</td>
+						</tr>
 					</th:block>
-				</td>
-			</th:block>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td>
-				<textarea rows="10" cols="60" name="content"
-						  th:text="${dto.content}"
-				          class="form-control"></textarea>
-				<span th:if="${#fields.hasErrors('content')}" 
-					  th:errors="*{content}"></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<button type="submit" class="btn-dark">수정</button>
-				<button type="button" class="btn-dark"
-				 th:onclick="|location.href='@{/board/mulDel(seq=${dto.board_seq})}'|">삭제</button>
-				<button type="button" class="btn-dark"
-				 th:onclick="|location.href='@{/board/boardList}'|">목록</button>
-			</td>
-		</tr>
-		</th:block>
-		<th:block th:unless="${session.mdto.id == dto.id or session.mdto.role == '사장'}">
-		<tr>
-			<th>작성자[ID]</th>
-			<td id = "id" th:text="${dto.id}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td>[[${dto.title}]]
-				<span th:if="${#fields.hasErrors('title')}" 
-					  th:errors="*{title}"></span>
-			</td>
-		</tr>
-		<tr>
-			<th>파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
-			<th:block th:if="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>첨부파일없음</td>
-			</th:block>
-			<th:block th:unless="${dto.fileBoardDto[0].origin_filename==null}">
-				<td>
-					<th:block th:each="fdto:${dto.fileBoardDto}">
-						<span class="glyphicon glyphicon-folder-open"></span>
-						<a th:text="${fdto.origin_filename}"
-						   th:href="@{/board/download(file_seq=${fdto.file_seq})}" ></a>&nbsp;&nbsp;
+					<th:block
+						th:unless="${session.mdto.id == dto.id or session.mdto.role == '사장'or session.mdto.role='매니저'}">
+						<tr>
+							<th>작성자[ID]</th>
+							<td id="id" th:text="${dto.id}"></td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td>[[${dto.title}]] <span
+								th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+							</td>
+						</tr>
+						<tr>
+							<th>파일 [[${#lists.size(dto.fileBoardDto)}]]</th>
+							<th:block th:if="${dto.fileBoardDto[0].origin_name==null}">
+								<td>첨부파일없음</td>
+							</th:block>
+							<th:block th:unless="${dto.fileBoardDto[0].origin_name==null}">
+								<td><th:block th:each="fdto:${dto.fileBoardDto}">
+										<span class="glyphicon glyphicon-folder-open"></span>
+										<a th:text="${fdto.origin_name}"
+											th:href="@{/board/download(file_seq=${fdto.file_seq})}"></a>&nbsp;&nbsp;
+					</th:block></td>
+							</th:block>
+						</tr>
+						<tr>
+							<th scope="row">내용</th>
+							<td colsapn="3">[[${dto.content}]]</td>
+						</tr>
+
+						<tr>
+							<td colspan="2">
+								<button type="button" class="btn-dark"
+									th:onclick="|location.href='@{/board/boardList}'|">목록</button>
+							</td>
+						</tr>
 					</th:block>
-				</td>
-			</th:block>
-		</tr>
-		<tr>
-			<th scope ="row">내용</th>
-			<td colsapn="3">[[${dto.content}]]
-			</td>
-		</tr>
-		
-		<tr>
-			<td colspan="2">
-				 <button type="button" class="btn-dark"
-				 th:onclick="|location.href='@{/board/boardList}'|">목록</button>
-			</td>
-		</tr>
-	</th:block>
-	</table>
-</form>
-</div>
-</div>
+				</table>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
 

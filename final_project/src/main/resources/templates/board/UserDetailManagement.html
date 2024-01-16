@@ -15,20 +15,21 @@
 	}
 
 	onload = function() {
-	    var month_pay_input = document.getElementById('month_pay');
-	    var firstmoney_input = document.getElementById('firstmoney');
-	    var tmoney_span = document.getElementById('tmoney');
-	    
-	    // Set a default value of 0 if firstmoney_input is not present
-	    var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
+		var month_pay_input = document.getElementById('month_pay');
+		var firstmoney_input = document.getElementById('firstmoney');
+		var tmoney_span = document.getElementById('tmoney');
 
-	    // 값(value)을 정수로 형변환하여 계산
-	    var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
+		// Set a default value of 0 if firstmoney_input is not present
+		var firstmoney_value = firstmoney_input ? firstmoney_input.textContent
+				: 0;
 
-	    console.log(tmoney);
-	    tmoney_span.textContent = tmoney + "원";
+		// 값(value)을 정수로 형변환하여 계산
+		var tmoney = parseInt(month_pay_input.textContent, 10)
+				- parseInt(firstmoney_value, 10);
+
+		console.log(tmoney);
+		tmoney_span.textContent = tmoney + "원";
 	}
-
 </script>
 <style type="text/css">
 body {
@@ -210,19 +211,19 @@ a.t:hover {
 			</div>
 			<div id="ctitle">
 				<a class="t" style="margin-left: 35%;"
-					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year-1},month=${calMap.month})}"><img
+					th:href="@{/manage/UserDetailManagement(id=${dto.id},year=${calMap.year-1},month=${calMap.month})}"><img
 					src="/css/doubleleft.png" style="width: 30px; height: 30px;" /></a> <a
 					class="t"
-					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year},month=${calMap.month-1})}"><img
+					th:href="@{/manage/UserDetailManagement(id=${dto.id},year=${calMap.year},month=${calMap.month-1})}"><img
 					src="/css/left.png" style="width: 35px; height: 35px;" /></a> <span
 					class="y" th:text="${calMap.year}"></span> <span>년</span> <span
 					class="m" th:text="${calMap.month}"></span> <span>월</span> <span
 					style="font-size: 40px; font-family: 'GmarketSans'; font-weight: bold; color: black; opacity: 1.0;">급여
 					정보</span> <a class="t"
-					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year},month=${calMap.month+1})}"><img
+					th:href="@{/manage/UserDetailManagement(id=${dto.id},year=${calMap.year},month=${calMap.month+1})}"><img
 					src="/css/right.png" style="width: 35px; height: 35px;" /></a> <a
 					class="t"
-					th:href="@{/manage/UserDetailManagement(name=${dto.name},year=${calMap.year+1},month=${calMap.month})}"><img
+					th:href="@{/manage/UserDetailManagement(id=${dto.id},year=${calMap.year+1},month=${calMap.month})}"><img
 					src="/css/doubleright.png" style="width: 30px; height: 30px;" /></a>
 			</div>
 
@@ -236,8 +237,8 @@ a.t:hover {
 					</th:block>
 				</tr>
 			</th:block>
-			
-			
+
+
 
 			<div
 				style="position: absolute; margin-left: 30%; top: 12%; box-shadow: 5px 5px 5px 5px; border-radius: 40px; width: 40%; height: 78%; z-index: 200;">
@@ -283,26 +284,27 @@ a.t:hover {
 
 
 
+			<th:block th:if="${session.mdto.role=='사장'}">
+				<form th:action="@{/manage/plus}" onsubmit="return plus()"
+					method="get" th:object="${adduserCommand}">
+					<input type="hidden" name="id" th:value="${dto.id}" /> <input
+						type="text" name="money"
+						style="font-size: 20px; width: 200px; font-family: 'GongGothicMedium'; position: absolute; top: 80%; left: 78%;" />
+					<button type="submit"
+						style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 80%; left: 88%;"
+						class="btn">이번달 급여 지급하기</button>
+				</form>
 
-			<form th:action="@{/manage/plus}" onsubmit="return plus()"
-				method="get" th:object="${adduserCommand}">
-				<input type="hidden" name="name" th:value="${dto.name}" /> <input
-					type="text" name="money"
-					style="font-size: 20px; width: 200px; font-family: 'GongGothicMedium'; position: absolute; top: 80%; left: 78%;" />
-				<button type="submit"
-					style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 80%; left: 88%;"
-					class="btn">이번달 급여 지급하기</button>
-			</form>
-
-			<form th:action="@{/manage/pay}" method="get"
-				th:object="${adduserCommand}">
-				<input type="hidden" name="name" th:value="${dto.name}" /> <input
-					type="text" name="pay" th:value="${dto.pay}"
-					style="font-size: 20px; font-family: 'GongGothicMedium'; width: 200px; position: absolute; top: 70%; left: 78%;" />
-				<button type="submit"
-					style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 70%; left: 88%;"
-					class="btn">시간당 급여 입력</button>
-			</form>
+				<form th:action="@{/manage/pay}" method="get"
+					th:object="${adduserCommand}">
+					<input type="hidden" name="id" th:value="${dto.id}" /> <input
+						type="text" name="pay" th:value="${dto.pay}"
+						style="font-size: 20px; font-family: 'GongGothicMedium'; width: 200px; position: absolute; top: 70%; left: 78%;" />
+					<button type="submit"
+						style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 70%; left: 88%;"
+						class="btn">시간당 급여 입력</button>
+				</form>
+			</th:block>
 		</div>
 
 

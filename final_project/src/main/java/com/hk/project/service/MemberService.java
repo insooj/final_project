@@ -74,7 +74,7 @@ public class MemberService {
    public boolean Pay(MemberDto dto) {
       return memberMapper.Pay(dto);
    }
-   
+  
     
    public boolean addAccount(String fintech_use_num, String account_num_masked, String bank_name, String id , int money) {
       AccountDto adto = new AccountDto();
@@ -128,8 +128,8 @@ public class MemberService {
       return memberMapper.getuserAccount(dto);
    }
    
-   public MemberDto getuserDetail(String name) {
-      return memberMapper.getuserDetail(name);
+   public MemberDto getuserDetail(String id) {
+      return memberMapper.getuserDetail(id);
    }
    
    public boolean userUpdate(UpdateUserCommand updateUserCommand) {

@@ -34,10 +34,12 @@ public interface MemberMapper {
   
    public MemberDto getuserAccount(MemberDto dto);
    
-   public MemberDto getuserDetail(String name);
+   public MemberDto getuserDetail(String id);
    
    public boolean Plus(AccountDto dto);
    public boolean Pay(MemberDto dto);
+   
+
     //글목록
       public List<MemberDto> getuserAccount();
    public String totalworktime(Map<String, String>map);

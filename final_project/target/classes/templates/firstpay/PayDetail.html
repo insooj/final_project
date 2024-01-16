@@ -179,7 +179,7 @@ to {
 			<p style=" text-align: center; font-size: 25px;	font-weight: bold; font-family: 'GongGothicMedium';">올바른 금액을 입력해야 지급버튼이 활성화 됩니다.</p>
 					<form th:action="@{/pay/success}" onsubmit="return plus()" 
 				method="get" th:object="${adduserCommand}">
-				<input type="hidden" name="name" th:value="${dto.name}" />
+				<input type="hidden" name="id" th:value="${dto.id}" />
 				<input type="hidden" name="board_seq" th:value="${dto.board_seq}" />
 				 <input
 					type="text" name="money" id="moneyInput"  

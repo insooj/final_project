@@ -8,8 +8,8 @@ public class FileBoardDto {
 	
 	private int file_seq;
 	private int board_seq;
-	private String origin_filename;
-	private String stored_filename;
+	private String origin_name;
+	private String stored_name;
 	
 	
 	
@@ -20,20 +20,20 @@ public class FileBoardDto {
 
 
 
-	public FileBoardDto(int file_seq, int board_seq, String origin_filename, String stored_filename) {
+	public FileBoardDto(int file_seq, int board_seq, String origin_name, String stored_name) {
 		super();
 		this.file_seq = file_seq;
 		this.board_seq = board_seq;
-		this.origin_filename = origin_filename;
-		this.stored_filename = stored_filename;
+		this.origin_name = origin_name;
+		this.stored_name = stored_name;
 	}
 
 
 
 	@Override
 	public String toString() {
-		return "FileBoardDto [file_seq=" + file_seq + ", board_seq=" + board_seq + ", origin_filename="
-				+ origin_filename + ", stored_filename=" + stored_filename + "]";
+		return "FileBoardDto [file_seq=" + file_seq + ", board_seq=" + board_seq + ", origin_name="
+				+ origin_name + ", stored_name=" + stored_name + "]";
 	}
 
 
@@ -62,26 +62,26 @@ public class FileBoardDto {
 
 
 
-	public String getOrigin_filename() {
-		return origin_filename;
+	public String getOrigin_name() {
+		return origin_name;
 	}
 
 
 
-	public void setOrigin_filename(String origin_filename) {
-		this.origin_filename = origin_filename;
+	public void setOrigin_name(String origin_name) {
+		this.origin_name = origin_name;
 	}
 
 
 
-	public String getStored_filename() {
-		return stored_filename;
+	public String getStored_name() {
+		return stored_name;
 	}
 
 
 
-	public void setStored_filename(String stored_filename) {
-		this.stored_filename = stored_filename;
+	public void setStored_name(String stored_name) {
+		this.stored_name = stored_name;
 	}
 
 

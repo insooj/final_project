@@ -89,7 +89,7 @@
 		FROM member m right OUTER
 		JOIN fintech f ON
 		m.memberid = f.memberid
-		WHERE name = #{name}
+		WHERE id = #{id}
 	</select>
 
 	<select id="getuserAccount" parameterType="String"
@@ -142,10 +142,15 @@
 		SET PAY = #{pay}
 		WHERE name = #{name}
 	</update>
+	
+	
+
 	<select id="fileUserList" resultMap="memberDtoMap">
-		SELECT m.id, m.NAME, f.file_seq, f.origin_filename, f.stored_filename
+		SELECT m.id, m.NAME,
+		f.file_seq, f.origin_filename, f.stored_filename
 		FROM member m
-		RIGHT OUTER JOIN userfile f ON m.id = f.id
+		RIGHT
+		OUTER JOIN userfile f ON m.id = f.id
 		WHERE (f.id, f.file_seq) IN (
 		SELECT id, MAX(file_seq) AS max_file_seq
 		FROM userfile
@@ -154,9 +159,9 @@
 		ORDER BY m.id, f.file_seq DESC
 	</select>
 
-	
 
-	
+
+
 </mapper>
 
 

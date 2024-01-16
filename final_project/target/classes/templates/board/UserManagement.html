@@ -1,137 +1,251 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-     layout:decorate="~{layouts/layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript">
-    function allSel(bool){
-      var chks=document.getElementsByName("seq");
-      for (var i = 0; i < chks.length; i++) {
-         chks[i].checked=bool;
-      }
-   }
-   
-   function isCheck(){
-      if(confirm("정말 해고 하시겠습니까?")){
-         return true;
-      }
-      return false;
-   }
+<script th:inline="javascript">
+function approveAction(id) {
+    // 모달 열기
+    console.log(id);
+
+    // 따옴표 제거
+    id = id.replace(/^"(.*)"$/, '$1');
+
+    console.log(id);
+    document.getElementById('modalIframe').src = '/manage/roleUpdate?id=' + id;
+    document.getElementById('myModal').style.display = 'block';
+}
+
+
+	document
+			.addEventListener(
+					'DOMContentLoaded',
+					function() {
+						document
+								.getElementById('closeModalBtn')
+								.addEventListener(
+										'click',
+										function() {
+											try {
+												// iframe의 URL 초기화
+												document
+														.getElementById('modalIframe').src = '';
+												document
+														.getElementById('myModal').style.display = 'none';
+												location.reload();
+											} catch (error) {
+												console.error(
+														"Error closing modal:",
+														error);
+											}
+										});
+					});
+
+	// 모달 외부 클릭 시 닫기
+	window.addEventListener('click', function(event) {
+		if (event.target === document.getElementById('myModal')) {
+			// iframe의 URL 초기화
+			document.getElementById('modalIframe').src = '';
+			document.getElementById('myModal').style.display = 'none';
+			location.reload();
+		}
+	});
+	function allSel(bool) {
+		var chks = document.getElementsByName("seq");
+		for (var i = 0; i < chks.length; i++) {
+			chks[i].checked = bool;
+		}
+	}
+
+	function isCheck() {
+		if (confirm("정말 해고 하시겠습니까?")) {
+			return true;
+		}
+		return false;
+	}
 </script>
 <style type="text/css">
-
-	body{
-	
+body {
 	background-color: #F5FFFA;
 	font-family: 'GmarketSans';
 	font-weight: bold;
-			
-		   
-		}
-	
+}
 
+h2 {
+	font-weight: border;
+}
 
+.hr1 {
+	border: 0;
+	height: 2px;
+	background: #d3d3d3;
+}
 
-      h2 { font-weight: border; }
-      .hr1 { border: 0;
-      height: 2px;
-      background:  #d3d3d3;}
-      .grey { 
-        color: #727272;
-      }
-      #strong { font-weight: 900;}
-      
+.grey {
+	color: #727272;
+}
 
-      th {
-        background-color: #F5F5F5;
-        border-top: 3px solid #727272;
-        padding: 10px;
-        height: 40px;
-      }
+#strong {
+	font-weight: 900;
+}
 
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+	margin: 15% auto;
+	padding: 20px;
+	padding-bottom: 3%;
+	border: 1px solid #888;
+	width: 30%;
+	height: 50%;
+	padding-bottom: 3%;
+}
+
+th {
+	background-color: #F5F5F5;
+	border-top: 3px solid #727272;
+	padding: 10px;
+	height: 40px;
+}
 
 table {
-    border-top: 1px solid #d3d3d3;
-    border-collapse: collapse;
-    margin: 18px; /* 테이블 간격 조절 */
-    display: flex;
-    flex-wrap: wrap; /* 테이블이 화면 크기에 맞춰 나열되도록 설정 */
-    float: left;
-    border-radius: 10px; /* 둥글게 만들기 */
-    overflow: hidden; /* 둥글게 만들 때 테이블 내용이 잘리는 것을 방지 */
-    background-color : 	#FAFAFA;
+	border-top: 1px solid #d3d3d3;
+	border-collapse: collapse;
+	margin: 18px; /* 테이블 간격 조절 */
+	display: flex;
+	flex-wrap: wrap; /* 테이블이 화면 크기에 맞춰 나열되도록 설정 */
+	float: left;
+	border-radius: 10px; /* 둥글게 만들기 */
+	overflow: hidden; /* 둥글게 만들 때 테이블 내용이 잘리는 것을 방지 */
+	background-color: #FAFAFA;
 }
 
 td {
-    padding: 10px;
-    height: 200px;
-    border-bottom: 3px solid #727272;
-    flex: 1; /* 각 테이블 내 셀이 균등하게 자라도록 설정 */
+	padding: 10px;
+	height: 200px;
+	border-bottom: 3px solid #727272;
+	flex: 1; /* 각 테이블 내 셀이 균등하게 자라도록 설정 */
 }
-      
-      .btn {
-        width: 100px;
-        height: 30px;
-        font-weight: 900;
-        color: white;
-        text-align: center;
-        background: grey;
-        border: solid 2px white;
-        border-radius: 5px;
-      }
-      
-      #error {
-        color: red;
-      }
 
-      a:link { color: blue; height: bold; text-decoration: none;}
-      a:visited { color: blue; height: bold; text-decoration: none;}
-      a:hover { color: red; height: bold; text-decoration: underline;}
-      a { color: black; height: bold; text-decoration-line: none;}
+.btn {
+	width: 100px;
+	height: 30px;
+	font-weight: 900;
+	color: white;
+	text-align: center;
+	background: grey;
+	border: solid 2px white;
+	border-radius: 5px;
+}
+
+#error {
+	color: red;
+}
+
+a:link {
+	color: blue;
+	height: bold;
+	text-decoration: none;
+}
+
+a:visited {
+	color: blue;
+	height: bold;
+	text-decoration: none;
+}
+
+a:hover {
+	color: red;
+	height: bold;
+	text-decoration: underline;
+}
+
+a {
+	color: black;
+	height: bold;
+	text-decoration-line: none;
+}
 </style>
 </head>
 <body>
 
-<div layout:fragment="content">
-  <div id="container" class="container">
-    <h2>직원 관리</h2>
-    <hr class ="hr1" noshade>
-    <form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
-          <div>
-        <button type="submit" class="btn">해고</button>
-        <span id="error" th:if="${#fields.hasErrors('seq')}" th:errors="*{seq}"></span>
-      </div>
-    
-       <th:block th:if="${#lists.isEmpty(mlist)}">
-         <tr>
-            <td colspan="4" style="text-align: center;" >---작성된 글이 없습니다.---</td>
-         </tr>
-      </th:block>
-      <th:block th:each="table:${mlist}">
-      <td>
-        <table id="table">
-          <tr>
-            <th th:each="header:${table}">직원</th>
-          </tr>
-          <tr th:each="row:${table}">
-            <td th:each="dto:${row}">
-              <input type="checkbox" class="center" th:field="*{seq}" th:value="${dto.account_seq}" /></br>
-              <span class="center" th:text="'아이디 : '+${dto.id}" th:style="'font-size : 18px;'+'font-weight : bold;'" /></br>
-              <a th:href="@{/manage/UserDetailManagement(name=${dto.name})}" class="center" th:text="'이름 : '+${dto.name}" th:value="${dto.name}" th:style="'font-size : 18px;'+'font-weight : bold;'"></a></br>
-              <span class="center" th:text="'등급 : '+${dto.role}" th:style="'font-size : 18px;'+'font-weight : bold;'" /></br>
-              <span class="left" th:text="'은행 : '+${dto.bank_name}" th:style="'font-size : 18px;'+'font-weight : bold;'" /></br>
-              <span class="center" th:text="'계좌번호 : '+${dto.Account_num_masked}" th:style="'font-size : 18px;'+'font-weight : bold;'" /></br>
-            </td>
-          </tr>
-        </table>
-        </td>
-      </th:block>
+	<div layout:fragment="content">
+		<div id="container" class="container">
+			<h2>직원 관리</h2>
+			<hr class="hr1" noshade>
+			<form action="/board/mulDel" method="post"
+				th:object="${delBoardCommand}">
+				<div>
+					<button type="submit" class="btn">해고</button>
+					<span id="error" th:if="${#fields.hasErrors('seq')}"
+						th:errors="*{seq}"></span>
+				</div>
 
-    </form>
-  </div>
-</div>
+				<th:block th:if="${#lists.isEmpty(mlist)}">
+					<tr>
+						<td colspan="4" style="text-align: center;">---작성된 글이
+							없습니다.---</td>
+					</tr>
+				</th:block>
+				<th:block th:each="table:${mlist}">
+					<td>
+						<table id="table">
+							<tr>
+								<th th:each="header:${table}"></th>
+							</tr>
+							<tr th:each="row:${table}">
+								<td th:each="dto:${row}"><input type="checkbox"
+									class="center" th:field="*{seq}" th:value="${dto.account_seq}" />
+				 <button type="button" class="btn-dark" th:onclick="approveAction('[[${dto.id}]]');">권한</button>
+									</br> <img name="p"
+									style="border-radius: 50%; margin-left: 25%; width: 100px; height: 100px; background-color: #FFFFFF; z-index: 200;"
+									th:src="@{'/upload/' + ${dto.stored_filename}}" alt="Image" />
+
+
+
+
+
+
+									</br> <span class="center" th:text="'이름 : '+${dto.name}"
+									th:style="'font-size : 18px;'+'font-weight : bold;'" /></br> <a
+									th:href="@{/manage/UserDetailManagement(id=${dto.id})}"
+									class="center" th:text="'아이디 : '+${dto.id}"
+									th:value="${dto.name}"
+									th:style="'font-size : 18px;'+'font-weight : bold;'"></a></br> <span
+									class="center" th:text="'등급 : '+${dto.role}"
+									th:style="'font-size : 18px;'+'font-weight : bold;'" /></br> <span
+									class="left" th:text="'은행 : '+${dto.bank_name}"
+									th:style="'font-size : 18px;'+'font-weight : bold;'" /></br> <span
+									class="center" th:text="'계좌번호 : '+${dto.Account_num_masked}"
+									th:style="'font-size : 18px;'+'font-weight : bold;'" /></br></td>
+
+							</tr>
+
+						</table>
+					</td>
+					<div id="myModal" class="modal">
+						<div class="modal-content">
+							<span class="close" id="closeModalBtn">&times;</span>
+							<iframe id="modalIframe" width="100%" height="100%"></iframe>
+						</div>
+					</div>
+				</th:block>
+
+			</form>
+		</div>
+	</div>
 
 </body>
 </html>
