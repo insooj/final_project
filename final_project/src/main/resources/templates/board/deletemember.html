@@ -5,33 +5,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script th:inline="javascript">
-	function roledown() {
-		if (confirm("정말 직원등급으로 변경 하시겠습니까?")) {
+	function delete() {
+		if (confirm("confirm(정말 해고 하시겠습니까?")) {
 			return true;
 		}
 		return false;
 
 	}
-	function roleup() {
-		if (confirm("정말 사장등급으로 변경 하시겠습니까?")) {
-			return true;
-		}
-		return false;
-
-	}
-	function rolem() {
-		if (confirm("정말 매니저등급으로 변경 하시겠습니까?")) {
-			return true;
-		}
-		return false;
-
-	}
-	function isCheck() {
-		if (confirm("정말 해고 하시겠습니까?")) {
-			return true;
-		}
-		return false;
-	}
+	
 </script>
 <style type="text/css">
 body {
@@ -151,8 +132,7 @@ a {
 
 	<div layout:fragment="content">
 		<div id="container" class="container">
-			<h2>직원 직급 변경</h2>
-			<h5>사장님 직급은 변경이 되지 않습니다.</h5>
+			<h2>직원해고</h2>
 			<hr class="hr1" noshade>
 			<th:block th:each="table:${dto}">
 				<td>
@@ -186,24 +166,12 @@ a {
 						</tr>
 
 					</table>
-					<form th:action="@{/manage/roledown}" onsubmit="return roledown()"
+					<form th:action="@{/manage/delete}" onsubmit="return delete();"
 						method="get">
 						<input type="hidden" name="id" th:value="${dto.id}" />
 						<button id="roledownButton" type="submit"
 							style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 60%; left: 50%;"
-							class="btn" th:disabled="${dto.role == '사장'}">직원권한으로 변경</button>
-					</form> <!-- 				사장권한 부여 --> <!-- 				<th:block  th:if="${session.mdto.role=='사장'}"> -->
-					<!-- 				<form th:action="@{/manage/roleup}" onsubmit="return roleup()" -->
-					<!-- 					method="get"> --> <!-- 					<input type="hidden" name="id" th:value="${dto.id}" /> -->
-					<!-- 					<button id="rolupButton" type="submit" --> <!-- 						style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 20%; left: 50%;" -->
-					<!-- 						class="btn">사장권한으로 변경</button> --> <!-- 				</form> -->
-					<!-- 				</th:block> -->
-					<form th:action="@{/manage/rolem}" onsubmit="return rolem()"
-						method="get">
-						<input type="hidden" name="id" th:value="${dto.id}" />
-						<button id="rolupButton" type="submit"
-							style="width: 230px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 40%; left: 50%;"
-							class="btn" th:disabled="${dto.role == '사장'}">매니저권한으로 변경</button>
+							class="btn" >해고하기</button>
 					</form>
 				</td>
 

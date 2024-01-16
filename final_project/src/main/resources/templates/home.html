@@ -1,87 +1,108 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout}">
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-	
+   
 </script>
 <style type="text/css">
 @import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
 
 li {
-	float: left;
+   float: left;
 }
 
 ul {
-	list-style: none;
+   list-style: none;
+}
+
+.D1 {
+   box-shadow: 3px 3px;
+   background-color: #E7EAF9;
+   border: none;
+   position: absolute;
+   font-family: 'GmarketSans';
+   font-size: 20px;
+   width: 250px;
+   text-align: center;
+   height: 250px;
+   border-radius: 10%;
+   transition: all 0.5s;
 }
 
 .D1:hover {
-	z-index: 200;
-	background-color: #90EE90;
-	color: white;
-	box-shadow: 5px 5px #ddd;
-	/* 	border: solid 1px; */
-	transition: all 0.5s;
-	transform: translateY(-10px);
-	background-color: #90EE90;
+   z-index: 200;
+   background-color: #90EE90;
+   color: white;
+   box-shadow: 5px 5px #ddd;
+   transition: all 0.5s;
+   transform: translateY(-10px);
+   background-color: #90EE90;
 }
 
 .slider {
-	opacity: 1;
-	overflow: hidden;
-	top: 70px;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	background-size: cover;
-	background-position: center;
-	background-image: url("/css/background.jpg");
+   opacity: 1;
+   overflow: hidden;
+   top: 70px;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   background-size: cover;
+   background-position: center;
+   background-image: url("/css/background.jpg");
+}
+
+
+   .table{
+      position: absolute; 
+      margin-left: 10%; 
+      top: 5%; 
+      box-shadow: 2px 2px 2px 2px; 
+      border-radius: 25px; 
+      width: 55%; 
+      height: 25%; 
+      background-color: #FFFFFF;
+       z-index: 200;
+       font-size : 20px;
 }
 </style>
 </head>
 <body style="overflow: hidden;">
-	<div layout:fragment="content">
-		<div class="slider">
-
-			<div>
-				<button class="D1"
-					style="box-shadow:  3px 3px;background-color: #E7EAF9; border: none;   position: absolute;  right: 5%; top: 15%; font-family: 'GmarketSans'; font-size: 35px; margin-left: 20px; line-height: 250px; width: 450px; text-align: center; height: 450ㅔ; border-radius: 10%;">
-					업무일지작성</button>
-				<button class="D1"
-					style="box-shadow: 3px 3px 3px 3px;background-color:  #CCE1FF; border: none; padding: 0; border: none; position: absolute; right: 5%; top: 44%; font-family: 'GmarketSans'; font-size: 35px; margin-left: 20px; line-height: 250px; width: 450px; text-align: center; height: 250px; border-radius: 10%;">
-					월별스케줄</button>
-				<button class="D1"
-					style="box-shadow: 3px 3px 3px 3px;background-color: transparent; border: none; padding: 0; border: none; position: absolute; right: 23%; bottom: 15%; font-family: 'GmarketSans'; font-size: 25px; margin-left: 20px; line-height: 150px; width: 150px; text-align: center; height: 150px; border-radius: 10%;">
-					선지급요청</button>
-				<button class="D1"
-					style="box-shadow: 3px 3px 3px 3px;background-color: transparent; border: none; padding: 0; border: none; position: absolute; right: 14%; bottom: 15%; font-family: 'GmarketSans'; font-size: 25px; margin-left: 20px; line-height: 150px; width: 150px; text-align: center; height: 150px; border-radius: 10%;">
-					프로필변경</button>
-						<button class="D1"
-					style="box-shadow: 3px 3px 3px 3px;background-color: transparent; border: none; padding: 0; border: none; position: absolute; right: 5%; bottom: 15%; font-family: 'GmarketSans'; font-size: 25px; margin-left: 20px; line-height: 150px; width: 150px; text-align: center; height: 150px; border-radius: 10%;">
-					비밀번호변경</button>
-						<button class="D1"
-					style="box-shadow: 3px 3px 3px 3px;background-color: transparent; border: none; padding: 0; border: none; position: absolute; right: 32%; bottom: 15%; font-family: 'GmarketSans'; font-size: 25px; margin-left: 20px; line-height: 150px; width: 150px; text-align: center; height: 150px; border-radius: 10%;">
-					계좌정보</button>
-			</div>
-		</div>
-
-	</div>
+   <div layout:fragment="content">
+      <div class="slider">
+         <div>
+            <div class="table">
+               <tr>
+                  <label type="text" id="text"> 현재 월급제로 이루어진 기업의 급여 시스템을 유럽, 미국 등 선진국에서 활용 중인 주급제의 개념으로 
+                  변경하여 경제활동 인구로 하여금 원활한 현금 흐름과 소비 패턴을 가지도록 도움을 주기 위한 프로그램입니다. 파이낸셜의 클라우드 계좌를 통해서
+                   기업은 회사 운영자금과 인건비를 다루고, 근로자는 급여의 유동성을 확보해 현금 흐름을 용이하게 합니다.</label>
+               </tr>
+            </div> 
+            <button class="D1" style="right: 50%; bottom: 40%; background-color : #E7EAF9;">
+               업무일지작성
+            </button>
+            <button class="D1" style="right: 35%; bottom: 40%; background-color : #CCE1FF;">
+               월별스케줄
+            </button>
+            <button class="D1" style="right: 5%; bottom: 40%; background-color: #F8EFFB;">
+               선지급관리
+            </button>
+            <button class="D1" style="right: 20%; bottom: 40%;">
+               프로필변경
+            </button>
+            <button class="D1" style="right: 5%; bottom: 70%;">
+               비밀번호변경
+            </button>
+            <button class="D1" style="right: 20%; bottom: 70%;">
+               계좌정보
+            </button>
+         </div>
+      </div>
+   </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
+   

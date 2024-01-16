@@ -96,6 +96,7 @@ public class MangementController {
 		System.out.println(accountDto);
 		return "redirect:/manage/UserDetailManagement?id=" + adduserCommand.getId();
 	}
+	
 
 	@GetMapping(value = "/roleUpdate")
 	public String roleUpdate(String id, Model model) {
@@ -111,7 +112,32 @@ public class MangementController {
 
 		return "board/roleUpdate";
 	}
+	
+	@GetMapping(value = "/deleteAction")
+	public String deleteAction(String id, Model model) {
+		System.out.println(id);
+		// 유효값처리용
+		model.addAttribute("updateBoardCommand", new UpdateBoardCommand());
+		// 출력용
 
+		AccountDto dto = userlistService.UserDetail(id);
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		System.out.println("직원 해고 모달");
+
+		return "board/deletemember";
+	}
+	@GetMapping(value = "/delete")
+	public String delete(String id, Model model) {
+		AccountDto dto = new AccountDto();
+		dto = userlistService.getUserDetail(id);
+		userlistService.membermulDel(dto);
+		model.addAttribute("dto", dto);
+		System.out.println(dto);
+		// 유효값처리용
+		System.out.println("해고");
+		return "board/delete";
+	}
 	@GetMapping(value = "/roledown")
 	public String roledown(String id, Model model) {
 		AccountDto dto = new AccountDto();

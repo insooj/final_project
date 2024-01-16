@@ -198,6 +198,7 @@
 <div layout:fragment="content">
 <div id="container">
 <section class="notice">
+<form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
   <div class="page-title">
         <div class="container">
             <h2>공지사항</h2>
@@ -214,7 +215,7 @@
             </td>
          </tr>
 <hr class ="hr1" noshade>
-<form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
+
 <div class="board-list">
 <div class="container">
    <table class="board-table">

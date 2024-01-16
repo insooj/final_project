@@ -33,11 +33,13 @@ public class UserListService {
 
 		return accountMapper.getUser();
 	}
-
+	
 	public AccountDto UserDetail(String id) {
 		return accountMapper.UserDetail(id);
 	}
-
+	public boolean membermulDel(AccountDto dto) {
+		return accountMapper.membermulDel(dto);
+	}
 	public AccountDto getUserDetail(String id) {
 		return accountMapper.getUserDetail(id);
 	}

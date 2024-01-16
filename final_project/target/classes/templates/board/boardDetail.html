@@ -84,7 +84,7 @@ body {
 
 				<table class="table">
 					<th:block
-						th:if="${session.mdto.id == dto.id or session.mdto.role == '사장' or session.mdto.role='매니저'}">
+						th:if="${session.mdto.id == dto.id or session.mdto.role == '사장' or session.mdto.role=='매니저'}">
 						<tr>
 							<th>작성자[ID]</th>
 							<td th:text="${dto.id}"></td>
@@ -133,7 +133,7 @@ body {
 						</tr>
 					</th:block>
 					<th:block
-						th:unless="${session.mdto.id == dto.id or session.mdto.role == '사장'or session.mdto.role='매니저'}">
+						th:unless="${session.mdto.id == dto.id or session.mdto.role == '사장'or session.mdto.role=='매니저'}">
 						<tr>
 							<th>작성자[ID]</th>
 							<td id="id" th:text="${dto.id}"></td>

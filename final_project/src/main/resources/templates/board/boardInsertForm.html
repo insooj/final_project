@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/layout}">
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -9,65 +9,65 @@
 
 </script>
 <style type="text/css">
-		body{
-				  
-		    background-color: #dcdcdc;
-		  	font-family: 'GmarketSans';
-			font-weight: bold;
-			
-		   
-		}
-		
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		  
-		  
-		  
-		  display: inline-block;
-		  padding: 0 30px;
-		  font-size: 20px;
-		  font-weight: 400;
-		  background: transparent;
-		  text-align: center;
-		  white-space: nowrap;
-		  vertical-align: middle;
-		  -ms-touch-action: manipulation;
-		  touch-action: manipulation;
-		  cursor: pointer;
-		  -webkit-user-select: none;
-		  -moz-user-select: none;
-		  -ms-user-select: none;
-		  user-select: none;
-		  border: 1px solid transparent;
-		  text-transform: uppercase;
-		  -webkit-border-radius: 0;
-		  -moz-border-radius: 0;
-		  border-radius: 0;
-		  -webkit-transition: all 0.3s;
-		  -moz-transition: all 0.3s;
-		  -ms-transition: all 0.3s;
-		  -o-transition: all 0.3s;
-		  transition: all 0.3s;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
-		.btn-dark {
-		  background: #929094;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
+      body{
+              
+          background-color: #dcdcdc;
+           font-family: 'GmarketSans';
+         font-weight: bold;
+         
+         
+      }
+      
+      
+      .btn-dark {
+        background: #555;
+        color: #fff;
+        
+        
+        
+        display: inline-block;
+        padding: 0 30px;
+        font-size: 20px;
+        font-weight: 400;
+        background: transparent;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        text-transform: uppercase;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
+      }
+      
+      .btn-dark:hover, .btn-dark:focus {
+        background: #373737;
+        border-color: #373737;
+        color: #fff;
+      }
+      
+      .btn-dark {
+        background: #929094;
+        color: #fff;
+      }
+      
+      .btn-dark:hover, .btn-dark:focus {
+        background: #373737;
+        border-color: #373737;
+        color: #fff;
+      }
 </style>
 </head>
 <body>
@@ -75,57 +75,56 @@
 <div id="container">
 <h1>새글 작성하기</h1>
 <form action="/board/boardInsert" method="post"
-	  enctype="multipart/form-data" th:object="${insertBoardCommand}">
-	<input type="hidden" name="id" th:value="${session.mdto.id}"/>
-	<input type="hidden" name="role" th:value="${session.mdto.role}"/>
-	<table class="table">
-		<tr>
-			<th>작성자[ID]</th>
-			<td th:text="${session.mdto.id}"></td>
-		</tr>
-		<tr>
-			<th>등급</th>
-			<td th:text="${session.mdto.role}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td>
-				<input type="text" name="title" th:field="*{title}" 
-												class="form-control"/>
-				<span th:if="${#fields.hasErrors('title')}" 
-					  th:errors="*{title}"></span>
-			</td>
-		</tr>
-		<tr>
-			<th>파일</th>
-			<td>
-				<input type="file" name="filename" multiple="multiple"
-					                              class="form-control" />
-			</td>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<td>
-				<textarea rows="10" cols="60" name="content"
-				          th:field="*{content}" class="form-control"></textarea>
-				<span th:if="${#fields.hasErrors('content')}" 
-					  th:errors="*{content}"></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<button type="submit" class="btn">등록</button>
-				<button type="button" class="btn"
-				 th:onclick="|location.href='@{/board/boardList}'|">목록</button>
-			</td>
-		</tr>
-	</table>
+     enctype="multipart/form-data" th:object="${insertBoardCommand}">
+   <input type="hidden" name="id" th:value="${session.mdto.id}"/>
+   <input type="hidden" name="role" th:value="${session.mdto.role}"/>
+   <table class="table">
+      <tr>
+         <th>작성자[ID]</th>
+         <td th:text="${session.mdto.id}"></td>
+      </tr>
+      <tr>
+         <th>등급</th>
+         <td th:text="${session.mdto.role}"></td>
+      </tr>
+      <tr>
+         <th>제목</th>
+         <td>
+            <input type="text" name="title" th:field="*{title}" 
+                                    class="form-control"/>
+            <span th:if="${#fields.hasErrors('title')}" 
+                 th:errors="*{title}"></span>
+         </td>
+      </tr>
+      <tr>
+         <th>파일</th>
+         <td>
+            <input type="file" name="filename" multiple="multiple"
+                                             class="form-control" />
+         </td>
+      </tr>
+      <tr>
+         <th>내용</th>
+         <td>
+            <textarea rows="10" cols="60" name="content"
+                      th:field="*{content}" class="form-control"></textarea>
+            <span th:if="${#fields.hasErrors('content')}" 
+                 th:errors="*{content}"></span>
+         </td>
+      </tr>
+      <tr>
+         <td colspan="2">
+            <button type="submit" class="btn-dark">등록</button>
+            <button type="button" class="btn-dark"
+             th:onclick="|location.href='@{/board/boardList}'|">목록</button>
+         </td>
+      </tr>
+   </table>
 </form>
 </div>
 </div>
 </body>
 </html>
-
 
 
 

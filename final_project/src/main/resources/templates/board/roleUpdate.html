@@ -161,9 +161,15 @@ a {
 							<th th:each="header:${table}"></th>
 						</tr>
 						<tr th:each="row:${table}">
-							<td th:each="dto:${row}"></br> <img name="p"
-								style="border-radius: 50%; margin-left: 25%; width: 100px; height: 100px; background-color: #FFFFFF; z-index: 200;"
-								th:src="@{'/upload/' + ${dto.stored_filename}}" alt="Image" />
+							<td th:each="dto:${row}"></br> <th:block th:if="${dto.stored_filename !=null}">
+                                       <img name="p"
+                                          style="border-radius: 50%; margin-left: 25%; width: 100px; height: 100px; background-color: #FFFFFF; z-index: 200;"
+                                          th:src="@{'/upload/' + ${dto.stored_filename}}" alt="Image" />
+                                    </th:block> 
+                                    <th:block th:if="${dto.stored_filename ==null}">
+                                       <img style="border-radius: 50%;margin-left: 25%; width: 100px; height: 100px; background-color: none ; z-index: 200;"/>
+                                       
+                                    </th:block> 
 								</br> <span class="center" th:text="'이름 : '+${dto.name}"
 								th:style="'font-size : 18px;'+'font-weight : bold;'" /></br> <span
 								th:href="@{/manage/UserDetailManagement(id=${dto.id})}"
