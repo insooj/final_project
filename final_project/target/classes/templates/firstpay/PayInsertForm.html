@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout}">
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -21,13 +21,13 @@ onload = function() {
     tmoney_span.textContent = tmoney + "원";
 }
 document.addEventListener("DOMContentLoaded", function() {
-	  var month_pay_input = document.getElementById('month_pay');
-	    var firstmoney_input = document.getElementById('firstmoney');
-	    var tmoney_span = document.getElementById('tmoney');
-	    var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
+     var month_pay_input = document.getElementById('month_pay');
+       var firstmoney_input = document.getElementById('firstmoney');
+       var tmoney_span = document.getElementById('tmoney');
+       var firstmoney_value = firstmoney_input ? firstmoney_input.textContent : 0;
 
-	    // 값(value)을 정수로 형변환하여 계산
-	    var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
+       // 값(value)을 정수로 형변환하여 계산
+       var tmoney = parseInt(month_pay_input.textContent, 10) - parseInt(firstmoney_value, 10);
     var moneyInput = document.getElementById('moneyInput');
     var maxAllowedValue = tmoney;
 
@@ -45,135 +45,144 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script>
 <style type="text/css">
-		body{
-				  
-		    background-color: #F8EFFB;
-		  	font-family: 'GmarketSans';
-			font-weight: bold;
-			
-		   
-		}
-		
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		  
-		  
-		  
-		  display: inline-block;
-		  padding: 0 30px;
-		  font-size: 20px;
-		  font-weight: 400;
-		  background: transparent;
-		  text-align: center;
-		  white-space: nowrap;
-		  vertical-align: middle;
-		  -ms-touch-action: manipulation;
-		  touch-action: manipulation;
-		  cursor: pointer;
-		  -webkit-user-select: none;
-		  -moz-user-select: none;
-		  -ms-user-select: none;
-		  user-select: none;
-		  border: 1px solid transparent;
-		  text-transform: uppercase;
-		  -webkit-border-radius: 0;
-		  -moz-border-radius: 0;
-		  border-radius: 0;
-		  -webkit-transition: all 0.3s;
-		  -moz-transition: all 0.3s;
-		  -ms-transition: all 0.3s;
-		  -o-transition: all 0.3s;
-		  transition: all 0.3s;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
-		.btn-dark {
-		  background: #929094;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
+      body{
+              
+          background-color: #F8EFFB;
+           font-family: 'GmarketSans';
+         font-weight: bold;
+         
+         
+      }
+      
+      
+      .btn-dark {
+        background: #555;
+        color: #fff;
+        
+        
+        
+        display: inline-block;
+        padding: 0 30px;
+        font-size: 20px;
+        font-weight: 400;
+        background: transparent;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        text-transform: uppercase;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
+      }
+      
+      .btn-dark:hover, .btn-dark:focus {
+        background: #373737;
+        border-color: #373737;
+        color: #fff;
+      }
+      
+      .btn-dark {
+        background: #929094;
+        color: #fff;
+      }
+      
+      .btn-dark:hover, .btn-dark:focus {
+        background: #373737;
+        border-color: #373737;
+        color: #fff;
+      }
 </style>
 </head>
 <body>
-	<div layout:fragment="content">
-		<div id="container">
-			<h1>선지급 요청 작성하기</h1>
-			<form action="/pay/RequestInsert" method="post"
-				enctype="multipart/form-data" th:object="${insertPayCommand}"
-				onsubmit="return validateInput()">
-				<input type="hidden" name="id" th:value="${session.mdto.id}" /> <input
-					type="hidden" name="name" th:value="${session.mdto.name}" /> <input
-					type="hidden" name="role" th:value="${session.mdto.role}" />
-				<table class="table">
-					<tr>
-						<th>작성자[ID]</th>
-						<td th:text="${session.mdto.id}"></td>
-					</tr>
-					<tr>
-						<th>이름</th>
-						<td th:text="${session.mdto.name}"></td>
-					</tr>
-					<tr>
-						<th>등급</th>
-						<td th:text="${session.mdto.role}"></td>
-					</tr>
-					<tr>
-						<th>선지급요청 가능 금액</th>
-						<th:block th:unless="${#lists.isEmpty(plist)}">
-							<tr th:each="dto : ${plist}">
-								<td th:if="${dto.total_hours != null}"><span id="month_pay"
-									th:text="${dto.month_pay}"></span><span th:text="원"></span></td>
-							</tr>
-						</th:block>
-					</tr>
-					<tr>
-						<div id="firstpaysalary">
-							<th:block th:unless="${#lists.isEmpty(flist)}">
-								<tr th:each="dto : ${flist}">
-									<td th:if="${dto.id != null}"><span id="firstmoney"
-										th:text="${dto.firstmoney}"></span><span th:text="원"></span></td>
-								</tr>
-							</th:block>
-						</div>
-					</tr>
-					<tr>
+   <div layout:fragment="content">
+      <div id="container">
+         <h1>선지급 요청 작성하기</h1>
+         <form action="/pay/RequestInsert" method="post"
+            enctype="multipart/form-data" th:object="${insertPayCommand}"
+            onsubmit="return validateInput()">
+            <input type="hidden" name="id" th:value="${session.mdto.id}" /> <input
+               type="hidden" name="name" th:value="${session.mdto.name}" /> <input
+               type="hidden" name="role" th:value="${session.mdto.role}" />
+            <table class="table">
+               <tr>
+                  <th>작성자[ID]</th>
+                  <td th:text="${session.mdto.id}"></td>
+               </tr>
+               <tr>
+                  <th>이름</th>
+                  <td th:text="${session.mdto.name}"></td>
+               </tr>
+               <tr>
+                  <th>등급</th>
+                  <td th:text="${session.mdto.role}"></td>
+               </tr>
 
-						<th>선지급요청 금액</th>
-						<td><input type="number" name="money" id="moneyInput"
-							class="form-control" required /></td>
-					</tr>
-					<tr>
-						<div id="totalsalary">
-							 <span
-								id="tmoney"></span><span id=tmoney></span>
-						</div>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<button type="submit" class="btn-dark">등록</button>
-							<button type="button" class="btn-dark"
-								th:onclick="|location.href='@{/pay/RequestList}'|">목록</button>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</div>
-	</div>
+               <tr>
+                  
+                  <div id="firstpaysalary">
+                  <th:block th:unless="${#lists.isEmpty(flist)}">
+                  <tr th:each="dto : ${flist}">
+                  <th>선지급받은 금액</th>
+                     <td th:if="${dto.id != null}"><span id="firstmoney"
+                        th:text="${dto.firstmoney}"></span><span th:text="원"></span></td>
+                        </tr>
+                     
+                  </th:block>   
+                  </div>
+               </tr>
+                     <tr th:each="dto : ${plist}">
+                     <th>내가 여태까지 번 금액</th>
+                        <td th:if="${dto.total_hours != null}">
+                        <div>
+                        <span id="month_pay" th:text="${dto.month_pay}"></span><span  th:text="원"></span>
+                        </div>
+                        </td>
+                     
+               <tr>
+                  <th style="color : red;">선지급요청 가능 금액</th>
+                  <th:block th:unless="${#lists.isEmpty(plist)}">
+                     <td>
+                     <div id="totalsalary">
+                         <span th:style="'color : red;'" id="tmoney"></span><span  id=tmoney></span>
+                        </div>
+                     </td>
+
+                  </th:block>
+               </tr>
+               
+               <tr>
+
+                  <th>선지급요청 금액</th>
+                  <td><input type="number" name="money" id="moneyInput"
+                     class="form-control" required /></td>
+               </tr>
+
+               <tr>
+                  <td colspan="2">
+                     <button type="submit" class="btn-dark">등록</button>
+                     <button type="button" class="btn-dark"
+                        th:onclick="|location.href='@{/pay/RequestList}'|">목록</button>
+                  </td>
+               </tr>
+            </table>
+         </form>
+      </div>
+   </div>
 </body>
 </html>
-
 
 
 

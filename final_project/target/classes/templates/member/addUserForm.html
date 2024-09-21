@@ -80,7 +80,9 @@ body{
 <div class="slider">
 <h1 style="margin-left: 45%; margin-top: 10%; font-size: 50px;font-family: 'GmarketSans'; font-weight: bold; color:black; opacity: 1.0;">회원 가입</h1>
 	<form onsubmit="return submitChk()" action="/user/addUser" method="post" th:object="${addUserCommand}">
-		<table class="table" style=" position:absolute; width:50%;  font-family: 'GmarketSans';margin-left: 35%;margin-top: 5%; font-size: 30px; width: 600px;">
+	
+	<input type="button" value="인증하기" onclick="authorization()"  style="margin-left: 32%; margin-top:4%;width: 200px;  font-family: 'GmarketSans'; font-size:30px; border-radius:20px; "/>
+		<table class="table" style=" position:absolute; width:50%;  font-family: 'GmarketSans';margin-left: 35%;margin-top:2%; font-size: 30px; width: 600px;">
 			<tr>
 				<th>아이디:</th>
 				<td><input style ="border-radius: 15px;  width: 400px;  "th:field="*{id}" type="text" 
@@ -132,13 +134,13 @@ body{
 			</tr>
 			<tr>
 				<td>
-					<input  name="useraccesstoken" th:field="*{useraccesstoken}" value=""/>
-					<input  name="userrefreshtoken" th:field="*{userrefreshtoken}" value=""/>
-					<input  name="userseqno" th:field="*{userseqno}" value=""/>
+					<input type="hidden" name="useraccesstoken" th:field="*{useraccesstoken}" value=""/>
+					<input  type="hidden"name="userrefreshtoken" th:field="*{userrefreshtoken}" value=""/>
+					<input type="hidden" name="userseqno" th:field="*{userseqno}" value=""/>
 				</td>
 				<td colspan="2">
 					<input  style="margin-left: 33%; width: 200px;	  font-family: 'GmarketSans'; font-size:30px; border-radius:20px; margin-top:7%;" type="submit" value="가입" class="btn"/>
-					<input type="button" value="인증하기" onclick="authorization()"  style="margin-left: 33%; width: 200px;  font-family: 'GmarketSans'; font-size:30px; border-radius:20px; margin-top:7%;"/>
+					
 				</td>
 			</tr>
 			

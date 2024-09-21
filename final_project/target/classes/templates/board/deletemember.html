@@ -5,14 +5,33 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script th:inline="javascript">
-	function delete() {
-		if (confirm("confirm(정말 해고 하시겠습니까?")) {
-			return true;
-		}
-		return false;
+document.addEventListener("DOMContentLoaded", function() {
+    var deleteInput = document.getElementById('delete');
+    var deleteButton = document.getElementById('deleteButton'); // 버튼 엘리먼트 가져오기
 
-	}
-	
+    // 초기에 버튼 비활성화
+    deleteButton.disabled = true;
+
+    deleteInput.addEventListener("input", function() {
+        console.log('Input event triggered');
+        var inputValue = deleteInput.value;
+
+        if (inputValue !== "해고하기" || inputValue === "") {
+        	deleteInput.setCustomValidity('값을 "해고하기"로 입력해주세요.');
+        	deleteButton.disabled = true; // 버튼 비활성화
+        } else {
+        	deleteInput.setCustomValidity('');
+        	deleteButton.disabled = false; // 버튼 활성화
+        }
+    });
+});
+
+function deletemember() {
+    if (confirm("해고하시겠습니까?")) {
+        return true;
+    }
+    return false;
+};
 </script>
 <style type="text/css">
 body {
@@ -166,14 +185,19 @@ a {
 						</tr>
 
 					</table>
-					<form th:action="@{/manage/delete}" onsubmit="return delete();"
+					<p
+				style="text-align: center; font-size: 25px; font-weight: bold; font-family: 'GongGothicMedium';">'해고하기'를
+				올바르게 입력해야 버튼이 활성화 됩니다.</p>
+					<form th:action="@{/manage/delete}" onsubmit="return deletemember()"
 						method="get">
 						<input type="hidden" name="id" th:value="${dto.id}" />
-						<button id="roledownButton" type="submit"
-							style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 60%; left: 50%;"
-							class="btn" >해고하기</button>
+					<input type="text" name="delete" id="delete" style="font-size: 20px; width: 200px; font-family: 'GongGothicMedium'; position: absolute; top: 50%; left: 55%;" />
+
+						<button id="deleteButton" type="submit" style="width: 200px; font-size: 20px; font-family: 'GongGothicMedium'; position: absolute; top: 70%; left: 55%;" class="btn" >해고하기</button>
+
 					</form>
-				</td>
+						
+			
 
 
 			</th:block>

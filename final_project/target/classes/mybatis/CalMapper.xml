@@ -184,7 +184,7 @@
       FROM schedule
       WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
       ) cal
-      WHERE rn BETWEEN 1 AND 3
+      WHERE rn BETWEEN 1 AND 8
    </select>
    <select id="monthViewList" parameterType="Map" resultType="CalDto">
       SELECT rn,seq, id,name,content, mdate, sdate,edate
@@ -194,7 +194,7 @@
       FROM month_schedule
       WHERE SUBSTR(mdate,1,6)=#{yyyyMM}
       ) cal
-      WHERE rn BETWEEN 1 AND 3
+      WHERE rn BETWEEN 1 AND 8
    </select>
    <select id="calBoardCount" parameterType="Map"
       resultType="Integer">

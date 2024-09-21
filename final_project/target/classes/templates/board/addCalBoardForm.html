@@ -8,57 +8,59 @@
 <style type="text/css">
    body{
        background-color : #E7EAF9;
+                  font-family: 'GmarketSans';
+         font-weight: bold;
    }
    
-					.btn {
-		  display: inline-block;
-		  padding: 0 30px;
-		  font-size: 20px;
-		  font-weight: 400;
-		  background: transparent;
-		  text-align: center;
-		  white-space: nowrap;
-		  vertical-align: middle;
-		  -ms-touch-action: manipulation;
-		  touch-action: manipulation;
-		  cursor: pointer;
-		  -webkit-user-select: none;
-		  -moz-user-select: none;
-		  -ms-user-select: none;
-		  user-select: none;
-		  border: 1px solid transparent;
-		  text-transform: uppercase;
-		  -webkit-border-radius: 0;
-		  -moz-border-radius: 0;
-		  border-radius: 0;
-		  -webkit-transition: all 0.3s;
-		  -moz-transition: all 0.3s;
-		  -ms-transition: all 0.3s;
-		  -o-transition: all 0.3s;
-		  transition: all 0.3s;
-		}
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
-		.btn-dark {
-		  background: #929094;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
+               .btn {
+        display: inline-block;
+        padding: 0 30px;
+        font-size: 20px;
+        font-weight: 400;
+        background: transparent;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        text-transform: uppercase;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
+      }
+      
+      .btn-dark {
+        background: #555;
+        color: #fff;
+      }
+      
+      .btn-dark:hover, .btn-dark:focus {
+        background: #373737;
+        border-color: #373737;
+        color: #fff;
+      }
+      
+      .btn-dark {
+        background: #929094;
+        color: #fff;
+      }
+      
+      .btn-dark:hover, .btn-dark:focus {
+        background: #373737;
+        border-color: #373737;
+        color: #fff;
+      }
 </style>
 <script type="text/javascript">
      var mainTable = document.getElementById('container');
@@ -112,51 +114,51 @@
                <th th:text="${session.mdto.role}"></th>
               
          </tr> 
-			<select name="year" id="yearSelect">
-			    <th:block th:each="i:${#numbers.sequence(insertCalCommand.year-5,insertCalCommand.year+5)}">
-			        <th:block th:if="${insertCalCommand.year == i}">
-			            <option th:value="${i}" th:text="${i}" selected="selected"></option>
-			        </th:block>
-			        <th:block th:unless="${insertCalCommand.year == i}">
-			            <option th:value="${i}" th:text="${i}"></option>
-			        </th:block>
-			    </th:block>
-			</select>년
-			<select name="month" id="monthSelect">
-			    <th:block th:each="i:${#numbers.sequence(1,12)}">
-			        <th:block th:if="${insertCalCommand.month == i}">
-			            <option th:value="${i}" th:text="${i}" selected="selected"></option>
-			        </th:block>
-			        <th:block th:unless="${insertCalCommand.month == i}">
-			            <option th:value="${i}" th:text="${i}"></option>
-			        </th:block>
-			    </th:block>
-			</select>월
-			<select name="date" id="dateSelect">
-			    <th:block th:each="i:${#numbers.sequence(1,31)}">
-			        <th:block th:if="${insertCalCommand.date == i}">
-			            <option th:value="${i}" th:text="${i}" selected="selected"></option>
-			        </th:block>
-			        <th:block th:unless="${insertCalCommand.date == i}">
-			            <option th:value="${i}" th:text="${i}"></option>
-			        </th:block>
-			    </th:block>
-			</select>일
-			
-			<script>
-			    document.getElementById('yearSelect').addEventListener('mousedown', function(event) {
-			        event.preventDefault();
-			        return false;
-			    });
-			    document.getElementById('monthSelect').addEventListener('mousedown', function(event) {
-			        event.preventDefault();
-			        return false;
-			    });
-			    document.getElementById('dateSelect').addEventListener('mousedown', function(event) {
-			        event.preventDefault();
-			        return false;
-			    });
-			</script>
+         <select name="year" id="yearSelect">
+             <th:block th:each="i:${#numbers.sequence(insertCalCommand.year-5,insertCalCommand.year+5)}">
+                 <th:block th:if="${insertCalCommand.year == i}">
+                     <option th:value="${i}" th:text="${i}" selected="selected"></option>
+                 </th:block>
+                 <th:block th:unless="${insertCalCommand.year == i}">
+                     <option th:value="${i}" th:text="${i}"></option>
+                 </th:block>
+             </th:block>
+         </select>년
+         <select name="month" id="monthSelect">
+             <th:block th:each="i:${#numbers.sequence(1,12)}">
+                 <th:block th:if="${insertCalCommand.month == i}">
+                     <option th:value="${i}" th:text="${i}" selected="selected"></option>
+                 </th:block>
+                 <th:block th:unless="${insertCalCommand.month == i}">
+                     <option th:value="${i}" th:text="${i}"></option>
+                 </th:block>
+             </th:block>
+         </select>월
+         <select name="date" id="dateSelect">
+             <th:block th:each="i:${#numbers.sequence(1,31)}">
+                 <th:block th:if="${insertCalCommand.date == i}">
+                     <option th:value="${i}" th:text="${i}" selected="selected"></option>
+                 </th:block>
+                 <th:block th:unless="${insertCalCommand.date == i}">
+                     <option th:value="${i}" th:text="${i}"></option>
+                 </th:block>
+             </th:block>
+         </select>일
+         
+         <script>
+             document.getElementById('yearSelect').addEventListener('mousedown', function(event) {
+                 event.preventDefault();
+                 return false;
+             });
+             document.getElementById('monthSelect').addEventListener('mousedown', function(event) {
+                 event.preventDefault();
+                 return false;
+             });
+             document.getElementById('dateSelect').addEventListener('mousedown', function(event) {
+                 event.preventDefault();
+                 return false;
+             });
+         </script>
          </tr>
          <tr>
             <th>일정</th>
@@ -202,7 +204,6 @@
 </script>
 </body>
 </html>
-
 
 
 

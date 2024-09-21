@@ -66,6 +66,7 @@ public class PaymentController {
 		List<FileUserDto> list = memberService.fileuser(filedto);
 		model.addAttribute("list", list);
 		List<PaymentDto> plist = payService.getAllList();
+		
 		model.addAttribute("plist", plist);
 		System.out.println(plist);
 		model.addAttribute("delBoardCommand", new DelBoardCommand());

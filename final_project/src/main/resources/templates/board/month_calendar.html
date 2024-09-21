@@ -7,14 +7,14 @@
 <meta charset="UTF-8">
 <title></title>
 <style type="text/css">
-		body{
-				  
-		  
-		  	font-family: 'GmarketSans';
-			font-weight: bold;
-			
-		   
-		}
+      body{
+              
+        
+           font-family: 'GmarketSans';
+         font-weight: bold;
+         
+         
+      }
 
    .cal{width:100%;}
 
@@ -27,7 +27,7 @@
    
 /*     날짜표현 div */
     .cal #tbody > div{
-       height: 120px;
+       height: 160px;
        vertical-align: top;
        border-top:1px solid gray;
        position: relative;
@@ -94,29 +94,28 @@
                       +(date.length<2?"0"+date:date);
       //   alert(yyyyMMdd);
       
-      if(aDate.nextAll("p").length>0){
-      $.ajax({
-         url:"/schedule/calCountAjax",
-         method:"get",
-         data:{"yyyyMMdd":yyyyMMdd},
-         dataType:"json",
-         async:false,
+//      if(aDate.nextAll("p").length>0){
+//      $.ajax({
+//         url:"/schedule/calCountAjax",
+//         method:"get",
+//         data:{"yyyyMMdd":yyyyMMdd},
+//         dataType:"json",
+//         async:false,
          
-         success:function(data){
+//         success:function(data){
          //   alert(data.count);
-            aDate.after("<div class='cp'>"+data.count+"</div>");
-         },
-         error:function(){
-            alert("통신실패");
-         }
-      });
-   }
-      },function(){
-         $(".cp").remove();
-      });
-      
-   });
-
+//            aDate.after("<div class='cp'>"+data.count+"</div>");
+//         },
+//         error:function(){
+//            alert("통신실패");
+//        }
+//     });
+//   }
+//      },function(){
+//         $(".cp").remove();
+//      });  
+//   });
+  
 
 </script>
 </head>
@@ -167,8 +166,6 @@
 
 </body>
 </html>
-
-
 
 
 

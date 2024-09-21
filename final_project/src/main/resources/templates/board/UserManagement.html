@@ -261,14 +261,23 @@ a {
                      <tr th:each="row:${table}">
                         <td th:each="dto:${row}">
                         
-             <button type="button" class="btn-dark" th:onclick="approveAction('[[${dto.id}]]');">권한 설정</button>
+                        <th:block th:if="${session.mdto.id!=dto.id}"> <button type="button" class="btn-dark" th:onclick="approveAction('[[${dto.id}]]');">권한 설정</button></th:block>
+                        
+                        
+            
+              <th:block th:if="${session.mdto.role=='사장'}">
+              <th:block th:if ="${session.mdto.id!=dto.id}">
                <button type="button" class="btn-dark" style="margin-left:15px;  "th:onclick="deleteAction('[[${dto.id}]]');">해고</button>
+             </th:block></th:block>	
+             
+            
+             
                            </br> </br>
                            
                               <th:block th:if="${dto.stored_filename !=null}">
                                        <img name="p"
                                           style="border-radius: 50%; margin-left: 25%; width: 100px; height: 100px; background-color: #FFFFFF; z-index: 200;"
-                                          th:src="@{'/upload/' + ${dto.stored_filename}}" alt="Image" />
+                                          th:src="@{'/upload/' + ${dto.stored_filename}}"  />
                                     </th:block> 
                                     <th:block th:if="${dto.stored_filename ==null}">
                                        <img style="border-radius: 50%;margin-left: 25%; width: 100px; height: 100px; background-color: none ; z-index: 200;"/>
@@ -305,7 +314,6 @@ a {
                </div>
             </th:block>
 
-         </form>
       </div>
    </div>
 

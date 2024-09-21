@@ -6,7 +6,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-   
+      function popup() {
+      var url = "/user/mypopup"; // 띄우고 싶은 url값을 입력해줍니다.
+      var name = "popup"; // 팝업의 이름을 입력해줍니다.
+      var option = "width = 700, height = 700, top = 100, left = 200, location = no" // 팝업창의 크기 및 기타 css를 설정해줍니다.
+      window.open(url, name, option); // 새로운 창이 뜨면서 팝업이 생성됩니다.
+   }
 </script>
 <style type="text/css">
 @import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
@@ -35,12 +40,11 @@ ul {
 
 .D1:hover {
    z-index: 200;
-   background-color: #90EE90;
+   background-color: rgb(255, 255, 255);
    color: white;
    box-shadow: 5px 5px #ddd;
    transition: all 0.5s;
    transform: translateY(-10px);
-   background-color: #90EE90;
 }
 
 .slider {
@@ -65,7 +69,7 @@ ul {
       border-radius: 25px; 
       width: 55%; 
       height: 25%; 
-      background-color: #FFFFFF;
+      background-color:#F5F5F5;
        z-index: 200;
        font-size : 20px;
 }
@@ -74,33 +78,43 @@ ul {
 <body style="overflow: hidden;">
    <div layout:fragment="content">
       <div class="slider">
-         <div>
-            <div class="table">
-               <tr>
-                  <label type="text" id="text"> 현재 월급제로 이루어진 기업의 급여 시스템을 유럽, 미국 등 선진국에서 활용 중인 주급제의 개념으로 
-                  변경하여 경제활동 인구로 하여금 원활한 현금 흐름과 소비 패턴을 가지도록 도움을 주기 위한 프로그램입니다. 파이낸셜의 클라우드 계좌를 통해서
-                   기업은 회사 운영자금과 인건비를 다루고, 근로자는 급여의 유동성을 확보해 현금 흐름을 용이하게 합니다.</label>
-               </tr>
-            </div> 
-            <button class="D1" style="right: 50%; bottom: 40%; background-color : #E7EAF9;">
-               업무일지작성
-            </button>
-            <button class="D1" style="right: 35%; bottom: 40%; background-color : #CCE1FF;">
-               월별스케줄
-            </button>
-            <button class="D1" style="right: 5%; bottom: 40%; background-color: #F8EFFB;">
-               선지급관리
-            </button>
-            <button class="D1" style="right: 20%; bottom: 40%;">
-               프로필변경
-            </button>
-            <button class="D1" style="right: 5%; bottom: 70%;">
-               비밀번호변경
-            </button>
-            <button class="D1" style="right: 20%; bottom: 70%;">
-               계좌정보
-            </button>
-         </div>
+<!--          <div> -->
+<!--             <div class="table"> -->
+<!--                <tr> -->
+<!--                   <label style="margin : 10px; font-size : 20px;"type="text" id="text"> 현재 월급제로 이루어진 기업의 급여 시스템을 유럽, 미국 등 선진국에서 활용 중인 주급제의 개념으로  -->
+<!--                   변경하여 경제활동 인구로 하여금 원활한 현금 흐름과 소비 패턴을 가지도록 도움을 주기 위한 프로그램입니다. 파이낸셜의 클라우드 계좌를 통해서 -->
+<!--                    기업은 회사 운영자금과 인건비를 다루고, 근로자는 급여의 유동성을 확보해 현금 흐름을 용이하게 합니다.</label> -->
+<!--                </tr> -->
+<!--             </div>  -->
+<!--             <button class="D1" style="right: 50%; bottom: 40%; background-color : #E7EAF9;" -->
+<!--                         th:onclick="|location.href='@{/schedule/calendar}'|"> -->
+<!--                업무일지 -->
+<!--             </button> -->
+<!--             <button class="D1" style="right: 35%; bottom: 40%; background-color : #CCE1FF;" -->
+<!--                              th:onclick="|location.href='@{/schedule/Month_calendar}'|"> -->
+<!--                월별스케줄 -->
+<!--             </button> -->
+<!--             <button class="D1" style="right: 5%; bottom: 40%; background-color: #F8EFFB;" -->
+<!--                            th:onclick="|location.href='@{/pay/RequestList}'|"> -->
+<!--                선지급관리 -->
+<!--             </button> -->
+<!--             <button class="D1" style="right: 65%; bottom: 40%; background-color: #F5FFFA;" -->
+<!--                            th:onclick="|location.href='@{/manage/usermanagement}'|"> -->
+<!--                직원관리 -->
+<!--             </button> -->
+<!--             <button class="D1" style="right: 20%; bottom: 40%; background-color: #FAFAD2;" -->
+<!--                                     th:onclick="|location.href='@{/user/myaccount}'|"> -->
+<!--                계좌정보 -->
+<!--             </button> -->
+<!--             <button class="D1" style="right: 5%; bottom: 70%; background-color : #FAEBD7;" -->
+<!--                            th:onclick="|location.href='@{/user/mypage}'|"> -->
+<!--                내정보 -->
+<!--             </button> -->
+<!--             <button class="D1" style="right: 20%; bottom: 70%; background-color: #dcdcdc;" -->
+<!--                            th:onclick="popup()"> -->
+<!--                프로필 사진변경 -->
+<!--             </button> -->
+<!--          </div> -->
       </div>
    </div>
 </body>
